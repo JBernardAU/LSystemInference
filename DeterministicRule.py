@@ -1,5 +1,5 @@
 from GlobalSettings import *
-UnitTest = False
+UnitTest_DeterministicRule = False
 
 
 # Two properties
@@ -7,12 +7,26 @@ UnitTest = False
 # Successor is the replacement string
 class DeterministicRule:
     def __init__(self, Pred, Succ):
-        self.predecessor = [Pred]
-        self.successor = [Succ]
+        self.predecessor = Pred
+        self.successor = Succ
+        maxL = 0
+        maxR = 0
+        for pred in self.predecessor:
+            if pred[iLeft] != anySymbol and len(pred[iLeft]) > maxL:
+                maxL = int(len(pred[iLeft]))
+            if pred[iRight] != anySymbol and len(pred[iRight]) > maxR:
+                maxR = int(len(pred[iRight]))
+        self.contextSize = (maxL,maxR)
 
     def Display(self):
         for iSucc, succ in enumerate(self.successor):
-            print(self.predecessor[iSucc][iLeft] + " < " + self.predecessor[iSucc][iSymbol] + " > " + + self.predecessor[iSucc][iRight] + " -> " + succ)
+            print(self.predecessor[iSucc][iLeft] + " < " + self.predecessor[iSucc][iSymbol] + " > " + self.predecessor[iSucc][iRight] + " -> " + succ)
+
+    def GetLeftContextSize(self):
+        return self.contextSize[0]
+
+    def GetRightContextSize(self):
+        return self.contextSize[1]
 
     def Add(self,Pred,Succ):
         self.predecessor.append(Pred)
@@ -26,7 +40,8 @@ class DeterministicRule:
         # symbols must match
         iSucc = 0
         isMatch = False
-        while (iSucc < len(self.successor)) and not isMatch:
+        isExactMatch = False
+        while (iSucc < len(self.successor)) and not isExactMatch:
             symbolMatch = (S == self.predecessor[iSucc][iSymbol])
 
             #check left symbols to left context
@@ -41,7 +56,6 @@ class DeterministicRule:
                     iPos2 -= 1
 
             #check right symbols to right context
-            #check left symbols to left context
             rightMatch = (self.predecessor[iSucc][iRight] == anySymbol) # if the predecessor left context is any symbol, then it automatically matches
             if not rightMatch:
                 iPos1 = 0 # start from the left side of the context and move right
@@ -51,23 +65,40 @@ class DeterministicRule:
                     rightMatch = rightMatch and (self.predecessor[iSucc][iRight][iPos2] == R[iPos1])
                     iPos1 += 1
                     iPos2 += 1
+
             isMatch = symbolMatch and leftMatch and rightMatch
-            if isMatch:
+            bool1 = self.predecessor[iSucc][iLeft] == anySymbol
+            bool2 = self.predecessor[iSucc][iRight] == anySymbol
+            bool3 = len(self.predecessor[iSucc][iLeft]) == len(L)
+            bool4 = len(self.predecessor[iSucc][iRight]) == len(R)
+            bool5 = isMatch and ((bool1 or bool3) and (bool2 or bool4))
+            """
+            if UnitTest:
+                print("self.predecessor[iSucc][iLeft] == anySymbol => " + str(bool1))
+                print("self.predecessor[iSucc][iRight] == anySymbol => " + str(bool2))
+                print("len(self.predecessor[iSucc][iLeft]) == len(L) => " + str(bool3))
+                print("len(self.predecessor[iSucc][iLeft]) == len(L) => " + str(bool4))
+                print(bool5)
+            """
+
+            isExactMatch = isMatch and ((bool1 or bool3) and (bool2 or bool4))
+
+            if isExactMatch or isMatch:
                 result = self.successor[iSucc]
-            else:
-                iSucc += 1
+
+            iSucc += 1
 
         return result
 
-if UnitTest:
-    r = DeterministicRule(("A","BB","*"),"AAA")
-    r.Add(("A","*","B"),"ABBA")
-    r.Add(("A","*","*"),"ABA")
+if UnitTest_DeterministicRule:
+    predecessors = [("A","BB","*"),("A","*","B"),("A","*","*")]
+    successors = ["AAA","ABBA","ABA"]
+    r = DeterministicRule(predecessors,successors)
 
     word = "ABABBBABA"
     iPos = 0
-    leftContextSize = 2
-    rightContextSize = 2
+    leftContextSize = r.contextSize[0]
+    rightContextSize = r.contextSize[1]
     result = ""
     while iPos < len(word):
         S = word[iPos]
