@@ -10,3 +10,7 @@ def GetLeftContext(S,P,N):
 def GetRightContext(S,P,N):
     result = S[P+1:P+1+N].ljust(N, emptySymbol)
     return result
+
+# Filters a word (W) based on alphabet (A)
+def Filter(W, A):
+    return W.translate({ord(s): '' for s in A})

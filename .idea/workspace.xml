@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Initial commit">
+    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Finished DeterministicRule.py and LSystem.py">
+      <change afterPath="$PROJECT_DIR$/IdentityRule.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProductionRule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DeterministicRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/DeterministicRule.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GlobalSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/GlobalSettings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,8 +51,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.DeterministicRule.executor": "Run",
+    "Python.IdentityRule.executor": "Debug",
     "Python.LSystem.executor": "Run",
     "Python.Main.executor": "Run",
+    "Python.ProductionRule.executor": "Debug",
+    "Python.Utility.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master"
   }
@@ -79,35 +84,29 @@
       <option name="project" value="LOCAL" />
       <updated>1732504748336</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Finished DeterministicRule.py and LSystem.py">
+      <option name="closed" value="true" />
+      <created>1732673528098</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732673528098</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
+    <MESSAGE value="Finished DeterministicRule.py and LSystem.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished DeterministicRule.py and LSystem.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/DeterministicRule.py</url>
-          <line>7</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/DeterministicRule.py</url>
-          <line>62</line>
+          <url>file://$PROJECT_DIR$/LSystem.py</url>
+          <line>141</line>
           <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/DeterministicRule.py</url>
-          <line>32</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/DeterministicRule.py</url>
-          <line>44</line>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
