@@ -1,4 +1,6 @@
-LSystem Name: CantorDust
-AI Type: GA
-Assume Context Known: True
+Mode: Inference
+LSystem Name: UnknownLSystem_00001
+AI Type: GeneticAlgorithm
+Context Mode: Known
+
 

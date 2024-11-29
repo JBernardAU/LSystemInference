@@ -2,9 +2,9 @@ from LSystem import LSystem
 from DeterministicRule import DeterministicRule
 
 class CantorDust(LSystem):
-    def __init__(self, N):
+    def __init__(self, N=3):
         super().__init__()
-        self.Initialize("ABA", ["A", "B"])
+        self.Initialize("ABA", ["A", "B"], list(), "Cantor Dust")
 
         # add rules
         # For symbol A

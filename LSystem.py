@@ -8,9 +8,11 @@ class LSystem:
     def __init__(self):
         self.name = ""
         self.axiom = ""
-        self.alphabet = []
-        self.rules = []
-        self.words = []
+        self.alphabet = list()
+        self.identities = list()
+        self.rules = list()
+        self.words = list()
+        self.facts = None # this is only used when trying to infer an L-system. It stores everything discovered about the L-system via the analyzer
 
     # make a clone of the L-system with an altered alphabet
     def Clone(self, A):
@@ -19,6 +21,7 @@ class LSystem:
         result.name = self.name
         result.axiom = self.axiom
         result.alphabet = A
+        result.identities = self.identities
         result.rules = self.rules
         result.words = self.words
 
@@ -48,13 +51,16 @@ class LSystem:
 
         return result
 
-
     def Display(self, WithRules=True):
-        print("Lsystem " + self.name)
-        print("Alphabet: ")
+        print("L-system: " + self.name)
+        print("Alphabet: ", end="")
         sep = ""
         for s in self.alphabet:
-            print(sep + s, end="")
+            if self.identities.contains(s):
+                mark = "*"
+            else:
+                mark = ""
+            print(sep + s + mark, end="")
             sep = ","
         print()
         print("Axiom: " + self.axiom)
@@ -67,6 +73,17 @@ class LSystem:
         print("Strings: ")
         for st in self.words:
             print(st)
+
+    # initialize an L-system with an axiom (W) and N strings
+    def Initialize(self, Axiom, Alphabet, Identities=None, Name="Unnamed"):
+        if Identities is None:
+            Identities = list()
+        self.name = Name
+        self.axiom = Axiom
+        self.alphabet = Alphabet
+        self.identities = Identities
+        self.words.append(Axiom)
+
 
     # This iterates a generation from a word
     def Iterate(self, W):
@@ -99,13 +116,6 @@ class LSystem:
         predecessors = [(S, "*", "*")]
         successors = [S]
         self.AddRules(IdentityRule(predecessors, successors))
-
-    # initialize an L-system with an axiom (W) and N strings
-    def Initialize(self, Axiom, Alphabet, Name="Unnamed"):
-        self.name = Name
-        self.axiom = Axiom
-        self.alphabet = Alphabet
-        self.words.append(Axiom)
 
     def GetSymbolID(self, S):
         return self.alphabet.index(S)
