@@ -1,0 +1,6 @@
+Mode: Experimental
+LSystem Name: CantorDust
+AI Type: GeneticAlgorithm
+Context Mode: Known
+
+

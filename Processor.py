@@ -1,6 +1,8 @@
 from GlobalSettings import *
 import importlib
 from LSystem import LSystem
+from LSystemExtended import LSystemExtended
+
 
 class Processor:
     def __init__(self, Settings):
@@ -9,18 +11,27 @@ class Processor:
         aiType = Settings[iSetting_AIType]
         self.contextMode = Settings[iSetting_ContextMode]
 
-        # create the target L-system
-        lSystemClass = getattr(importlib.import_module("LSystems." + LSystemFileName), LSystemFileName)
-        self.lSystem_original = lSystemClass()
+        if self.mode == "Experimental":
+            # load the original L-system
+            lSystemClass = getattr(importlib.import_module("LSystems." + LSystemFileName), LSystemFileName)
+            self.lSystem_original = lSystemClass()
+            print("Experimental mode activated. This is the original L-system.")
+            self.lSystem_original.Display()
+            self.lSystem_master = LSystemExtended()
+            self.lSystem_master.InitalizeFromLsystem(self.lSystem_original, "Unknown L-system")
+            print("*****************************************")
 
         # this the master copy of the L-system to be analyzed
-        self.lSystem_master = LSystem()
-        self.lSystem_master.name = self.lSystem_original.name
+        # a master copy is needed as this will undergo projections and backtracking
+        # so it is necessary to be able to return to the original
+        if self.mode == "Inference":
+            # load the unknown L-system
+            lSystemClass = getattr(importlib.import_module("LSystems." + LSystemFileName), LSystemFileName)
+            self.lSystem_master = lSystemClass()
+            print("Inference mode activated. ", end="")
 
-        # create the AI
-        #aiClass = getattr(importlib.import_module("AI." + aiType + "." + aiType), aiType)
-        #self.ai = aiClass()
-        self.lSystem_original.Display()
+        print("Attempting to find the following L-system.")
+        self.lSystem_master.Display()
 
     # Inputs:
     # - A sequence of words
@@ -28,6 +39,10 @@ class Processor:
     def Execute(self):
         # Step 1 - Pre-Analyze L-system
         # In this step, an initial pass is done to establish the most basic of facts about the successors
+        # And create the necessary structures to do the analysis
+        self.lSystem_master.PreAnalysis()
+
+        exit()
 
         error = float("inf")
         tabooSolutions = list()

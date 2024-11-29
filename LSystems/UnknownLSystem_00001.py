@@ -10,7 +10,7 @@ class UnknownLSystem_00001(LSystemExtended):
         self.contextSize = (0,0)
         self.identities = list()
         self.forbidden = None
-        super().InitalizeFromSelf()
+        super().InitializeFromSelf()
 
 
 
