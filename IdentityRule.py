@@ -1,4 +1,4 @@
-from ProductionRule import ProductionRule
+from ProductionRules.ProductionRule import ProductionRule
 
 UnitTest_IdentityRule = False
 

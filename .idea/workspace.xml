@@ -4,15 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Added IdentityRule.py. Added filtering for projected solutions.">
-      <change afterPath="$PROJECT_DIR$/Decoder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LSystems/CantorDust.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.txt" afterDir="false" />
+    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Incremental commit just to save the files">
+      <change afterPath="$PROJECT_DIR$/LSystemExtended.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProductionRules/UnknownRule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analyzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DeterministicRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/DeterministicRule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GlobalSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/GlobalSettings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdentityRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/IdentityRule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystemFacts.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/CantorDust.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/CantorDust.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/UnknownLSystem_00001.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/UnknownLSystem_00001.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductionRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,20 +57,52 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.CantorDust.executor": "Debug",
-    "Python.DeterministicRule.executor": "Run",
-    "Python.IdentityRule.executor": "Debug",
-    "Python.LSystem.executor": "Run",
-    "Python.Main.executor": "Run",
-    "Python.Processor.executor": "Run",
-    "Python.ProductionRule.executor": "Debug",
-    "Python.Utility.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.CantorDust.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.DeterministicRule.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IdentityRule.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.LSystem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Processor.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ProductionRule.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Utility.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jason/PycharmProjects/LSystemInference/Main.py&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ProductionRules" />
+      <recent name="$PROJECT_DIR$/AI/GeneticAlgorithm" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="PythonConfigurationType" factoryName="Python">
+      <module name="LSystemInference" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (LSystemInference)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -104,22 +143,55 @@
       <option name="project" value="LOCAL" />
       <updated>1732763343100</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added program initialization with settings (in settings.txt).&#10;Added initialization with Processor.&#10;Added L-systems directory.">
+      <option name="closed" value="true" />
+      <created>1732842552526</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1732842552526</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Incremental commit just to save the files">
+      <option name="closed" value="true" />
+      <created>1732851864815</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1732851864815</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Finished DeterministicRule.py and LSystem.py" />
     <MESSAGE value="Added IdentityRule.py. Added filtering for projected solutions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added IdentityRule.py. Added filtering for projected solutions." />
+    <MESSAGE value="Added program initialization with settings (in settings.txt).&#10;Added initialization with Processor.&#10;Added L-systems directory." />
+    <MESSAGE value="Incremental commit just to save the files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Incremental commit just to save the files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/LSystem.py</url>
-          <line>141</line>
+          <line>272</line>
           <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Analyzer.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Processor.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Processor.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="62" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

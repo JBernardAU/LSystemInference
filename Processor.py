@@ -1,9 +1,6 @@
-from Analyzer import Analyzer
 from GlobalSettings import *
 import importlib
-
 from LSystem import LSystem
-
 
 class Processor:
     def __init__(self, Settings):
@@ -15,8 +12,10 @@ class Processor:
         # create the target L-system
         lSystemClass = getattr(importlib.import_module("LSystems." + LSystemFileName), LSystemFileName)
         self.lSystem_original = lSystemClass()
-        self.lSystem_found = LSystem()
-        self.lSystem_found.name = self.lSystem_original.name
+
+        # this the master copy of the L-system to be analyzed
+        self.lSystem_master = LSystem()
+        self.lSystem_master.name = self.lSystem_original.name
 
         # create the AI
         #aiClass = getattr(importlib.import_module("AI." + aiType + "." + aiType), aiType)
@@ -27,21 +26,37 @@ class Processor:
     # - A sequence of words
 
     def Execute(self):
-        # Step 1 - Deduce an initial L-system from a sequence of words
-        analyzer = Analyzer()
-        words = self.lSystem_original.words
-        if self.mode == "Inference":
-            alphabet, predecessors = analyzer.InferAlphabetAndPredecessors(words, (0,0),list())
-            self.lSystem_found.alphabet = alphabet
-            self.lSystem_found.Display(True)
+        # Step 1 - Pre-Analyze L-system
+        # In this step, an initial pass is done to establish the most basic of facts about the successors
 
-        elif self.mode == "Experimental":
+        error = float("inf")
+        tabooSolutions = list()
+
+        while error > 0:
+            # Step 2 - Project the L-system onto a copy excluding all identity symbols
+
+            # Step 3 - Analyze the projected L-system
+
+            # Step 4 - Search for a solution
+
+            # Step 5 - If no solution found, add the solution to the taboo list
+
+            # Step 6 - Backtrack
+
+
+            error = 0
             pass
 
-        # Step 2 - Analyze L-system
 
-        #
 
+        if error > 0:
+            print("No matching L-system was found. Displaying best candidates.")
+        else:
+            print("One or more L-systems found. Displaying all suitable L-systems found.")
+
+        # Step N - Compare original and found if in experimental mode
+        if self.mode == "Experimental":
+            print("Comparing found L-systems with original L-system")
 
         return ""
 

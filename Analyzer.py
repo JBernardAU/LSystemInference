@@ -1,3 +1,6 @@
+from Utility import GetLeftContext, GetRightContext, DisplaySAC
+
+
 class Analyzer:
     # Inputs:
     # - none
@@ -11,22 +14,10 @@ class Analyzer:
     # Outputs:
     # - An alphabet
     # - All possible predecessors
-    def InferAlphabetAndPredecessors(self, W, CS, Identity):
+    def LSystemFromWords(self, L):
         alphabet = list()
         predecessors = list()
 
         # for each word
-        for w in W:
-            # for each symbol in the word
-            for s in w:
-                # If it is not a known identity and the alphabet doesn't already contain the symbol (s)
-                if s not in Identity and s not in alphabet:
-                    alphabet.append(s)
 
-        # add the identity symbols to the end
-        alphabet += Identity
-        print(alphabet)
-
-        return alphabet, predecessors
-
-
+        L.alphabet = alphabet
