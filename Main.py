@@ -1,11 +1,19 @@
-a = "ABA"
-b = "ABABBBABA"
+from GlobalSettings import *
+from Processor import Processor
 
-iPos = 0
-leftContextSize = 2
-rightContextSize = 2
+def ExtractSetting(Line):
+    return line.split(":")[1].strip()
 
-while iPos < len(b):
-    print(b[max(iPos-leftContextSize,0):iPos] + " < " + b[iPos] + " > " + b[iPos+1:iPos+1+rightContextSize])
-    iPos += 1
+settings = list()
+with open("settings.txt", "r") as file:
+    iLine = 0
+    for line in file:
+        if iLine == iSetting_LSystemName:
+            settings.append(ExtractSetting(line))
+        elif iLine == iSetting_AIType:
+            settings.append(ExtractSetting(line))
+        elif iLine == iSetting_AssumeContextKnown:
+            settings.append(ExtractSetting(line))
+        iLine += 1
 
+p = Processor(settings)

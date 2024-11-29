@@ -2,7 +2,7 @@ from DeterministicRule import DeterministicRule
 from IdentityRule import IdentityRule
 from Utility import *
 from GlobalSettings import *
-UnitTest_LSystem = True
+UnitTest_LSystem = False
 
 class LSystem:
     def __init__(self):
@@ -101,11 +101,11 @@ class LSystem:
         self.AddRules(IdentityRule(predecessors, successors))
 
     # initialize an L-system with an axiom (W) and N strings
-    def Initialize(self, W, A, Name="Unnamed"):
+    def Initialize(self, Axiom, Alphabet, Name="Unnamed"):
         self.name = Name
-        self.axiom = W
-        self.alphabet = A
-        self.words.append(W)
+        self.axiom = Axiom
+        self.alphabet = Alphabet
+        self.words.append(Axiom)
 
     def GetSymbolID(self, S):
         return self.alphabet.index(S)

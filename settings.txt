@@ -1,0 +1,4 @@
+LSystem Name: CantorDust
+AI Type: GA
+Assume Context Known: True
+
