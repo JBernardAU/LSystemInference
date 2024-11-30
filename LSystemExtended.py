@@ -2,6 +2,7 @@ import math
 from LSystem import LSystem
 from ProductionRules.DeterministicRule import DeterministicRule
 from ProductionRules.UnknownRule import UnknownRule
+from Scanner import Scanner
 from Utility import *
 from GlobalSettings import *
 
@@ -20,6 +21,21 @@ class LSystemExtended(LSystem):
         self.prefixFragment = ""
         self.suffixFragment = ""
         self.otherFragments = list()
+        self.solved = False
+
+    """
+    Inputs: None
+    Outputs: None
+    This determines is an L-system has been solved. An L-system is solved when the min and max lengths for all SACs are equal.
+    """
+    def CheckIfSolved(self):
+        iLength = 0
+        self.solved = True
+        while iLength < self.lengths and self.solved:
+            self.solved = self.lengths[iLength][iMin] == self.lengths[iLength][iMax]
+        if self.solved:
+            scanner = Scanner()
+
 
     def SetMaxGrowth(self, iSAC, iSymbol, V):
         flag = False
@@ -101,7 +117,8 @@ class LSystemExtended(LSystem):
             self.parikhLY[iWord-1] = countsY
             self.parikhLZ[iWord-1] = countsZ
 
-        print("CHECKING FOR A SOLUTION FROM PARIKH MATRICES")
+        print("CHECKING FOR A SOLUTION FROM PARIKH MATRICES")\
+        #TODO: Filter out identities
         numEquations = len(self.sacs)
         if len(self.parikhLY[0]) >= numEquations:
             mY = CreateMatrix(numSACs,numEquations)
@@ -112,15 +129,19 @@ class LSystemExtended(LSystem):
                     mY[iRow][iSac] = self.parikhLY[iRow][iSac]
             aY = np.array(mY)
             aZ = np.array(mZ)
-            aML = np.linalg.solve(aY, aZ)
             parikhFlag = True
-            for iSac, sac in enumerate(self.sacs):
-                if math.fmod(aML[iSac][0], 1) == 0.0:
-                    value = int(aML[iSac][0])
-                    self.SetMinLength(iSac,value)
-                    self.SetMaxLength(iSac,value)
-                else:
-                    parikhFlag = False
+            try:
+                aML = np.linalg.solve(aY, aZ)
+                for iSac, sac in enumerate(self.sacs):
+                    if math.fmod(aML[iSac][0], 1) == 0.0:
+                        value = int(aML[iSac][0])
+                        self.SetMinLength(iSac,value)
+                        self.SetMaxLength(iSac,value)
+                    else:
+                        parikhFlag = False
+            except:
+                print("Matrix is not invertible.")
+                parikhFlag = False
 
             if parikhFlag:
                 solutionFound = True
@@ -128,11 +149,11 @@ class LSystemExtended(LSystem):
             print("INSUFFICIENT ROWS - NO SOLUTION POSSIBLE")
 
         if solutionFound:
-            print("Solution Found")
+            print("*** SOLUTION FOUND ***")
             print(self.lengths)
         else:
+            print("LOCALIZATION - INITIALIZATION")
             for iWord in range(1,len(self.words)):
-                print("LOCALIZATION MAP INITIALIZED")
                 map = CreateMatrix(len(self.words[iWord]), len(self.words[iWord-1]))
                 self.localizationMaps.append(map)
                 #DisplayMatrix(map)
@@ -146,23 +167,38 @@ class LSystemExtended(LSystem):
                 countsSymbols = [[x, self.words[iWord].count(x)] for x in set(self.words[iWord])]
 
                 for iSac in range(len(self.growths)):
-                    sacCount = countsSACS[iSac]
-                    for iSymbol, s in enumerate(self.alphabet):
-                        for iCount in range(len(countsSymbols)):
-                            if countsSymbols[iCount][0] == s:
-                                growthSbySAC = math.floor(countsSymbols[iCount][1]/sacCount)
-                                self.SetMaxGrowth(iSac, iSymbol, growthSbySAC)
+                    if not IsSACIdentity(self.sacs[iSac],self.identities):
+                        sacCount = countsSACS[iSac]
+                        for iSymbol, s in enumerate(self.alphabet):
+                            for iCount in range(len(countsSymbols)):
+                                if countsSymbols[iCount][0] == s:
+                                    if (sacCount > 0):
+                                        growthSbySAC = math.floor(countsSymbols[iCount][1]/sacCount)
+                                        self.SetMaxGrowth(iSac, iSymbol, growthSbySAC)
+                    else:
+                        for iSymbol, s in enumerate(self.alphabet):
+                            if s == self.sacs[iSac][iSACSymbol]:
+                                self.SetMinGrowth(iSac, iSymbol, 1)
+                                self.SetMaxGrowth(iSac, iSymbol, 1)
+                            else:
+                                self.SetMinGrowth(iSac, iSymbol, 0)
+                                self.SetMaxGrowth(iSac, iSymbol, 0)
 
             # compute initial lengths
             for iSac, sac in enumerate(self.sacs):
-                growths = self.growths[iSac]
-                minLength = 0
-                maxLength = 0
-                for iSymbol, s in enumerate(self.alphabet):
-                    minLength += growths[iSymbol][iMin]
-                    maxLength += growths[iSymbol][iMax]
-                self.SetMinLength(iSac, minLength)
-                self.SetMaxLength(iSac, maxLength)
+                if not IsSACIdentity(sac,self.identities):
+                    growths = self.growths[iSac]
+                    minLength = 0
+                    maxLength = 0
+                    for iSymbol, s in enumerate(self.alphabet):
+                        minLength += growths[iSymbol][iMin]
+                        maxLength += growths[iSymbol][iMax]
+                    self.SetMinLength(iSac, minLength)
+                    self.SetMaxLength(iSac, maxLength)
+                else:
+                    self.SetMinLength(iSac, 1)
+                    self.SetMaxLength(iSac, 1)
+
 
     def InitalizeFromLsystem(self, L, Name="Unnamed"):
         self.axiom = L.axiom
@@ -182,7 +218,7 @@ class LSystemExtended(LSystem):
     def InitializeFromWords(self, W, Identities=None, Forbidden=None, Name="Unnamed"):
         # if not already named, then use the incoming name
         # also, if the incoming name is not the default value, then assume the intent is to rename the L-system
-        if self.name == "" or Name != "Unnamed":
+        if self.__name == "" or Name != "Unnamed":
             self.name = Name
 
         # Step 2.
@@ -211,8 +247,10 @@ class LSystemExtended(LSystem):
                     self.sacs.append(sac)
                     self.rules.append(UnknownRule())
 
-        # add the identity symbols to the end
-        self.alphabet += self.identities
+        # add the identity symbols to the end if not already there
+        for s in self.identities:
+            if s not in self.alphabet:
+                self.AddIdentity(s)
 
 if UnitTest_LSystemExtended:
     l = LSystemExtended()

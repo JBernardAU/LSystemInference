@@ -13,9 +13,9 @@ identityAlphabet2D = [moveForward, turnLeft, turnRight, turn180, startBranch, en
 contextForbidden = [turnLeft, turnRight, turn180, startBranch, endBranch] # these symbols may not appear in a context
 
 # SAC Positions
-iSymbol = 0
-iLeft = 1
-iRight = 2
+iSACSymbol = 0
+iSACLeft = 1
+iSACRight = 2
 
 # J,K Positions
 iContextLeft = 0
@@ -34,5 +34,5 @@ iMax = 1
 # default actions
 identityOnNoMatch = True
 
-# other
-episilon = 0.0000000001
+multicharacterIndicator = "."
+

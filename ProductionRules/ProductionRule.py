@@ -1,5 +1,4 @@
 from GlobalSettings import *
-from Utility import Filter
 
 class ProductionRule():
     def __init__(self, Succ):
@@ -19,9 +18,9 @@ class ProductionRule():
     def Display(self, SAC):
         for succ in self.successors:
             if succ is not None:
-                print(SAC[iLeft] + " < " + SAC[iSymbol] + " > " + SAC[iRight] + " -> " + succ)
+                print(SAC[iSACLeft] + " < " + SAC[iSACSymbol] + " > " + SAC[iSACRight] + " -> " + succ)
             else:
-                print(SAC[iLeft] + " < " + SAC[iSymbol] + " > " + SAC[iRight] + " -> ???" )
+                print(SAC[iSACLeft] + " < " + SAC[iSACSymbol] + " > " + SAC[iSACRight] + " -> ???")
 
 
     """

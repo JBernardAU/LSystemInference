@@ -1,5 +1,5 @@
 Mode: Experimental
-LSystem Name: CantorDust
+LSystem Name: DragonCurve
 AI Type: GeneticAlgorithm
 Context Mode: Known
 

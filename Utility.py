@@ -1,6 +1,8 @@
 from GlobalSettings import *
 import numpy as np
 
+"""
+DEPRECATED - Use WordExtended instead
 def GetSAC(W,P,J,K,F=None):
     s = W[P]
     lc = GetLeftContext(W,P,J,F)
@@ -10,7 +12,10 @@ def GetSAC(W,P,J,K,F=None):
     if rc == "":
         rc = anySymbol
     return s,lc,rc
+"""
 
+"""
+DEPRECATED - Incorporated into Word
 # Given a word (W), a position in that string (P), and a left context size (J), return the left context
 # Optionally takes a list of forbidden symbols (F). Context may not pass any forbidden symbol.
 def GetLeftContext(W, P, J, F=None):
@@ -27,7 +32,10 @@ def GetLeftContext(W, P, J, F=None):
                 pass
 
     return result.rjust(J, emptySymbol)
+"""
 
+"""
+DEPRECATED - Incorporated into Word
 # Given a word (W), a position in that string (P), and a right context size (K), return the right context
 # Optionally takes a list of forbidden symbols (F). Context may not pass any forbidden symbol.
 def GetRightContext(W, P, K, F=None):
@@ -41,22 +49,32 @@ def GetRightContext(W, P, K, F=None):
                 result = result[0:p]
 
     return result.ljust(K, emptySymbol)
+"""
 
+"""
+DEPRECATED - Incorporated into Word
 # Filters a word (W) based on alphabet (A)
 def Filter(W, A):
     return W.translate({ord(s): '' for s in A})
+"""
 
+"""
+DEPRECATED - Use SAC object instead
 # Since it is done so often, this display a symbol with the left and right context
 def DisplaySAC(SIC, NewLine=True):
     if NewLine:
         print(SIC[1] + " < " + SIC[0] + " > " + SIC[2])
     else:
         print(SIC[1] + " < " + SIC[0] + " > " + SIC[2], end="")
+"""
 
+"""
+DEPRECATED
 def PredecessorFromSAC(SAC):
     # use the SAC symbols, unless the left/right context is empty, in which case use "*" (or whatever any symbol is set to)
-    predecessor = (SAC[iSymbol],SAC[iLeft].rjust(1,anySymbol),SAC[iRight].ljust(1,anySymbol))
+    predecessor = (SAC[iSACSymbol], SAC[iSACLeft].rjust(1, anySymbol), SAC[iSACRight].ljust(1, anySymbol))
     return predecessor
+"""
 
 def CreateMatrix(W,H,V=0):
     return [[V for x in range(W)] for y in range(H)]
@@ -64,6 +82,8 @@ def CreateMatrix(W,H,V=0):
 def DisplayMatrix(M):
     print(np.matrix(M))
 
+"""
+DEPRECATED - Integrated into WordExtended
 def CountSACs(W, SACs,F=None):
     result = [0] * len(SACs)
     lcs = 0
@@ -79,3 +99,15 @@ def CountSACs(W, SACs,F=None):
                 result[iSac] += 1
 
     return result
+"""
+
+"""
+DEPRECATED - Identity is now in Symbol object
+def IsSACIdentity(SAC, I):
+    iSymbol = 0
+    flag = False
+    while iSymbol < len(I) and not flag:
+        flag = SAC[iSACSymbol] == I[iSymbol]
+        iSymbol += 1
+    return flag
+"""

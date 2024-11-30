@@ -1,32 +1,71 @@
+from typing import List, Any
+
 from ProductionRules.DeterministicRule import DeterministicRule
-from IdentityRule import IdentityRule
-from Utility import *
+from ProductionRules.IdentityRule import IdentityRule
+from ProductionRules.ProductionRule import ProductionRule
+from Alphabet import Alphabet
+from SACAlphabet import SACAlphabet
+from Symbol import Symbol
+from Word import Word
 from GlobalSettings import *
+
 UnitTest_LSystem = False
 
 class LSystem:
+    __name: str
+    __axiom: str
+    __alphabet: Alphabet
+    __sacs: SACAlphabet
+    __rules: list[ProductionRule]
+    __words: list[Word]
+    __contextSize: tuple[int, int]
+
     def __init__(self):
-        self.name = ""
-        self.axiom = ""
-        self.alphabet = list()
-        self.sacs = list()
-        self.identities = list()
-        self.forbidden = None
-        self.rules = list()
-        self.words = list()
-        self.contextSize = (0,0)
+        self.__name = ""
+        self.__axiom = ""
+        self.__alphabet = None
+        self.__sacs = None
+        #self.__identities = list()
+        #self.__forbidden = list()
+        self.__rules = list()
+        self.__words = list()
+        self.__contextSize = (0,0)
+
+    def GetName(self):
+        return self.__name
+    
+    def GetAxiom(self):
+        return self.__axiom
+
+    def GetSymbol(self,I):
+        return self.__alphabet.GetSymbol(I)
+
+    def GetSymbolID(self,I):
+        return self.__alphabet.GetID(I)
+
+    def GetSAC(self,I):
+        return self.__sacs.GetSAC(I)
+
+    def GetSACID(self,I):
+        return self.__sacs.GetSACID(I)
+
+    def GetRule(self, SAC):
+        pass
+
+    def GetWord(self, I):
+        return self.__words[I]
 
     # make a clone of the L-system with an altered alphabet
     def Project(self, A):
         # first make a copy
         result = LSystem()
-        result.name = self.name
-        result.axiom = self.axiom
+        result.__name = self.__name
+        result.axiom = self.__axiom
         result.alphabet = A
-        result.identities = self.identities
-        result.rules = self.rules
-        result.words = self.words
+        result.rules = self.__rules
+        result.words = self.__words
 
+        """
         # Printing the result
         toRemove = list(set(self.alphabet) - set(result.alphabet))
 
@@ -45,48 +84,43 @@ class LSystem:
         # Otherwise call Filter
         rules = []
         for (iRule, rule) in enumerate(result.rules):
-            if rule.predecessors[0][iSymbol] not in toRemove:
+            if rule.predecessors[0][iSACSymbol] not in toRemove:
                 rule.Filter(toRemove)
                 rules.append(rule)
 
         result.rules = rules
-
+        """
         return result
 
     def Display(self, WithSACS=True, WithRules=True):
-        print("L-system: " + self.name)
+        print("L-system: " + self.__name)
         print("Alphabet: ", end="")
         sep = ""
-        for s in self.alphabet:
-            if s in self.identities:
-                mark = "*"
-            else:
-                mark = ""
-            print(sep + s + mark, end="")
-            sep = ","
-        print()
-        print("Axiom: " + self.axiom)
+        for s in self.__alphabet:
+            print(sep + s, end="")
+            sep = ", "
+        print("Axiom: " + self.__axiom)
 
         if WithSACS and not WithRules:
             print("SACS: ")
-            for sac in self.sacs:
-                DisplaySAC(sac)
+            for sac in self.__sacs:
+                print(sac)
 
         if WithRules:
             print("Rules: ")
-            for sac in self.sacs:
+            for sac in self.__sacs:
                 rules = self.GetRules(sac)
                 for r in rules:
                     r.Display(sac)
 
-        print("Strings: ")
-        for st in self.words:
-            print(st)
+        print("Words: ")
+        for w in self.__words:
+            print(w)
 
     """
     Inputs:
     - An axiom
-    - An alphabet including identities
+    - An alphabet including identities. This can be a list of strings or an Alphabet object
     - (optional) A list of symbols with known identity production rules
     - (optional) A list of forbidden symbols. Context may not pass a forbidden symbol
     - (optional) A name     
@@ -96,15 +130,25 @@ class LSystem:
     This initializes a simple L-system using known values. This is mainly used for when no analysis is required and
     a known L-system is to be used for simulation purposes.
     """
-    def Initialize(self, Axiom, Alphabet, Identities=None, Forbidden=None, Name="Unnamed"):
+
+    # noinspection PyTypeChecker
+    def Initialize(self, W, A, Identities=None, Forbidden=None, Name="Unnamed"):
         if Identities is None:
             Identities = list()
-        self.name = Name
-        self.axiom = Axiom
-        self.alphabet = Alphabet
-        self.identities = Identities
-        self.forbidden = Forbidden
-        self.words.append(Axiom)
+
+        if Forbidden is None:
+            Forbidden = list()
+
+        self.__name = Name
+
+        # setup the alphabet
+        if type(Alphabet) is Alphabet:
+            self.__alphabet = A
+        else:
+            self.__alphabet = Alphabet(A,Identities,Forbidden)
+
+        self.__axiom = Word(self.__alphabet.ConvertString2List(W))
+        self.__words.append(self.__axiom)
 
     # This iterates a generation from a word
     def Iterate(self, W):
@@ -154,11 +198,14 @@ class LSystem:
     def AddRules(self, R):
         self.rules.append(R)
 
+    def AddIdentityRules(self):
+        for s in self.identities:
+            self.AddIdentity(s)
+
     def AddIdentity(self, S):
         self.alphabet.append(S)
-        predecessors = [(S, "*", "*")]
-        successors = [S]
-        self.AddRules(IdentityRule(predecessors, successors))
+        self.sacs.append((S, "*", "*"))
+        self.AddRules(IdentityRule([S]))
 
     def GetSymbolID(self, S):
         return self.alphabet.index(S)

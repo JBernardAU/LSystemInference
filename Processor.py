@@ -40,8 +40,12 @@ class Processor:
         # In this step, an initial pass is done to establish the most basic of facts about the successors
         # And create the necessary structures to do the analysis
         self.lSystem_master.PreAnalysis()
+        self.lSystem_master.CheckIfSolved()
+
         error = float("inf")
         tabooSolutions = list()
+        if self.lSystem_master == True:
+            error = 0
 
         while error > 0:
             # Step 2 - Project the L-system onto a copy excluding all identity symbols
