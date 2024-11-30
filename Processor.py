@@ -1,6 +1,5 @@
 from GlobalSettings import *
 import importlib
-from LSystem import LSystem
 from LSystemExtended import LSystemExtended
 
 
@@ -41,9 +40,6 @@ class Processor:
         # In this step, an initial pass is done to establish the most basic of facts about the successors
         # And create the necessary structures to do the analysis
         self.lSystem_master.PreAnalysis()
-
-        exit()
-
         error = float("inf")
         tabooSolutions = list()
 

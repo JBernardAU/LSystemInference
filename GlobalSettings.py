@@ -33,3 +33,6 @@ iMax = 1
 
 # default actions
 identityOnNoMatch = True
+
+# other
+episilon = 0.0000000001

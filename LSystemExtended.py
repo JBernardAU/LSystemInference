@@ -1,8 +1,10 @@
+import math
 from LSystem import LSystem
 from ProductionRules.DeterministicRule import DeterministicRule
 from ProductionRules.UnknownRule import UnknownRule
 from Utility import *
 from GlobalSettings import *
+
 UnitTest_LSystemExtended = False
 
 class LSystemExtended(LSystem):
@@ -13,11 +15,39 @@ class LSystemExtended(LSystem):
         self.parikhLZ = None
         self.parikhGY = None
         self.parikhGZ = None
-        self.lengths = list()
-        self.growths = list()
+        self.lengths = None
+        self.growths = None
         self.prefixFragment = ""
         self.suffixFragment = ""
         self.otherFragments = list()
+
+    def SetMaxGrowth(self, iSAC, iSymbol, V):
+        flag = False
+        if V <= self.growths[iSAC][iSymbol][iMax]:
+            self.growths[iSAC][iSymbol][iMax] = V
+            flag = True
+        return flag
+
+    def SetMinGrowth(self, iSAC, iSymbol, V):
+        flag = False
+        if V >= self.growths[iSAC][iSymbol][iMin]:
+            self.growths[iSAC][iSymbol][iMin] = V
+            flag = True
+        return flag
+
+    def SetMaxLength(self, iSAC, V):
+        flag = False
+        if V <= self.lengths[iSAC][iMax]:
+            self.lengths[iSAC][iMax] = V
+            flag = True
+        return flag
+
+    def SetMinLength(self, iSAC, V):
+        flag = False
+        if V >= self.lengths[iSAC][iMin]:
+            self.lengths[iSAC][iMin] = V
+            flag = True
+        return flag
 
     """
     Inputs: None
@@ -27,13 +57,22 @@ class LSystemExtended(LSystem):
     """
     def PreAnalysis(self):
         print("Starting Pre-analysis")
+        defaultMin = 0
+        defaultMax = math.inf
+        solutionFound = False
+        solution = list()
 
-        # Step 1. create localization maps
-        for iWord in range(1,len(self.words)):
-            print("LOCALIZATION MAP INITIALIZED")
-            map = CreateMatrix(len(self.words[iWord]), len(self.words[iWord-1]))
-            self.localizationMaps.append(map)
-            #DisplayMatrix(map)
+        # create length and growth structures
+        self.lengths = list()
+        for iSac, sac in enumerate(self.sacs):
+            self.lengths.append([defaultMin, defaultMax])
+
+        self.growths = list()
+        for sac in self.sacs:
+            growth = list()
+            for s in self.alphabet:
+                growth.append([defaultMin, defaultMax])
+            self.growths.append(growth)
 
         # Create the Parikh vectors
         numSACs = len(self.sacs)
@@ -62,33 +101,68 @@ class LSystemExtended(LSystem):
             self.parikhLY[iWord-1] = countsY
             self.parikhLZ[iWord-1] = countsZ
 
-        DisplayMatrix(self.parikhLY)
-        DisplayMatrix(self.parikhLZ)
+        print("CHECKING FOR A SOLUTION FROM PARIKH MATRICES")
+        numEquations = len(self.sacs)
+        if len(self.parikhLY[0]) >= numEquations:
+            mY = CreateMatrix(numSACs,numEquations)
+            mZ = CreateMatrix(1,numEquations)
+            for iRow in range(numEquations):
+                mZ[iRow][0] = self.parikhLZ[iRow][0]
+                for iSac in range(numSACs):
+                    mY[iRow][iSac] = self.parikhLY[iRow][iSac]
+            aY = np.array(mY)
+            aZ = np.array(mZ)
+            aML = np.linalg.solve(aY, aZ)
+            parikhFlag = True
+            for iSac, sac in enumerate(self.sacs):
+                if math.fmod(aML[iSac][0], 1) == 0.0:
+                    value = int(aML[iSac][0])
+                    self.SetMinLength(iSac,value)
+                    self.SetMaxLength(iSac,value)
+                else:
+                    parikhFlag = False
 
-        """
-        import numpy as np
-        a = np.array([[2, 1], [8, 19]])
-        b = np.array([9, 81])
-        x = np.linalg.solve(a, b)
-        print(x)
-        """
-        print("GROWTH PRE-ANALYSIS")
-        counts1 = list()
-        for iWord in range(1,len(self.words)):
-            countsSACS = CountSACs(self.words[iWord - 1], self.sacs, self.forbidden)
-            countsSymbols = [[x, self.words[iWord].count(x)] for x in set(self.words[iWord])]
+            if parikhFlag:
+                solutionFound = True
+        else:
+            print("INSUFFICIENT ROWS - NO SOLUTION POSSIBLE")
 
-            for sac in self.sacs:
+        if solutionFound:
+            print("Solution Found")
+            print(self.lengths)
+        else:
+            for iWord in range(1,len(self.words)):
+                print("LOCALIZATION MAP INITIALIZED")
+                map = CreateMatrix(len(self.words[iWord]), len(self.words[iWord-1]))
+                self.localizationMaps.append(map)
+                #DisplayMatrix(map)
 
+            print("GROWTH PRE-ANALYSIS")
+            # create length and growth initial structures
 
-            print(counts1)
-            print(counts2)
-            counts1 = counts2
+            # compute initial growths
+            for iWord in range(1,len(self.words)):
+                countsSACS = CountSACs(self.words[iWord - 1], self.sacs, self.forbidden)
+                countsSymbols = [[x, self.words[iWord].count(x)] for x in set(self.words[iWord])]
 
-        pass
+                for iSac in range(len(self.growths)):
+                    sacCount = countsSACS[iSac]
+                    for iSymbol, s in enumerate(self.alphabet):
+                        for iCount in range(len(countsSymbols)):
+                            if countsSymbols[iCount][0] == s:
+                                growthSbySAC = math.floor(countsSymbols[iCount][1]/sacCount)
+                                self.SetMaxGrowth(iSac, iSymbol, growthSbySAC)
 
-
-
+            # compute initial lengths
+            for iSac, sac in enumerate(self.sacs):
+                growths = self.growths[iSac]
+                minLength = 0
+                maxLength = 0
+                for iSymbol, s in enumerate(self.alphabet):
+                    minLength += growths[iSymbol][iMin]
+                    maxLength += growths[iSymbol][iMax]
+                self.SetMinLength(iSac, minLength)
+                self.SetMaxLength(iSac, maxLength)
 
     def InitalizeFromLsystem(self, L, Name="Unnamed"):
         self.axiom = L.axiom
