@@ -1,4 +1,4 @@
-from Symbol import Symbol
+from WordsAndSymbols.Symbol import Symbol
 UnitTest_Word = False
 
 class Word:
@@ -6,25 +6,27 @@ class Word:
     Properties:
     - A list of Symbol objects
     """
-    __symbols: list[Symbol]
+    _symbols: list[Symbol]
 
-    def __init__(self, Symbols):
+    def __init__(self, Symbols, Ids=None, SACs=None, SACIDs=None):
         """
         :type Symbols: list[Symbol]
         """
-        self.__symbols = Symbols
-        self.__sacs = None
-        self.__sacCounts = None
-
+        self._symbols = Symbols
+        self._ids = Ids
+        self._parameters = None
+        self._sacs = SACs
+        self._sacIds = SACIDs
+        self._sacCounts = None
 
     def __len__(self):
-        return len(self.__symbols)
+        return len(self._symbols)
 
     def __eq__(self, other):
         iW = 0
-        flag = len(self.__symbols) == len(other.symbols)
-        while iW < len(self.__symbols) and flag:
-            flag = self.__symbols[iW] == other.symbols[iW]
+        flag = len(self._symbols) == len(other.symbols)
+        while iW < len(self._symbols) and flag:
+            flag = self._symbols[iW] == other.symbols[iW]
             iW += 1
         return flag
 
@@ -36,12 +38,33 @@ class Word:
 
     def __str__(self):
         result = ""
-        for s in self.__symbols:
+        for s in self._symbols:
             result += str(s)
         return result
 
     def __iter__(self):
-        return iter(self.__symbols)
+        return iter(self._symbols)
+
+    def AddSAC(self, SAC):
+        self._sacs.append(SAC)
+        pass
+
+    def Parametrize(self):
+        self._parameters = list()
+
+    def AddParameters(self, P):
+        self.Parametrize()
+        pass
+
+    def Extend(self):
+        self._sacs = list()
+        self._sacCounts = list()
+
+    def IsExtended(self):
+        if self._sacs is None:
+            return False
+        else:
+            return True
 
 if UnitTest_Word:
     from Symbol import Symbol

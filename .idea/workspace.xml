@@ -5,15 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Incremental commit.&#10;&#10;Redid the framework to be object-oriented.">
-      <change afterPath="$PROJECT_DIR$/SaCLibrary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/AnySymbol.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/AnyWord.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/EmptySymbol.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/EmptyWord.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Alphabet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GlobalSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/GlobalSettings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystemExtended.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystemExtended.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/CantorDust.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/CantorDust.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LSystems/DragonCurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/DragonCurve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/UnknownLSystem_00001.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/UnknownLSystem_00001.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SAC.py" beforeDir="false" afterPath="$PROJECT_DIR$/SaC.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SACAlphabet.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WordExtended.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordExtended.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaC.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/SaC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SaCLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/SaCLibrary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Symbol.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Symbol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Word.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Word.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordExtended.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,32 +61,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.CantorDust.executor": "Debug",
-    "Python.DeterministicRule.executor": "Run",
-    "Python.IdentityRule.executor": "Debug",
-    "Python.LSystem.executor": "Run",
-    "Python.Main.executor": "Debug",
-    "Python.Processor.executor": "Run",
-    "Python.ProductionRule.executor": "Debug",
-    "Python.SAC.executor": "Run",
-    "Python.Symbol.executor": "Run",
-    "Python.Utility.executor": "Debug",
-    "Python.Word.executor": "Run",
-    "Python.WordExtended.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/jason/PycharmProjects/LSystemInference"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.CantorDust.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.DeterministicRule.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IdentityRule.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.LSystem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Processor.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ProductionRule.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.SAC.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Symbol.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Utility.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Word.executor&quot;: &quot;Run&quot;,
+    &quot;Python.WordExtended.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jason/PycharmProjects/LSystemInference&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/WordsAndSymbols" />
+      <recent name="$PROJECT_DIR$/LSystems" />
+      <recent name="$PROJECT_DIR$/Words and Symbols" />
+      <recent name="$PROJECT_DIR$/SpecialSymbols" />
       <recent name="$PROJECT_DIR$/ProductionRules" />
-      <recent name="$PROJECT_DIR$/AI/GeneticAlgorithm" />
     </key>
   </component>
   <component name="RunManager">
@@ -192,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732996052512</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Incremental commit.&#10;&#10;Redid the framework to be object-oriented.">
+      <option name="closed" value="true" />
+      <created>1733023899717</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733023899717</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -211,34 +232,29 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/LSystem.py</url>
-          <line>356</line>
+          <url>file://$PROJECT_DIR$/LSystems/LSystem.py</url>
+          <line>344</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/LSystemExtended.py</url>
+          <url>file://$PROJECT_DIR$/LSystems/LSystemExtended.py</url>
           <line>252</line>
           <option name="timeStamp" value="107" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/SaC.py</url>
-          <line>71</line>
+          <url>file://$PROJECT_DIR$/WordsAndSymbols/SaC.py</url>
+          <line>80</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/LSystem.py</url>
-          <line>161</line>
-          <option name="timeStamp" value="132" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/SaCLibrary.py</url>
-          <line>59</line>
-          <option name="timeStamp" value="133" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/LSystems/DragonCurve.py</url>
-          <line>11</line>
-          <option name="timeStamp" value="134" />
+          <line>14</line>
+          <option name="timeStamp" value="156" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/WordsAndSymbols/SaCLibrary.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="159" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

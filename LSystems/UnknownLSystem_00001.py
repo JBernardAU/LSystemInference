@@ -1,4 +1,4 @@
-from LSystemExtended import LSystemExtended
+from LSystems.LSystemExtended import LSystemExtended
 
 class UnknownLSystem_00001(LSystemExtended):
     def __init__(self):

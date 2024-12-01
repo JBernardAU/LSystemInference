@@ -1,5 +1,4 @@
-import math
-from LSystem import LSystem
+from LSystems.LSystem import LSystem
 from ProductionRules.DeterministicRule import DeterministicRule
 from ProductionRules.UnknownRule import UnknownRule
 from Scanner import Scanner
@@ -7,6 +6,7 @@ from Utility import *
 from GlobalSettings import *
 
 UnitTest_LSystemExtended = False
+
 
 class LSystemExtended(LSystem):
     def __init__(self):
@@ -28,6 +28,7 @@ class LSystemExtended(LSystem):
     Outputs: None
     This determines is an L-system has been solved. An L-system is solved when the min and max lengths for all SACs are equal.
     """
+
     def CheckIfSolved(self):
         iLength = 0
         self.solved = True
@@ -35,7 +36,6 @@ class LSystemExtended(LSystem):
             self.solved = self.lengths[iLength][iMin] == self.lengths[iLength][iMax]
         if self.solved:
             scanner = Scanner()
-
 
     def SetMaxGrowth(self, iSAC, iSymbol, V):
         flag = False
@@ -71,6 +71,7 @@ class LSystemExtended(LSystem):
     This does a pre-analysis of the L-system to establish the most basic facts before starting the analysis.
     It also creates and initializes any necessary structures.
     """
+
     def PreAnalysis(self):
         print("Starting Pre-analysis")
         defaultMin = 0
@@ -95,34 +96,34 @@ class LSystemExtended(LSystem):
         numWords = len(self.words)
         numSymbols = len(self.alphabet)
         print("PARIKH MATRICES - GROWTH INITIALIZED")
-        self.parikhGY = CreateMatrix(numSACs,numWords-1)
-        self.parikhGZ = CreateMatrix(numSymbols,numWords-1)
+        self.parikhGY = CreateMatrix(numSACs, numWords - 1)
+        self.parikhGZ = CreateMatrix(numSymbols, numWords - 1)
         countsY = list()
-        for iWord in range(1,len(self.words)):
+        for iWord in range(1, len(self.words)):
             if iWord == 1:
-                countsY = CountSACs(self.words[iWord-1], self.sacs, self.forbidden)
+                countsY = CountSACs(self.words[iWord - 1], self.sacs, self.forbidden)
             countsZ = CountSACs(self.words[iWord], self.sacs, self.forbidden)
 
-            self.parikhGY[iWord-1] = countsY
-            self.parikhGZ[iWord-1] = countsZ
+            self.parikhGY[iWord - 1] = countsY
+            self.parikhGZ[iWord - 1] = countsZ
             countsY = countsZ
 
         print("PARIKH MATRICES - LENGTH INITIALIZED")
-        self.parikhLY = CreateMatrix(numSACs,numWords-1)
-        self.parikhLZ = CreateMatrix(1,numWords-1)
-        for iWord in range(1,len(self.words)):
-            countsY = CountSACs(self.words[iWord-1], self.sacs, self.forbidden)
+        self.parikhLY = CreateMatrix(numSACs, numWords - 1)
+        self.parikhLZ = CreateMatrix(1, numWords - 1)
+        for iWord in range(1, len(self.words)):
+            countsY = CountSACs(self.words[iWord - 1], self.sacs, self.forbidden)
             countsZ = [len(self.words[iWord])]
 
-            self.parikhLY[iWord-1] = countsY
-            self.parikhLZ[iWord-1] = countsZ
+            self.parikhLY[iWord - 1] = countsY
+            self.parikhLZ[iWord - 1] = countsZ
 
-        print("CHECKING FOR A SOLUTION FROM PARIKH MATRICES")\
-        #TODO: Filter out identities
+        print("CHECKING FOR A SOLUTION FROM PARIKH MATRICES") \
+            #TODO: Filter out identities
         numEquations = len(self.sacs)
         if len(self.parikhLY[0]) >= numEquations:
-            mY = CreateMatrix(numSACs,numEquations)
-            mZ = CreateMatrix(1,numEquations)
+            mY = CreateMatrix(numSACs, numEquations)
+            mZ = CreateMatrix(1, numEquations)
             for iRow in range(numEquations):
                 mZ[iRow][0] = self.parikhLZ[iRow][0]
                 for iSac in range(numSACs):
@@ -135,8 +136,8 @@ class LSystemExtended(LSystem):
                 for iSac, sac in enumerate(self.sacs):
                     if math.fmod(aML[iSac][0], 1) == 0.0:
                         value = int(aML[iSac][0])
-                        self.SetMinLength(iSac,value)
-                        self.SetMaxLength(iSac,value)
+                        self.SetMinLength(iSac, value)
+                        self.SetMaxLength(iSac, value)
                     else:
                         parikhFlag = False
             except:
@@ -153,8 +154,8 @@ class LSystemExtended(LSystem):
             print(self.lengths)
         else:
             print("LOCALIZATION - INITIALIZATION")
-            for iWord in range(1,len(self.words)):
-                map = CreateMatrix(len(self.words[iWord]), len(self.words[iWord-1]))
+            for iWord in range(1, len(self.words)):
+                map = CreateMatrix(len(self.words[iWord]), len(self.words[iWord - 1]))
                 self.localizationMaps.append(map)
                 #DisplayMatrix(map)
 
@@ -162,18 +163,18 @@ class LSystemExtended(LSystem):
             # create length and growth initial structures
 
             # compute initial growths
-            for iWord in range(1,len(self.words)):
+            for iWord in range(1, len(self.words)):
                 countsSACS = CountSACs(self.words[iWord - 1], self.sacs, self.forbidden)
                 countsSymbols = [[x, self.words[iWord].count(x)] for x in set(self.words[iWord])]
 
                 for iSac in range(len(self.growths)):
-                    if not IsSACIdentity(self.sacs[iSac],self.identities):
+                    if not IsSACIdentity(self.sacs[iSac], self.identities):
                         sacCount = countsSACS[iSac]
                         for iSymbol, s in enumerate(self.alphabet):
                             for iCount in range(len(countsSymbols)):
                                 if countsSymbols[iCount][0] == s:
                                     if (sacCount > 0):
-                                        growthSbySAC = math.floor(countsSymbols[iCount][1]/sacCount)
+                                        growthSbySAC = math.floor(countsSymbols[iCount][1] / sacCount)
                                         self.SetMaxGrowth(iSac, iSymbol, growthSbySAC)
                     else:
                         for iSymbol, s in enumerate(self.alphabet):
@@ -186,7 +187,7 @@ class LSystemExtended(LSystem):
 
             # compute initial lengths
             for iSac, sac in enumerate(self.sacs):
-                if not IsSACIdentity(sac,self.identities):
+                if not IsSACIdentity(sac, self.identities):
                     growths = self.growths[iSac]
                     minLength = 0
                     maxLength = 0
@@ -198,7 +199,6 @@ class LSystemExtended(LSystem):
                 else:
                     self.SetMinLength(iSac, 1)
                     self.SetMaxLength(iSac, 1)
-
 
     def InitalizeFromLsystem(self, L, Name="Unnamed"):
         self.axiom = L.axiom
@@ -218,7 +218,7 @@ class LSystemExtended(LSystem):
     def InitializeFromWords(self, W, Identities=None, Forbidden=None, Name="Unnamed"):
         # if not already named, then use the incoming name
         # also, if the incoming name is not the default value, then assume the intent is to rename the L-system
-        if self.__name == "" or Name != "Unnamed":
+        if self._name == "" or Name != "Unnamed":
             self.name = Name
 
         # Step 2.
@@ -233,8 +233,8 @@ class LSystemExtended(LSystem):
                     self.alphabet.append(s)
 
                 # get the symbol in context
-                lc = GetLeftContext(w,p,self.contextSize[0],Forbidden)
-                rc = GetRightContext(w,p,self.contextSize[1],Forbidden)
+                lc = GetLeftContext(w, p, self.contextSize[0], Forbidden)
+                rc = GetRightContext(w, p, self.contextSize[1], Forbidden)
 
                 if lc == "":
                     lc = anySymbol
@@ -242,7 +242,7 @@ class LSystemExtended(LSystem):
                 if rc == "":
                     rc = anySymbol
 
-                sac = (s, lc , rc)
+                sac = (s, lc, rc)
                 if sac not in self.sacs:
                     self.sacs.append(sac)
                     self.rules.append(UnknownRule())
@@ -252,18 +252,19 @@ class LSystemExtended(LSystem):
             if s not in self.alphabet:
                 self.AddIdentity(s)
 
+
 if UnitTest_LSystemExtended:
     l = LSystemExtended()
-    l.Initialize("A+B-A", ["A","B"])
+    l.Initialize("A+B-A", ["A", "B"])
 
     # add rules
     # For symbol A
-    predecessors = [("A","*","*")]
+    predecessors = [("A", "*", "*")]
     successors = ["A+B-A"]
-    l.AddRules(DeterministicRule(predecessors,successors))
+    l.AddRules(DeterministicRule(predecessors, successors))
 
     # For symbol B
-    predecessors = [("B","*","*")]
+    predecessors = [("B", "*", "*")]
     successors = ["[B-B+B]"]
     l.AddRules(DeterministicRule(predecessors, successors))
 
@@ -276,6 +277,6 @@ if UnitTest_LSystemExtended:
     l.IterateN(l.axiom, 3)
     l.Display()
 
-    a2 = ["A","B","+"]
+    a2 = ["A", "B", "+"]
     l2 = l.Project(a2)
     l2.Display()

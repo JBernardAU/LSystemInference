@@ -1,4 +1,13 @@
-from Symbol import Symbol
+from typing import List, Any
+
+import GlobalSettings
+from WordsAndSymbols.Symbol import Symbol
+from WordsAndSymbols.SpecialSymbols.AnySymbol import AnySymbol
+from WordsAndSymbols.SpecialSymbols.AnyWord import AnyWord
+from GlobalSettings import anySymbol
+from WordsAndSymbols.SpecialSymbols.EmptySymbol import EmptySymbol
+from WordsAndSymbols.SpecialSymbols.EmptyWord import EmptyWord
+from WordsAndSymbols.Word import Word
 
 UnitTest_Alphabet = False
 
@@ -12,6 +21,11 @@ class Alphabet:
     def __init__(self, Symbols=None, Identities=None, Forbidden=None):
         self.__symbols = list()
         self.__ids = list()
+        self.anySymbol = AnySymbol() # these are special instances of a symbol and word to make for easy matching to any symbol or word
+        self.anyWord = AnyWord([self.anySymbol],[self.anySymbol.GetID()])
+        self.emptySymbol = EmptySymbol() # these are special instances of a symbol and word to make for easy matching to any symbol or word
+        self.emptyWord = EmptyWord([self.emptySymbol],[self.emptySymbol.GetID()])
+
         if Symbols is not None:
             for s in Symbols:
                 self.Add(s)
@@ -49,7 +63,6 @@ class Alphabet:
     def GetSymbol(self, I):
         return self.__symbols[I]
 
-
     def GetID(self, I):
         return self.__ids[I]
 
@@ -57,8 +70,6 @@ class Alphabet:
         id = len(self.__symbols)
         self.__symbols.append(Symbol(S, id, IsIdentity, IsForbidden))
         self.__ids.append(id)
-
-
 
     """
     Input: a string
@@ -68,10 +79,15 @@ class Alphabet:
         """
         :rtype: list(Symbol)
         """
-        x = list()
-        for s in S:
-            x.append(self.FindSymbol(s))
-        return x
+        if len(S) == 0:
+            return [self.emptySymbol]
+        if len(S) == 1 and S[0] == GlobalSettings.anySymbol:
+            return [self.anySymbol]
+        else:
+            x = list()
+            for s in S:
+                x.append(self.FindSymbol(s))
+            return x
 
     """
     Input: a string
@@ -81,10 +97,15 @@ class Alphabet:
         """
         :rtype: list(int)
         """
-        x = list()
-        for s in S:
-            x.append(self.FindSymbolID(s))
-        return x
+        if len(S) == 0:
+            return [GlobalSettings.emptySymbolID]
+        if len(S) == 1 and S[0] == GlobalSettings.anySymbol:
+            return [GlobalSettings.emptySymbolID]
+        else:
+            x = list()
+            for s in S:
+                x.append(self.FindSymbolID(s))
+            return x
 
 if UnitTest_Alphabet:
     import Symbol

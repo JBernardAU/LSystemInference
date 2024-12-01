@@ -1,4 +1,4 @@
-from LSystem import LSystem
+from LSystems.LSystem import LSystem
 from ProductionRules.DeterministicRule import DeterministicRule
 
 class CantorDust(LSystem):

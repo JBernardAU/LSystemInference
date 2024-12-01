@@ -1,17 +1,18 @@
 import math
 
 from ProductionRules.ProductionRule import ProductionRule
-from SaC import SaC
+from WordsAndSymbols.SaC import SaC
 
 class SaCLibrary:
     __sacs: list[SaC]
     __ids: list[int]
     __rules: list[ProductionRule]
 
-    def __init__(self):
+    def __init__(self, Alphabet):
         self.__sacs = list()
         self.__ids = list()
         self.__rules = list()
+        self.__alphabet = Alphabet
 
     def __len__(self):
         return len(self.__sacs)
@@ -57,11 +58,32 @@ class SaCLibrary:
                 return self.__ids[i]
 
     def Add(self, SAC, R):
-        if type(SAC) is not SaC:
-            raise Exception("SACLibrary.Add(): Type Error - SAC is not a SAC object.")
-        if type(R) is not ProductionRule:
-            raise Exception("SACLibrary.Add(): Type Error - R is not a ProductionRule object.")
+        if not issubclass(type(SAC),SaC):
+            raise Exception("SACLibrary.Add(): Type Error - SAC argument is not a subclass of SaC object.")
+        if not issubclass(type(R),ProductionRule):
+            raise Exception("SACLibrary.Add(): Type Error - R argument is not a subclass of ProductionRule object.")
         id = len(self.__sacs)
         self.__sacs.append(SAC)
         self.__rules.append(R)
         self.__ids.append(id)
+
+    """
+    Inputs:
+    - A word (W)
+    - A context size, k,l
+    Outputs:
+    - None. Modifies W.
+    This function extends a word by calculating the SACs in the word, the counts, and other metrics.
+    This should be used when the only available information are the words themselves.
+    """
+    def ExtendWord(self, W, k, l):
+        for i, s in enumerate(W):
+            lc = list()
+            rc = list()
+            # scan left
+
+            # scan right
+
+            pass
+
+        pass

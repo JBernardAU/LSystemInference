@@ -1,5 +1,10 @@
-emptySymbol = "~"
+import math
+
+# Special symbols
 anySymbol = "*"
+anySymbolID = math.inf-1
+emptySymbol = "~"
+emptySymbolID = math.inf-2
 
 # Turtle graphics
 moveForward = "F"
@@ -35,4 +40,6 @@ iMax = 1
 identityOnNoMatch = True
 
 multicharacterIndicator = "."
+
+
 

@@ -9,43 +9,43 @@ class Symbol:
         :type Id: int
         :type IsIdentity: Boolean         :type Multicharacter: Boolean
         """
-        self.__character = S
-        self.__id = Id  # assigned by the alphabet
-        self.__isIdentity = IsIdentity
-        self.__multicharacter = Multicharacter
-        self.__isForbidden = IsForbidden
-        if len(self.__character) > 1:
-            self.__multicharacter = True
+        self._character = S
+        self._id = Id  # assigned by the alphabet
+        self._isIdentity = IsIdentity
+        self._multicharacter = Multicharacter
+        self._isForbidden = IsForbidden
+        if len(self._character) > 1:
+            self._multicharacter = True
 
     def GetCharacter(self):
-        return self.__character
+        return self._character
 
     def GetID(self):
-        return self.__id
+        return self._id
 
     def GetIsIdentity(self):
-        return self.__isIdentity
+        return self._isIdentity
 
     def GetIsForbidden(self):
-        return self.__isForbidden
+        return self._isForbidden
 
     def __eq__(self, other):
         if type(other) == str:
-            return self.__character == other
+            return self._character == other
         else:
-            return self.__id == other.GetID()
+            return self._id == other.GetID()
 
     def __len__(self):
-        if not self.__multicharacter:
-            return len(self.__character)
+        if not self._multicharacter:
+            return len(self._character)
         else:
-            return len(self.__character + multicharacterIndicator)
+            return len(self._character + multicharacterIndicator)
 
     def __str__(self):
-        if not self.__multicharacter:
-            return self.__character
+        if not self._multicharacter:
+            return self._character
         else:
-            return self.__character + multicharacterIndicator
+            return self._character + multicharacterIndicator
 
     def __add__(self, other):
         return str(self) + str(other)

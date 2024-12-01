@@ -1,47 +1,46 @@
-from typing import List, Any
-
-from ProductionRules.DeterministicRule import DeterministicRule
 from ProductionRules.IdentityRule import IdentityRule
 from ProductionRules.ProductionRule import ProductionRule
-from Alphabet import Alphabet
-from SaCLibrary import SaCLibrary
-from Symbol import Symbol
-from Word import Word
+from WordsAndSymbols.Alphabet import Alphabet
+from WordsAndSymbols.SaC import SaC
+from WordsAndSymbols.SaCLibrary import SaCLibrary
+from WordsAndSymbols.Word import Word
 from GlobalSettings import *
 
 UnitTest_LSystem = False
 
 class LSystem:
-    __name: str
-    __axiom: str
-    __alphabet: Alphabet
-    __sacLibrary: SaCLibrary
-    __rules: list[ProductionRule]
-    __words: list[Word]
-    __contextSize: tuple[int, int]
+    _name: str
+    _axiom: str
+    _alphabet: Alphabet
+    _sacLibrary: SaCLibrary
+    _rules: list[ProductionRule]
+    _words: list[Word]
+    _contextSize: tuple[int, int]
 
     def __init__(self):
-        self.__name = ""
-        self.__axiom = ""
-        self.__alphabet = None
-        self.__sacLibrary = None
+        self._name = ""
+        self._axiom = ""
+        self._alphabet = None
+        self._sacLibrary = None
         #self.__identities = list()
         #self.__forbidden = list()
-        self.__rules = list()
-        self.__words = list()
-        self.__contextSize = None
+        self._rules = list()
+        self._words = list()
+        self._contextSize = None
+
+    # GETTERS
 
     def GetName(self):
-        return self.__name
+        return self._name
     
     def GetAxiom(self):
-        return self.__axiom
+        return self._axiom
 
     def GetSymbol(self,I):
-        return self.__alphabet.GetSymbol(I)
+        return self._alphabet.GetSymbol(I)
 
     def GetSymbolID(self,I):
-        return self.__alphabet.GetID(I)
+        return self._alphabet.GetID(I)
 
     def GetSAC(self,I):
         return self.__sacs.GetSAC(I)
@@ -53,17 +52,19 @@ class LSystem:
         pass
 
     def GetWord(self, I):
-        return self.__words[I]
+        return self._words[I]
+
+    # METHODS
 
     # make a clone of the L-system with an altered alphabet
     def Project(self, A):
         # first make a copy
         result = LSystem()
-        result.__name = self.__name
-        result.axiom = self.__axiom
+        result._name = self._name
+        result.axiom = self._axiom
         result.alphabet = A
-        result.rules = self.__rules
-        result.words = self.__words
+        result.rules = self._rules
+        result.words = self._words
 
         """
         # Printing the result
@@ -93,17 +94,17 @@ class LSystem:
         return result
 
     def Display(self, WithSACS=True, WithRules=True):
-        print("L-system: " + self.__name)
+        print("L-system: " + self._name)
         print("Alphabet: ", end="")
         sep = ""
-        for s in self.__alphabet:
+        for s in self._alphabet:
             print(sep + s, end="")
             sep = ", "
-        print("Axiom: " + self.__axiom)
+        print("Axiom: " + self._axiom)
 
         if WithSACS:
             print("SAC Library: ")
-            print(self.__sacLibrary)
+            print(self._sacLibrary)
 
         """
         DEPRECATED - Rules are in the SAC Library
@@ -116,7 +117,7 @@ class LSystem:
         """
 
         print("Words: ")
-        for w in self.__words:
+        for w in self._words:
             print(w)
 
     """
@@ -132,8 +133,6 @@ class LSystem:
     This initializes a simple L-system using known values. This is mainly used for when no analysis is required and
     a known L-system is to be used for simulation purposes.
     """
-
-    # noinspection PyTypeChecker
     def Initialize(self, W, A, k=0, l=0, Identities=None, Forbidden=None, Name="Unnamed"):
         if Identities is None:
             Identities = list()
@@ -141,17 +140,18 @@ class LSystem:
         if Forbidden is None:
             Forbidden = list()
 
-        self.__name = Name
+        self._name = Name
 
         # setup the alphabet
         if type(Alphabet) is Alphabet:
-            self.__alphabet = A
+            self._alphabet = A
         else:
-            self.__alphabet = Alphabet(A,Identities,Forbidden)
+            self._alphabet = Alphabet(A, Identities, Forbidden)
 
-        self.__axiom = Word(self.__alphabet.ConvertString2List(W))
-        self.__words.append(self.__axiom)
-        self.__contextSize = (k,l)
+        self._sacLibrary = SaCLibrary(self._alphabet)
+        self._axiom = Word(self._alphabet.ConvertString2List(W))
+        self._words.append(self._axiom)
+        self._contextSize = (k, l)
 
     """
     Input: 
@@ -159,19 +159,18 @@ class LSystem:
     - A rule associated with the SAC
     """
     def AddSAC(self, SAC, R):
+        if self._sacLibrary is None:
+            raise Exception("LSystem.AddSAC(): SACLibrary property is None.")
         sac = SAC
         if type(SAC) is not SAC:
             # convert the tuple to a SAC
-            s = self.__alphabet.FindSymbol(sac[iSACSymbol])
-            lc = Word(self.__alphabet.ConvertString2List(sac[iSACLeft]))
-            rc = Word(self.__alphabet.ConvertString2List(sac[iSACRight]))
-            sac = SAC(s,lc,rc)
+            s = self._alphabet.FindSymbol(sac[iSACSymbol])
+            #TODO: Possibly extend the contexts
+            lc = Word(self._alphabet.ConvertString2List(sac[iSACLeft]))
+            rc = Word(self._alphabet.ConvertString2List(sac[iSACRight]))
+            sac = SaC(s,lc,rc)
 
-        self.__sacLibrary.Add(sac,R)
-
-
-
-        pass
+        self._sacLibrary.Add(sac, R)
 
     """
     Inputs: None
@@ -183,13 +182,16 @@ class LSystem:
 
     # This iterates a generation from a word
     def Iterate(self, W):
-        if self.__sacLibrary is None:
-            raise Exception("SAC Library is not initialized")
+        if self._sacLibrary is None:
+            raise Exception("LSystem.Iterate(): SAC Library is not initialized")
+        if not W.IsExtended():
+            W.Extend()
+            self._sacLibrary.ExtendWord(W,self._contextSize[iContextLeft],self._contextSize[iContextRight])
         else:
             #print("Iterate over " + W)
             result = ""
             for (iPos, s) in enumerate(W):
-                sac = GetSAC(W,iPos,self.contextSize[iContextLeft],self.contextSize[iContextRight],self.forbidden)
+                sac = GetSAC(W,iPos,self._contextSize[iContextLeft],self._contextSize[iContextRight],self.forbidden)
                 rules = self.GetRules(sac)
                 # by default, use rule zero
                 rule = rules[0]
@@ -198,13 +200,13 @@ class LSystem:
 
     # Iterates N times
     def IterateN(self, W, N):
-        if self.__sacLibrary is None:
+        if self._sacLibrary is None:
             raise Exception("SAC Library is not initialized")
         else:
             curr = W
             for i in range(N):
                 curr = self.Iterate(curr)
-                self.words.append(curr)
+                self._words.append(curr)
 
     """
     Inputs: A symbol (S)
@@ -216,17 +218,6 @@ class LSystem:
         self.alphabet.append(S)
 
     """
-    Inputs: A symbol and context (SAC)
-    Outputs: None
-    Purpose: This adds a SAC to the symbol and context list. This should not be necessary that often since the L-system 
-    should be initialized but could be useful if trying to build an L-system analytically. Note, the SAC must align with
-    the rules so AddRule should be called immediately afterward.
-    """
-    def AddSAC(self,SAC):
-        self.alphabet.append(SAC)
-        self.rules.append([])
-
-    """
     Inputs: A rule (SAC)
     Outputs: None
     Purpose: This adds a rule to the L-system. Note, the position in the list must exactly match the SAC list as this
@@ -236,13 +227,9 @@ class LSystem:
         self.rules.append(R)
 
     def AddIdentityRules(self):
-        for s in self.identities:
-            self.AddIdentity(s)
-
-    def AddIdentity(self, S):
-        self.alphabet.append(S)
-        self.sacs.append((S, "*", "*"))
-        self.AddRules(IdentityRule([S]))
+        for i, s in enumerate(self._alphabet):
+            if s.GetIsIdentity():
+                self._sacLibrary.Add(SaC(s, self._alphabet.anyWord, self._alphabet.anyWord),IdentityRule([Word([s],[self._alphabet.GetID(i)])]))
 
     def GetSymbolID(self, S):
         return self.alphabet.index(S)
@@ -328,6 +315,8 @@ class LSystem:
             iSucc += 1
 """
 
+"""
+DEPRECATED - Need a new test case
 if UnitTest_LSystem:
     l = LSystem()
     l.Initialize("A+B-A", ["A","B"])
@@ -355,3 +344,4 @@ if UnitTest_LSystem:
     a2 = ["A","B","+"]
     l2 = l.Project(a2)
     l2.Display()
+"""

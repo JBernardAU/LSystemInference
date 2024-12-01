@@ -1,7 +1,6 @@
-from GlobalSettings import identityAlphabet2D
-from LSystem import LSystem
+from LSystems.LSystem import LSystem
 from ProductionRules.DeterministicRule import DeterministicRule
-from Word import Word
+from WordsAndSymbols.Word import Word
 
 
 class DragonCurve(LSystem):
@@ -9,7 +8,8 @@ class DragonCurve(LSystem):
         super().__init__()
         identities = ["F","+","-"]
         self.Initialize(W="FX+FX+", A=["X", "Y"], k=0,l=0, Identities=identities, Forbidden=identities, Name="Dragon Curve")
-        self.AddSAC(("X", "*", "*"),DeterministicRule([Word(self.__alphabet.ConvertString2List("X+YF"))]))
-        self.AddSAC(("Y", "*", "*"),DeterministicRule([Word(self.__alphabet.ConvertString2List("FX-Y"))]))
+        self.AddSAC(("X", "*", "*"), DeterministicRule([Word(self._alphabet.ConvertString2List("X+YF"))]))
+        self.AddSAC(("Y", "*", "*"), DeterministicRule([Word(self._alphabet.ConvertString2List("FX-Y"))]))
         self.AddIdentityRules()
         self.IterateN(self.GetAxiom(), 5)
+        pass

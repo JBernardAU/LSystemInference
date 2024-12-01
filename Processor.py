@@ -1,6 +1,6 @@
 from GlobalSettings import *
 import importlib
-from LSystemExtended import LSystemExtended
+from LSystems.LSystemExtended import LSystemExtended
 
 
 class Processor:

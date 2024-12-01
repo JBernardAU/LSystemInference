@@ -1,7 +1,10 @@
 import math
 
-from Symbol import Symbol
-from Word import Word
+import GlobalSettings
+from WordsAndSymbols.SpecialSymbols.AnyWord import AnyWord
+from WordsAndSymbols.SpecialSymbols.EmptyWord import EmptyWord
+from WordsAndSymbols.Symbol import Symbol
+from WordsAndSymbols.Word import Word
 
 UnitTest_SAC = False
 
@@ -16,17 +19,23 @@ class SaC:
     - A word object for the left context (RC)
     """
     def __init__(self, S, LC, RC):
-        if type(S) is not Symbol:
-            raise Exception("Type Error. SAC requires S to be a Symbol")
-        if type(LC) is not Word:
-            raise Exception("Type Error. SAC requires LC to be a Word")
-        if type(RC) is not Word:
-            raise Exception("Type Error. SAC requires RC to be a Word")
+        if not issubclass(type(S),Symbol):
+            raise Exception("SaC(): Type Error - SAC argument is not a subclass of Symbol")
+        if not issubclass(type(LC),Word):
+            raise Exception("SaC(): Type Error - LC argument is not a subclass of Word")
+        if not issubclass(type(LC),Word):
+            raise Exception("SaC(): Type Error - RC argument is not a subclass of Word")
         self.__symbol = S
         self.__left = LC
         self.__right = RC
-        self.__k = len(LC)
-        self.__l = len(RC)
+        if not issubclass(type(self.__left),AnyWord):
+            self.__k = len(LC)
+        else:
+            self.__k = 0
+        if not issubclass(type(self.__right),AnyWord):
+            self.__l = len(RC)
+        else:
+            self.__l = 0
 
     def PartialMatch(self,other):
         error = 0

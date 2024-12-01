@@ -1,5 +1,5 @@
 from GlobalSettings import *
-from Word import Word
+from WordsAndSymbols.Word import Word
 
 class ProductionRule:
     def __init__(self, Successors):
