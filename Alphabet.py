@@ -32,6 +32,10 @@ class Alphabet:
     def __iter__(self):
         return iter(self.__symbols)
 
+    """
+    Input: - a symbol (S) as a string
+    Output - the corresponding symbol from the alphabet
+    """
     def FindSymbol(self, S):
         for i, s in enumerate(self.__symbols):
             if s == S:
@@ -45,6 +49,7 @@ class Alphabet:
     def GetSymbol(self, I):
         return self.__symbols[I]
 
+
     def GetID(self, I):
         return self.__ids[I]
 
@@ -52,6 +57,8 @@ class Alphabet:
         id = len(self.__symbols)
         self.__symbols.append(Symbol(S, id, IsIdentity, IsForbidden))
         self.__ids.append(id)
+
+
 
     """
     Input: a string

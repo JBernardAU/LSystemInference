@@ -44,7 +44,7 @@ class WordExtended(Word):
 
 if UnitTest_WordExtended:
     from Symbol import Symbol
-    from SAC import SAC
+    from SaC import SaC
 
     a = Symbol("A",0,Multicharacter=True)
     b = Symbol("B",1, Multicharacter=True)
@@ -54,11 +54,11 @@ if UnitTest_WordExtended:
     wAny = Word(any)
     wA = Word(a)
 
-    aSac = SAC(a,wAny, wAny)
-    b1Sac = SAC(b,wAny, wAny)
-    b2Sac = SAC(b,wA, wA)
-    ccSac = SAC(cc,wAny, wAny)
-    ddSac = SAC(dd,wAny, wAny)
+    aSac = SaC(a, wAny, wAny)
+    b1Sac = SaC(b, wAny, wAny)
+    b2Sac = SaC(b, wA, wA)
+    ccSac = SaC(cc, wAny, wAny)
+    ddSac = SaC(dd, wAny, wAny)
     sacs = [aSac, b1Sac, b2Sac, ccSac, ddSac]
 
     print("Test 1 - Initialize and display an extended word")

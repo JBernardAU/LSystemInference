@@ -1,8 +1,17 @@
 from GlobalSettings import *
+from Word import Word
 
-class ProductionRule():
-    def __init__(self, Succ):
-        self.successors = Succ
+class ProductionRule:
+    def __init__(self, Successors):
+        if type(Successors) is not list:
+            raise Exception("ProductionRule(): Type Error - Succ is not a list.")
+
+        self.successors = list()
+        for i, successor in enumerate(Successors):
+            if type(successor) is not Word:
+                raise Exception("ProductionRule(): Type Error - Succcessors[" + str(i) + "] is not Word object.")
+            self.successors.append(successor)
+
         """
         DEPRECATED
         maxL = 0

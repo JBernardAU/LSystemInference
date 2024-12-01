@@ -8,7 +8,7 @@ UnitTest_SAC = False
 """
 This class represents a symbol and context or a SAC.
 """
-class SAC:
+class SaC:
     """
     Input:
     - A symbol object (S)
@@ -28,7 +28,7 @@ class SAC:
         self.__k = len(LC)
         self.__l = len(RC)
 
-    def Match(self,other):
+    def PartialMatch(self,other):
         error = 0
         if self.__symbol != other.symbol:
             error = math.inf
@@ -68,7 +68,7 @@ if UnitTest_SAC:
     lc = Word([s2,s1])
     rc = Word([s1,s3])
 
-    a = SAC(s1, lc, rc)
+    a = SaC(s1, lc, rc)
     print(a + " " + str(len(lc)) + " " + str(len(rc)))
 
 

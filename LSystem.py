@@ -4,7 +4,7 @@ from ProductionRules.DeterministicRule import DeterministicRule
 from ProductionRules.IdentityRule import IdentityRule
 from ProductionRules.ProductionRule import ProductionRule
 from Alphabet import Alphabet
-from SACAlphabet import SACAlphabet
+from SaCLibrary import SaCLibrary
 from Symbol import Symbol
 from Word import Word
 from GlobalSettings import *
@@ -15,7 +15,7 @@ class LSystem:
     __name: str
     __axiom: str
     __alphabet: Alphabet
-    __sacs: SACAlphabet
+    __sacLibrary: SaCLibrary
     __rules: list[ProductionRule]
     __words: list[Word]
     __contextSize: tuple[int, int]
@@ -24,12 +24,12 @@ class LSystem:
         self.__name = ""
         self.__axiom = ""
         self.__alphabet = None
-        self.__sacs = None
+        self.__sacLibrary = None
         #self.__identities = list()
         #self.__forbidden = list()
         self.__rules = list()
         self.__words = list()
-        self.__contextSize = (0,0)
+        self.__contextSize = None
 
     def GetName(self):
         return self.__name
@@ -101,17 +101,19 @@ class LSystem:
             sep = ", "
         print("Axiom: " + self.__axiom)
 
-        if WithSACS and not WithRules:
-            print("SACS: ")
-            for sac in self.__sacs:
-                print(sac)
+        if WithSACS:
+            print("SAC Library: ")
+            print(self.__sacLibrary)
 
+        """
+        DEPRECATED - Rules are in the SAC Library
         if WithRules:
             print("Rules: ")
-            for sac in self.__sacs:
+            for sac in self.__sacLibrary:
                 rules = self.GetRules(sac)
                 for r in rules:
                     r.Display(sac)
+        """
 
         print("Words: ")
         for w in self.__words:
@@ -132,7 +134,7 @@ class LSystem:
     """
 
     # noinspection PyTypeChecker
-    def Initialize(self, W, A, Identities=None, Forbidden=None, Name="Unnamed"):
+    def Initialize(self, W, A, k=0, l=0, Identities=None, Forbidden=None, Name="Unnamed"):
         if Identities is None:
             Identities = list()
 
@@ -149,25 +151,60 @@ class LSystem:
 
         self.__axiom = Word(self.__alphabet.ConvertString2List(W))
         self.__words.append(self.__axiom)
+        self.__contextSize = (k,l)
+
+    """
+    Input: 
+    - A symbol and context (SAC). This can be a SAC object or a tuple[str, str, str]
+    - A rule associated with the SAC
+    """
+    def AddSAC(self, SAC, R):
+        sac = SAC
+        if type(SAC) is not SAC:
+            # convert the tuple to a SAC
+            s = self.__alphabet.FindSymbol(sac[iSACSymbol])
+            lc = Word(self.__alphabet.ConvertString2List(sac[iSACLeft]))
+            rc = Word(self.__alphabet.ConvertString2List(sac[iSACRight]))
+            sac = SAC(s,lc,rc)
+
+        self.__sacLibrary.Add(sac,R)
+
+
+
+        pass
+
+    """
+    Inputs: None
+    Outputs: None
+    Creates a SAC library from the words of L-system
+    """
+    def InferSACLibrary(self):
+        pass
 
     # This iterates a generation from a word
     def Iterate(self, W):
-        #print("Iterate over " + W)
-        result = ""
-        for (iPos, s) in enumerate(W):
-            sac = GetSAC(W,iPos,self.contextSize[iContextLeft],self.contextSize[iContextRight],self.forbidden)
-            rules = self.GetRules(sac)
-            # by default, use rule zero
-            rule = rules[0]
-            result += rule.Replace()
+        if self.__sacLibrary is None:
+            raise Exception("SAC Library is not initialized")
+        else:
+            #print("Iterate over " + W)
+            result = ""
+            for (iPos, s) in enumerate(W):
+                sac = GetSAC(W,iPos,self.contextSize[iContextLeft],self.contextSize[iContextRight],self.forbidden)
+                rules = self.GetRules(sac)
+                # by default, use rule zero
+                rule = rules[0]
+                result += rule.Replace()
         return result
 
     # Iterates N times
     def IterateN(self, W, N):
-        curr = W
-        for i in range(N):
-            curr = self.Iterate(curr)
-            self.words.append(curr)
+        if self.__sacLibrary is None:
+            raise Exception("SAC Library is not initialized")
+        else:
+            curr = W
+            for i in range(N):
+                curr = self.Iterate(curr)
+                self.words.append(curr)
 
     """
     Inputs: A symbol (S)
