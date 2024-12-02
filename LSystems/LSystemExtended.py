@@ -7,7 +7,6 @@ from GlobalSettings import *
 
 UnitTest_LSystemExtended = False
 
-
 class LSystemExtended(LSystem):
     def __init__(self):
         super().__init__()
@@ -28,7 +27,6 @@ class LSystemExtended(LSystem):
     Outputs: None
     This determines is an L-system has been solved. An L-system is solved when the min and max lengths for all SACs are equal.
     """
-
     def CheckIfSolved(self):
         iLength = 0
         self.solved = True
@@ -71,7 +69,8 @@ class LSystemExtended(LSystem):
     This does a pre-analysis of the L-system to establish the most basic facts before starting the analysis.
     It also creates and initializes any necessary structures.
     """
-
+    """
+    TODO: BROKEN
     def PreAnalysis(self):
         print("Starting Pre-analysis")
         defaultMin = 0
@@ -81,13 +80,13 @@ class LSystemExtended(LSystem):
 
         # create length and growth structures
         self.lengths = list()
-        for iSac, sac in enumerate(self.sacs):
+        for iSac, sac in enumerate(self._sacs):
             self.lengths.append([defaultMin, defaultMax])
 
         self.growths = list()
-        for sac in self.sacs:
+        for sac in self._sacLibrary:
             growth = list()
-            for s in self.alphabet:
+            for s in self._alphabet:
                 growth.append([defaultMin, defaultMax])
             self.growths.append(growth)
 
@@ -201,20 +200,29 @@ class LSystemExtended(LSystem):
                     self.SetMaxLength(iSac, 1)
 
     def InitalizeFromLsystem(self, L, Name="Unnamed"):
-        self.axiom = L.axiom
-        self.alphabet = L.alphabet
-        self.identities = L.identities
-        self.forbidden = L.forbidden
-        self.words = L.words
+        self._axiom = L.GetAxiom()
+        self._alphabet = L.GetAlphabet()
+        self._words = L.GetWords()
+        self._sacLibrary = L.GetSACLibrary()
         #TODO: make this an option
-        self.contextSize = L.contextSize
+        self._contextSize = L._contextSize
         self.InitializeFromSelf()
+    """
 
+    """
+    TODO: BROKEN
     def InitializeFromSelf(self, Name="Unnamed"):
-        self.InitializeFromWords(self.words, self.identities, self.forbidden, Name)
+        #self.InitializeFromWords(self._words, self._identities, self._forbidden, Name)
+    """
 
-    # This initialization method should be called to initialize an L-system from a sequence of words (W)
-    # Typically, InitializeFromSelf() should be called to use the words stored in the L-system itself
+    """
+    Inputs:
+    Outputs:
+    This initialization method should be called to initialize an L-system from a sequence of words (W)
+    Typically, InitializeFromSelf() should be called to use the words stored in the L-system itself
+    """
+    """
+    TODO: BROKEN
     def InitializeFromWords(self, W, Identities=None, Forbidden=None, Name="Unnamed"):
         # if not already named, then use the incoming name
         # also, if the incoming name is not the default value, then assume the intent is to rename the L-system
@@ -251,32 +259,4 @@ class LSystemExtended(LSystem):
         for s in self.identities:
             if s not in self.alphabet:
                 self.AddIdentity(s)
-
-
-if UnitTest_LSystemExtended:
-    l = LSystemExtended()
-    l.Initialize("A+B-A", ["A", "B"])
-
-    # add rules
-    # For symbol A
-    predecessors = [("A", "*", "*")]
-    successors = ["A+B-A"]
-    l.AddRules(DeterministicRule(predecessors, successors))
-
-    # For symbol B
-    predecessors = [("B", "*", "*")]
-    successors = ["[B-B+B]"]
-    l.AddRules(DeterministicRule(predecessors, successors))
-
-    # For identities
-    l.AddIdentity("+")
-    l.AddIdentity("-")
-    l.AddIdentity("[")
-    l.AddIdentity("]")
-
-    l.IterateN(l.axiom, 3)
-    l.Display()
-
-    a2 = ["A", "B", "+"]
-    l2 = l.Project(a2)
-    l2.Display()
+    """

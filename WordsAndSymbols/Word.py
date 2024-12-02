@@ -24,17 +24,18 @@ class Word:
 
     def __eq__(self, other):
         iW = 0
-        flag = len(self._symbols) == len(other.symbols)
-        while iW < len(self._symbols) and flag:
-            flag = self._symbols[iW] == other.symbols[iW]
-            iW += 1
+        flag = True
+        if self is other:
+            return True
+        elif len(self) == len(other):
+            while iW < len(self._symbols) and flag:
+                flag = self._symbols[iW] == other.GetSymbol(iW)
+                iW += 1
         return flag
 
     def __add__(self, other):
-        return str(self) + str(other)
-
-    def __radd__(self, other):
-        return str(other) + str(self)
+        for i, s in enumerate(other):
+            self._symbols.append(s)
 
     def __str__(self):
         result = ""
@@ -45,9 +46,36 @@ class Word:
     def __iter__(self):
         return iter(self._symbols)
 
+    """
+    Inputs: A word (W)
+    Outputs: None. Modifies self.
+    This appends one word to another. Equivalent to += for strings. Note, this destroys the extensions for self.
+    Parameters in particular should be saved before calling Append().
+    """
+    def Append(self, W):
+        if issubclass(type(W),Word) and len(W) > 0:
+            self.Deextend()
+        for i, s in enumerate(W):
+            self._symbols.append(s)
+
+
+    def GetSymbol(self, I):
+        return self._symbols[I]
+
+    def GetSymbolID(self, I):
+        return self._ids[I]
+
+    def GetSAC(self, I):
+        return self._sacs[I]
+
+    def GetSACID(self, I):
+        return self._sacIds[I]
+
+    def AddSymbol(self, S):
+        self._symbols.append(S)
+
     def AddSAC(self, SAC):
         self._sacs.append(SAC)
-        pass
 
     def Parametrize(self):
         self._parameters = list()
@@ -59,6 +87,12 @@ class Word:
     def Extend(self):
         self._sacs = list()
         self._sacCounts = list()
+
+    def Deextend(self):
+        self._sacs = None
+        self._sacIds = None
+        self._sacCounts = None
+        self._parameters = None
 
     def IsExtended(self):
         if self._sacs is None:

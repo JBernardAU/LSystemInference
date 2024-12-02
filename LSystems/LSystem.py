@@ -28,13 +28,27 @@ class LSystem:
         self._words = list()
         self._contextSize = None
 
-    # GETTERS
+    # PROPERTY GETTERS
 
     def GetName(self):
         return self._name
     
     def GetAxiom(self):
         return self._axiom
+
+    def GetAlphabet(self):
+        return self._alphabet
+
+    def GetSACLibrary(self):
+        return self._sacLibrary
+
+    def GetContextSize(self):
+        return self._contextSize
+
+    def GetWords(self):
+        return self._words
+
+    # METHODS
 
     def GetSymbol(self,I):
         return self._alphabet.GetSymbol(I)
@@ -49,7 +63,7 @@ class LSystem:
         return self.__sacs.GetSACID(I)
 
     def GetRule(self, SAC):
-        pass
+        return self._sacLibrary.GetRule(SAC)
 
     def GetWord(self, I):
         return self._words[I]
@@ -100,11 +114,12 @@ class LSystem:
         for s in self._alphabet:
             print(sep + s, end="")
             sep = ", "
-        print("Axiom: " + self._axiom)
+        print()
+        print("Axiom: " + str(self._axiom))
 
         if WithSACS:
             print("SAC Library: ")
-            print(self._sacLibrary)
+            self._sacLibrary.Display()
 
         """
         DEPRECATED - Rules are in the SAC Library
@@ -166,8 +181,16 @@ class LSystem:
             # convert the tuple to a SAC
             s = self._alphabet.FindSymbol(sac[iSACSymbol])
             #TODO: Possibly extend the contexts
-            lc = Word(self._alphabet.ConvertString2List(sac[iSACLeft]))
-            rc = Word(self._alphabet.ConvertString2List(sac[iSACRight]))
+            lc = self._alphabet.ConvertString2List(sac[iSACLeft])
+            rc = self._alphabet.ConvertString2List(sac[iSACRight])
+            if len(lc) > 0 and lc[0] == self._alphabet.anySymbol:
+                lc = self._alphabet.anyWord
+            else:
+                lc = Word(lc)
+            if len(rc) > 0 and rc[0] == self._alphabet.anySymbol:
+                rc = self._alphabet.anyWord
+            else:
+                rc = Word(rc)
             sac = SaC(s,lc,rc)
 
         self._sacLibrary.Add(sac, R)
@@ -187,15 +210,11 @@ class LSystem:
         if not W.IsExtended():
             W.Extend()
             self._sacLibrary.ExtendWord(W,self._contextSize[iContextLeft],self._contextSize[iContextRight])
-        else:
-            #print("Iterate over " + W)
-            result = ""
-            for (iPos, s) in enumerate(W):
-                sac = GetSAC(W,iPos,self._contextSize[iContextLeft],self._contextSize[iContextRight],self.forbidden)
-                rules = self.GetRules(sac)
-                # by default, use rule zero
-                rule = rules[0]
-                result += rule.Replace()
+        result = Word([])
+        for (iPos, s) in enumerate(W):
+            sac = W.GetSAC(iPos)
+            rule = self.GetRule(sac)
+            result.Append(rule.Replace())
         return result
 
     # Iterates N times
@@ -242,29 +261,6 @@ class LSystem:
 
     def GetSAC(self, I):
         return self.sacs[I]
-
-    """
-    Input: A symbol and context (SAC)
-    Output: A list of rules that match the SAC
-    Purpose: This returns a list of rules that could potentially match a provided symbol and context. If there is an 
-    exact rule match, then only that rule will be returned; otherwise; all possible partial matches are returned
-    including the degree of mismatch. Typically done before calling the rule's Replace() function.
-    """
-    def GetRules(self, SAC):
-        result = list()
-        pred = PredecessorFromSAC(SAC)
-        try:
-            ruleID = self.sacs.index(pred)
-        except:
-            ruleID = None
-
-        if ruleID is not None:
-            result.append(self.rules[ruleID])
-        else:
-            for r in self.rules:
-                pass
-
-        return result
 
 """
         result = ""

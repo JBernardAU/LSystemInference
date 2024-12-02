@@ -17,7 +17,8 @@ class Processor:
             print("Experimental mode activated. This is the original L-system.")
             self.lSystem_original.Display()
             self.lSystem_master = LSystemExtended()
-            self.lSystem_master.InitalizeFromLsystem(self.lSystem_original, "Unknown L-system")
+            #TODO: BROKEN
+            #self.lSystem_master.InitalizeFromLsystem(self.lSystem_original, "Unknown L-system")
             print("*****************************************")
 
         # this the master copy of the L-system to be analyzed
@@ -30,7 +31,8 @@ class Processor:
             print("Inference mode activated. ", end="")
 
         print("Attempting to find the following L-system.")
-        self.lSystem_master.Display()
+        #TODO: BROKEN
+        #self.lSystem_master.Display()
 
     # Inputs:
     # - A sequence of words
@@ -39,8 +41,10 @@ class Processor:
         # Step 1 - Pre-Analyze L-system
         # In this step, an initial pass is done to establish the most basic of facts about the successors
         # And create the necessary structures to do the analysis
-        self.lSystem_master.PreAnalysis()
-        self.lSystem_master.CheckIfSolved()
+        #TODO: BROKEN
+        #self.lSystem_master.PreAnalysis()
+        #TODO: BROKEN
+        #self.lSystem_master.CheckIfSolved()
 
         error = float("inf")
         tabooSolutions = list()

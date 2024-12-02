@@ -1,6 +1,7 @@
 import math
 
 import GlobalSettings
+from WordsAndSymbols.SpecialSymbols.AnySymbol import AnySymbol
 from WordsAndSymbols.SpecialSymbols.AnyWord import AnyWord
 from WordsAndSymbols.SpecialSymbols.EmptyWord import EmptyWord
 from WordsAndSymbols.Symbol import Symbol
@@ -17,6 +18,7 @@ class SaC:
     - A symbol object (S)
     - A word object for the left context (LC)
     - A word object for the left context (RC)
+    TODO: Add the library index as a property so it can be quickly found
     """
     def __init__(self, S, LC, RC):
         if not issubclass(type(S),Symbol):
@@ -57,10 +59,12 @@ class SaC:
         return self.__right
 
     def __eq__(self, other):
-        return self.__symbol == other.GetSymbol() and self.__left == other.GetLeftContext() and self.__right == other.GetRightContext()
+        return self is other or (self.__symbol == other.GetSymbol() or type(self.__symbol) is AnySymbol or type(other.GetSymbol) is AnySymbol
+                                 and self.__left == other.GetLeftContext() or type(self.__left) is AnyWord or type(other.GetLeftContext) is AnyWord
+                                 and self.__right == other.GetRightContext() or type(self.__right) is AnyWord or type(other.GetRightContext) is AnyWord)
 
     def __str__(self):
-        return self.__left + " < " + self.__symbol + " > " + self.__right
+        return str(self.__left) + " < " + self.__symbol + " > " + str(self.__right)
 
     def __add__(self, other):
         return str(self) + str(other)
