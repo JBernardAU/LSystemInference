@@ -1,4 +1,4 @@
-from ProductionRules.ProductionRule import ProductionRule
+from ProductionRules.Deprecated.ProductionRule import ProductionRule
 
 UnitTest_DeterministicRule = False
 
@@ -8,7 +8,7 @@ PROPERTIES:
 METHODS:
 """
 
-class DeterministicRule(ProductionRule):
+class DeterministicRuleOld(ProductionRule):
     def __init__(self, Succ):
         super().__init__(Succ)
 

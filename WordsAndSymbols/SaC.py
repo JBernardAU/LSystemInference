@@ -1,87 +1,67 @@
-import math
+from typing import List, Union
 
-import GlobalSettings
-from WordsAndSymbols.SpecialSymbols.AnySymbol import AnySymbol
-from WordsAndSymbols.SpecialSymbols.AnyWord import AnyWord
-from WordsAndSymbols.SpecialSymbols.EmptyWord import EmptyWord
-from WordsAndSymbols.Symbol import Symbol
-from WordsAndSymbols.Word import Word
-
-UnitTest_SAC = False
-
-"""
-This class represents a symbol and context or a SAC.
-"""
 class SaC:
-    """
-    Input:
-    - A symbol object (S)
-    - A word object for the left context (LC)
-    - A word object for the left context (RC)
-    TODO: Add the library index as a property so it can be quickly found
-    """
-    def __init__(self, S, LC, RC):
-        if not issubclass(type(S),Symbol):
-            raise Exception("SaC(): Type Error - SAC argument is not a subclass of Symbol")
-        if not issubclass(type(LC),Word):
-            raise Exception("SaC(): Type Error - LC argument is not a subclass of Word")
-        if not issubclass(type(LC),Word):
-            raise Exception("SaC(): Type Error - RC argument is not a subclass of Word")
-        self.__symbol = S
-        self.__left = LC
-        self.__right = RC
-        if not issubclass(type(self.__left),AnyWord):
-            self.__k = len(LC)
-        else:
-            self.__k = 0
-        if not issubclass(type(self.__right),AnyWord):
-            self.__l = len(RC)
-        else:
-            self.__l = 0
+    def __init__(self, left_context: List[int], symbol: int, right_context: List[int]):
+        """
+        Initialize a SymbolAndContext (SaC) object.
 
-    def PartialMatch(self,other):
-        error = 0
-        if self.__symbol != other.symbol:
-            error = math.inf
-        else:
-            error += self.__left.Match(other.self.left)
-            error += self.__right.Match(other.self.right)
-
-        return error
-
-    def GetSymbol(self):
-        return self.__symbol
-
-    def GetLeftContext(self):
-        return self.__left
-
-    def GetRightContext(self):
-        return self.__right
+        :param left_context: List of IDs representing the left context.
+        :param symbol: The central symbol as an ID.
+        :param right_context: List of IDs representing the right context.
+        """
+        self.left_context = left_context
+        self.symbol = symbol
+        self.right_context = right_context
 
     def __eq__(self, other):
-        return self is other or (self.__symbol == other.GetSymbol() or type(self.__symbol) is AnySymbol or type(other.GetSymbol) is AnySymbol
-                                 and self.__left == other.GetLeftContext() or type(self.__left) is AnyWord or type(other.GetLeftContext) is AnyWord
-                                 and self.__right == other.GetRightContext() or type(self.__right) is AnyWord or type(other.GetRightContext) is AnyWord)
+        if not isinstance(other, SaC):
+            return False
+        return (
+                self.left_context == other.left_context and
+                self.symbol == other.symbol and
+                self.right_context == other.right_context
+        )
 
-    def __str__(self):
-        return str(self.__left) + " < " + self.__symbol + " > " + str(self.__right)
+    def __hash__(self):
+        return hash((tuple(self.left_context), self.symbol, tuple(self.right_context)))
 
-    def __add__(self, other):
-        return str(self) + str(other)
+    def __repr__(self) -> str:
+        """Provide a string representation for debugging and visualization."""
+        return (
+            f"SymbolAndContext("
+            f"left_context={self.left_context}, "
+            f"symbol={self.symbol}, "
+            f"right_context={self.right_context})"
+        )
 
-    def __radd__(self, other):
-        return str(other) + str(self)
+    @staticmethod
+    def from_string(string: str, mapping: dict) -> 'SaC':
+        """
+        Create a SymbolAndContext object from a string and a mapping of characters to IDs.
 
-if UnitTest_SAC:
-    print("Test 1 - Initialize and print a SAC, single character symbol and contexts")
-    s1 = Symbol("A",0)
-    s2 = Symbol("B",1)
-    s3 = Symbol("C",2)
+        :param string: A string in the format 'L_S_R' where:
+                       L = left context as a sequence of characters (no spaces).
+                       S = single central character (the symbol).
+                       R = right context as a sequence of characters (no spaces).
+        :param mapping: Dictionary mapping characters to IDs.
+        :return: A SymbolAndContext object.
+        """
+        parts = string.split('_')
+        if len(parts) != 3:
+            raise ValueError("String format must be 'L_S_R'")
+        left_context = [mapping[char] for char in parts[0]]
+        symbol = mapping[parts[1]]
+        right_context = [mapping[char] for char in parts[2]]
+        return SaC(left_context, symbol, right_context)
 
-    lc = Word([s2,s1])
-    rc = Word([s1,s3])
+    def to_string(self, reverse_mapping: dict) -> str:
+        """
+        Convert a SymbolAndContext object to a string representation.
 
-    a = SaC(s1, lc, rc)
-    print(a + " " + str(len(lc)) + " " + str(len(rc)))
-
-
+        :param reverse_mapping: Dictionary mapping IDs back to characters.
+        :return: String representation in the format 'L_S_R'.
+        """
+        left_str = ''.join(reverse_mapping[id_] for id_ in self.left_context)
+        symbol_str = reverse_mapping[self.symbol]
+        right_str = ''.join(reverse_mapping[id_] for id_ in self.right_context)
+        return f"{left_str}_{symbol_str}_{right_str}"

@@ -5,12 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Incremental commit.&#10;&#10;Redid the framework to be object-oriented.">
+      <change afterPath="$PROJECT_DIR$/ProductionRules/Deprecated/ProductionRule.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UnitTests/TestProductionRule.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UnitTests/TestWord.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/Alphabet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/SaC.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/Word.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/LSystemInference.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LSystemInference.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/CantorDust.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/CantorDust.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/DragonCurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/DragonCurve.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LSystems/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LSystems/LSystemExtended.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystemExtended.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductionRules/DeterministicRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/Deprecated/DeterministicRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductionRules/IdentityRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/Deprecated/IdentityRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductionRules/UnknownRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/Deprecated/UnknownRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SaC.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/SaC.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SaCLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/SaCLibrary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SaCLibrary.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/SaCLibrary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/AnySymbol.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/SpecialSymbols/AnySymbol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/AnyWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/SpecialSymbols/AnyWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/EmptySymbol.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/SpecialSymbols/EmptySymbol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SpecialSymbols/EmptyWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/SpecialSymbols/EmptyWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Symbol.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Deprecated/Symbol.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Word.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Word.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +57,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/JBernardAU/LSystemInference.git&quot;,
-    &quot;accountId&quot;: &quot;a7f8844a-7961-4c87-875a-976522e132a5&quot;
+    &quot;accountId&quot;: &quot;9f46771b-5486-4bf0-af5d-86881acdf071&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -51,20 +71,29 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests for TestWord.TestWord.test_add_sac.executor": "Run",
+    "Python tests.Python tests for TestWord.TestWord.test_append_word.executor": "Run",
+    "Python tests.Python tests for TestWord.TestWord.test_from_string.executor": "Run",
+    "Python tests.Python tests in TestAlphabetAndWord.py.executor": "Run",
+    "Python tests.Python tests in TestProductionRule.py.executor": "Run",
+    "Python tests.Python tests in TestWord.py.executor": "Run",
+    "Python.Alphabet.executor": "Run",
     "Python.CantorDust.executor": "Debug",
     "Python.DeterministicRule.executor": "Run",
     "Python.IdentityRule.executor": "Debug",
     "Python.LSystem.executor": "Run",
-    "Python.Main.executor": "Run",
+    "Python.Main.executor": "Debug",
     "Python.Processor.executor": "Run",
-    "Python.ProductionRule.executor": "Debug",
+    "Python.ProductionRule.executor": "Run",
     "Python.SAC.executor": "Run",
     "Python.Symbol.executor": "Run",
     "Python.Utility.executor": "Debug",
-    "Python.Word.executor": "Run",
+    "Python.Word.executor": "Debug",
     "Python.WordExtended.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "/home/jason/PycharmProjects/LSystemInference"
   }
 }]]></component>
@@ -73,14 +102,14 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\ProductionRules\Deprecated" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\WordsAndSymbols\Deprecated" />
       <recent name="$PROJECT_DIR$/WordsAndSymbols" />
       <recent name="$PROJECT_DIR$/LSystems" />
       <recent name="$PROJECT_DIR$/Words and Symbols" />
-      <recent name="$PROJECT_DIR$/SpecialSymbols" />
-      <recent name="$PROJECT_DIR$/ProductionRules" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python tests.Python tests for TestWord.TestWord.test_from_string">
     <configuration name="Main" type="PythonConfigurationType" factoryName="Python">
       <module name="LSystemInference" />
       <option name="ENV_FILES" value="" />
@@ -90,7 +119,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.11 (LSystemInference)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -104,11 +132,63 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Python tests for TestWord.TestWord.test_add_sac" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="LSystemInference" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UnitTests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestWord.TestWord.test_add_sac&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for TestWord.TestWord.test_append_word" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="LSystemInference" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UnitTests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestWord.TestWord.test_append_word&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for TestWord.TestWord.test_from_string" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="LSystemInference" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UnitTests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestWord.TestWord.test_from_string&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Python tests for TestWord.TestWord.test_from_string" />
+        <item itemvalue="Python tests.Python tests for TestWord.TestWord.test_append_word" />
+        <item itemvalue="Python tests.Python tests for TestWord.TestWord.test_add_sac" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
+        <option value="bundled-python-sdk-495700d161d3-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.22562.220" />
       </set>
     </attachedChunks>
   </component>
@@ -233,12 +313,12 @@
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/WordsAndSymbols/SaC.py</url>
+          <url>file://$PROJECT_DIR$/WordsAndSymbols/Deprecated/SaC.py</url>
           <line>84</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/WordsAndSymbols/Word.py</url>
+          <url>file://$PROJECT_DIR$/WordsAndSymbols/Deprecated/Word.py</url>
           <line>31</line>
           <option name="timeStamp" value="178" />
         </line-breakpoint>
@@ -246,6 +326,30 @@
           <url>file://$PROJECT_DIR$/LSystems/LSystem.py</url>
           <line>110</line>
           <option name="timeStamp" value="204" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Processor.py</url>
+          <line>14</line>
+          <option name="timeStamp" value="205" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Processor.py</url>
+          <option name="timeStamp" value="206" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UnitTests/TestProductionRule.py</url>
+          <line>88</line>
+          <option name="timeStamp" value="212" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/WordsAndSymbols/Word.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UnitTests/TestWord.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="233" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

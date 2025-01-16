@@ -2,7 +2,7 @@ from GlobalSettings import multicharacterIndicator
 
 UnitTest_Symbol = False
 
-class Symbol:
+class SymbolOld:
     def __init__(self, S, Id, IsIdentity=False, IsForbidden=False, Multicharacter=False):
         """
         :type S: string

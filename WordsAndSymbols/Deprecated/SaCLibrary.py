@@ -1,11 +1,11 @@
 import math
 
-from ProductionRules.ProductionRule import ProductionRule
-from WordsAndSymbols.SaC import SaC
-from WordsAndSymbols.Word import Word
+from ProductionRules.Deprecated.ProductionRule import ProductionRule
+from WordsAndSymbols.Deprecated.SaC import SaC
+from WordsAndSymbols.Deprecated.Word import Word
 
 
-class SaCLibrary:
+class SaCLibraryOld:
     __sacs: list[SaC]
     __ids: list[int]
     __rules: list[ProductionRule]

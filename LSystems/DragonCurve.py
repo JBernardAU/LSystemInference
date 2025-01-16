@@ -1,6 +1,6 @@
 from LSystems.LSystem import LSystem
-from ProductionRules.DeterministicRule import DeterministicRule
-from WordsAndSymbols.Word import Word
+from ProductionRules.Deprecated.DeterministicRule import DeterministicRule
+from WordsAndSymbols.Deprecated.Word import Word
 
 
 class DragonCurve(LSystem):

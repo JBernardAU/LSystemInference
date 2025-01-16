@@ -1,5 +1,5 @@
 from LSystems.LSystem import LSystem
-from ProductionRules.DeterministicRule import DeterministicRule
+from ProductionRules.Deprecated.DeterministicRule import DeterministicRule
 
 class CantorDust(LSystem):
     def __init__(self, N=3):

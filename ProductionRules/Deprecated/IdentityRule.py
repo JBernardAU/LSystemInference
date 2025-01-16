@@ -1,8 +1,8 @@
-from ProductionRules.ProductionRule import ProductionRule
+from ProductionRules.Deprecated.ProductionRule import ProductionRule
 
 UnitTest_IdentityRule = False
 
-class IdentityRule(ProductionRule):
+class IdentityRuleOld(ProductionRule):
     def __init__(self, Succ):
         super().__init__(Succ)
 

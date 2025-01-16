@@ -1,4 +1,4 @@
-from WordsAndSymbols.Word import Word
+from WordsAndSymbols.Deprecated.Word import Word
 
 class AnyWord(Word):
     def __init__(self, W, Ids):

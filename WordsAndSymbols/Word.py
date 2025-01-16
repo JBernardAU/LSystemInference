@@ -1,132 +1,121 @@
-from WordsAndSymbols.Symbol import Symbol
-UnitTest_Word = False
+from typing import List, Dict
+
+from WordsAndSymbols.SaC import SaC
+
 
 class Word:
-    """
-    Properties:
-    - A list of Symbol objects
-    """
-    _symbols: list[Symbol]
-
-    def __init__(self, Symbols, Ids=None, SACs=None, SACIDs=None):
+    def __init__(self, sac_list: List[SaC]):
         """
-        :type Symbols: list[Symbol]
+        Initialize a Word object as a collection of SaC objects.
+
+        :param sac_list: List of SaC objects representing the word.
         """
-        self._symbols = Symbols
-        self._ids = Ids
-        self._parameters = None
-        self._sacs = SACs
-        self._sacIds = SACIDs
-        self._sacCounts = None
+        self.sac_list = sac_list
+        self.parameters = [{} for _ in sac_list]  # Dictionary of parameters for each position
+        self.sac_counts = self._count_sacs()
 
-    def __len__(self):
-        return len(self._symbols)
+    def __len__(self) -> int:
+        """Return the number of symbols (SaCs) in the word."""
+        return len(self.sac_list)
 
-    def __eq__(self, other):
-        iW = 0
-        flag = True
-        if self is other:
-            return True
-        elif len(self) == len(other):
-            while iW < len(self._symbols) and flag:
-                flag = self._symbols[iW] == other.GetSymbol(iW)
-                iW += 1
-        return flag
+    def __getitem__(self, index: int) -> SaC:
+        """Get the SaC object at the specified index."""
+        return self.sac_list[index]
 
-    def __add__(self, other):
-        for i, s in enumerate(other):
-            self._symbols.append(s)
+    def __repr__(self) -> str:
+        """Provide a string representation of the Word for debugging."""
+        return f"Word({self.sac_list})"
 
-    def __str__(self):
-        result = ""
-        for s in self._symbols:
-            result += str(s)
-        return result
+    def to_string(self, reverse_mapping: Dict[int, str]) -> str:
+        """
+        Convert the Word object to a string representation.
 
-    def __iter__(self):
-        return iter(self._symbols)
+        :param reverse_mapping: Dictionary mapping IDs back to characters.
+        :return: A string representation of the entire word.
+        """
+        parts = []
+        for sac in self.sac_list:
+            symbol_str = reverse_mapping[sac.symbol]
+            if len(symbol_str) > 1:
+                parts.append(f"_{symbol_str}_")
+            else:
+                parts.append(symbol_str)
+        return ''.join(parts)
 
-    """
-    Inputs: A word (W)
-    Outputs: None. Modifies self.
-    This appends one word to another. Equivalent to += for strings. Note, this destroys the extensions for self.
-    Parameters in particular should be saved before calling Append().
-    """
-    def Append(self, W):
-        if issubclass(type(W),Word) and len(W) > 0:
-            self.Deextend()
-        for i, s in enumerate(W):
-            self._symbols.append(s)
+    @staticmethod
+    def from_string(string: str, mapping: Dict[str, int]) -> 'Word':
+        """
+        Create a Word object from a string and a character-to-ID mapping.
 
+        :param string: A string representation of the word, where individual
+                       SaC objects are either concatenated or separated by underscores.
+        :param mapping: Dictionary mapping characters to IDs.
+        :return: A Word object.
+        """
+        sac_list = []
+        i = 0
+        while i < len(string):
+            if string[i] == '_':
+                # Multi-character symbol
+                end = string.find('_', i + 1)
+                if end == -1:
+                    raise ValueError("Malformed string with unmatched underscores.")
+                multi_char_symbol = string[i + 1:end]
+                if multi_char_symbol not in mapping:
+                    raise ValueError(f"Unknown symbol: {multi_char_symbol}")
+                sac_list.append(SaC([], mapping[multi_char_symbol], []))  # Contexts will need to be added separately
+                i = end + 1
+            else:
+                single_char_symbol = string[i]
+                if single_char_symbol not in mapping:
+                    raise ValueError(f"Unknown symbol: {single_char_symbol}")
+                sac_list.append(SaC([], mapping[single_char_symbol], []))
+                i += 1
+        return Word(sac_list)
 
-    def GetSymbol(self, I):
-        return self._symbols[I]
+    def add_sac(self, sac: SaC):
+        """Add a SaC object to the word."""
+        self.sac_list.append(sac)
+        self.parameters.append({})  # Add a new dictionary for the new position
+        self.sac_counts = self._count_sacs()
 
-    def GetSymbolID(self, I):
-        return self._ids[I]
+    def find_by_symbol(self, symbol_id: int) -> List[int]:
+        """
+        Find all indices where the given symbol ID appears in the word.
 
-    def GetSAC(self, I):
-        return self._sacs[I]
+        :param symbol_id: The symbol ID to search for.
+        :return: A list of indices where the symbol appears.
+        """
+        return [i for i, sac in enumerate(self.sac_list) if sac.symbol == symbol_id]
 
-    def GetSACID(self, I):
-        return self._sacIds[I]
+    def get_contexts(self, index: int) -> SaC:
+        """
+        Retrieve the SaC object at the given index.
 
-    def AddSymbol(self, S):
-        self._symbols.append(S)
+        :param index: Index of the desired SaC.
+        :return: The SaC object at the specified index.
+        """
+        if 0 <= index < len(self.sac_list):
+            return self.sac_list[index]
+        raise IndexError("Index out of bounds for Word.")
 
-    def AddSAC(self, SAC):
-        self._sacs.append(SAC)
+    def append_word(self, other: 'Word'):
+        """
+        Append another Word object to this Word.
 
-    def Parametrize(self):
-        self._parameters = list()
+        :param other: Another Word object.
+        """
+        self.sac_list.extend(other.sac_list)
+        self.parameters.extend(other.parameters)
+        self.sac_counts = self._count_sacs()
 
-    def AddParameters(self, P):
-        self.Parametrize()
-        pass
+    def _count_sacs(self) -> Dict[int, int]:
+        """
+        Count the occurrences of each symbol in the word.
 
-    def Extend(self):
-        self._sacs = list()
-        self._sacCounts = list()
-
-    def Deextend(self):
-        self._sacs = None
-        self._sacIds = None
-        self._sacCounts = None
-        self._parameters = None
-
-    def IsExtended(self):
-        if self._sacs is None:
-            return False
-        else:
-            return True
-
-if UnitTest_Word:
-    from Symbol import Symbol
-
-    print("Test 1 - Initialize and display a word")
-    a = Symbol("A",0,True)
-    b = Symbol("B",1, True)
-    cc = Symbol("CC", 2)
-    dd = Symbol("DD",3)
-    l = [a,b,cc,dd]
-    w = Word(l)
-    print(w)
-
-    print("\nTest 2 - Are two words equal? Yes")
-    a2 = Symbol("A",0,True)
-    b2 = Symbol("B",1, True)
-    cc2 = Symbol("CC", 2)
-    dd2 = Symbol("DD",3)
-    l2 = [a2,b2,cc2,dd2]
-    w2 = Word(l2)
-    print(w + " == " + w2 + "? " +  str(w == w2))
-
-    print("\nTest 3 - Are two words equal? No")
-    a3 = Symbol("A",0,True)
-    b3 = Symbol("B",1, True)
-    cc3 = Symbol("CC", 2)
-    dd3 = Symbol("DD",3)
-    l3 = [b2,a3,cc2,dd2]
-    w3 = Word(l3)
-    print(w + " == " + w3 + "? " + str(w == w3))
-
+        :return: A dictionary where keys are symbol IDs and values are their counts.
+        """
+        counts = {}
+        for sac in self.sac_list:
+            counts[sac.symbol] = counts.get(sac.symbol, 0) + 1
+        return counts

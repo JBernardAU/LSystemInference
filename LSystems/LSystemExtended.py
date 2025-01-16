@@ -1,8 +1,5 @@
 from LSystems.LSystem import LSystem
-from ProductionRules.DeterministicRule import DeterministicRule
-from ProductionRules.UnknownRule import UnknownRule
 from Scanner import Scanner
-from Utility import *
 from GlobalSettings import *
 
 UnitTest_LSystemExtended = False

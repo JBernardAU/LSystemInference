@@ -1,6 +1,6 @@
-from ProductionRules.ProductionRule import ProductionRule
+from ProductionRules.Deprecated.ProductionRule import ProductionRule
 
-class UnknownRule(ProductionRule):
+class UnknownRuleOld(ProductionRule):
     def __init__(self):
         super().__init__([None])
 

@@ -1,9 +1,9 @@
-from ProductionRules.IdentityRule import IdentityRule
-from ProductionRules.ProductionRule import ProductionRule
-from WordsAndSymbols.Alphabet import Alphabet
-from WordsAndSymbols.SaC import SaC
-from WordsAndSymbols.SaCLibrary import SaCLibrary
-from WordsAndSymbols.Word import Word
+from ProductionRules.Deprecated.IdentityRule import IdentityRule
+from ProductionRules.Deprecated.ProductionRule import ProductionRule
+from WordsAndSymbols.Deprecated.Alphabet import Alphabet
+from WordsAndSymbols.Deprecated.SaC import SaC
+from WordsAndSymbols.Deprecated.SaCLibrary import SaCLibrary
+from WordsAndSymbols.Deprecated.Word import Word
 from GlobalSettings import *
 
 UnitTest_LSystem = False

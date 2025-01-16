@@ -1,5 +1,5 @@
 import GlobalSettings
-from WordsAndSymbols.Symbol import Symbol
+from WordsAndSymbols.Deprecated.Symbol import Symbol
 
 class EmptySymbol(Symbol):
     def __init__(self):
