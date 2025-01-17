@@ -1,9 +1,7 @@
-from typing import List, Dict, Union
-import random
-
-from WordsAndSymbols.SaC import SaC
+from typing import Union, Dict
 from WordsAndSymbols.Word import Word
-
+from WordsAndSymbols.SaC import SaC
+import random
 
 class ProductionRule:
     def __init__(self, sac: SaC, word: Word):
@@ -23,9 +21,20 @@ class ProductionRule:
         :param sac: The SaC to which the rule should be applied.
         :return: The resulting Word if the rule matches, otherwise None.
         """
-        if self.sac == sac:
+        if self.sac == sac:  # Handles AnySymbol and EmptySymbol via SaC equality logic
             return self.word
         return None
+
+    def __repr__(self):
+        """
+        Display the production rule in human-readable format.
+        Format: left_context < symbol > right_context -> replacement string
+        """
+        left_context = "".join(str(x) for x in self.sac.left_context) if self.sac.left_context else "*"
+        symbol = self.sac.symbol
+        right_context = "".join(str(x) for x in self.sac.right_context) if self.sac.right_context else "*"
+        replacement = self.word.to_string(reverse_mapping={}) if self.word else ""
+        return f"{left_context} < {symbol} > {right_context} -> {replacement}"
 
 class DeterministicProductionRule(ProductionRule):
     def __init__(self, sac: SaC, word: Word):
@@ -72,6 +81,10 @@ class ParametricProductionRule(ProductionRule):
         :param sac: The SaC to which the rule should be applied.
         :return: The resulting Word if the rule matches, otherwise None.
         """
-        if self.sac.symbol == sac.symbol and self.sac.left_context == sac.left_context and self.sac.right_context == sac.right_context:
+        if (
+            self.sac._match_symbol(self.sac.symbol, sac.symbol) and
+            self.sac._match_context(self.sac.left_context, sac.left_context) and
+            self.sac._match_context(self.sac.right_context, sac.right_context)
+        ):
             return self.parametric_function(sac)
         return None

@@ -1,7 +1,7 @@
 import unittest
 from ProductionRules.ProductionRule import DeterministicProductionRule
 from WordsAndSymbols.Alphabet import Alphabet
-from WordsAndSymbols.SaC import SaC
+from WordsAndSymbols.SaC import SaC, ANY_SYMBOL, ANY_SYMBOL_ID
 from WordsAndSymbols.Word import Word
 
 
@@ -13,62 +13,30 @@ class TestProductionRule(unittest.TestCase):
             identity_symbols={"F", "+", "-", "[", "]"}
         )
 
+        self.i = 0
+        self.j = 0
         # Define the initial string and convert it to a Word
         self.initial_string = "A+[FB]-C"
-        self.word = self._string_to_word(self.initial_string)
+        self.word = Word.from_string(self.initial_string, self.alphabet.mappings, self.i, self.j)
 
-        self.first_word = self._string_to_word("F+[A]+[FFB]-AC")
-        self.second_word = self._string_to_word("F+[F+[A]]+[FFFB]-F+[A]AC")
+        self.first_word = Word.from_string("F+[A]+[FFB]-AC", self.alphabet.mappings, self.i, self.j)
+        self.second_word = Word.from_string("F+[F+[A]]+[FFFB]-F+[A]AC", self.alphabet.mappings, self.i, self.j)
 
         # Define production rules
         self.rules = [
             DeterministicProductionRule(
-                SaC([], self.alphabet.get_id("A"), []),  # A -> F+[A]
-                self._string_to_word("F+[A]")
+                SaC([ANY_SYMBOL_ID], self.alphabet.get_id("A"), [ANY_SYMBOL_ID]),  # A -> F+[A]
+                Word.from_string("F+[A]", self.alphabet.mappings, self.i, self.j)
             ),
             DeterministicProductionRule(
-                SaC([], self.alphabet.get_id("B"), []),  # B -> F
-                self._string_to_word("FB")
+                SaC([ANY_SYMBOL_ID], self.alphabet.get_id("B"), [ANY_SYMBOL_ID]),  # B -> F
+                Word.from_string("FB", self.alphabet.mappings, self.i, self.j)
             ),
             DeterministicProductionRule(
-                SaC([], self.alphabet.get_id("C"), []),  # C -> C
-                self._string_to_word("AC")
+                SaC([ANY_SYMBOL_ID], self.alphabet.get_id("C"), [ANY_SYMBOL_ID]),  # C -> C
+                Word.from_string("AC", self.alphabet.mappings, self.i, self.j)
             )
         ]
-
-    def _string_to_word(self, string: str) -> Word:
-        """
-        Helper to convert a string to a Word object.
-        """
-        sac_list = []
-        for i, char in enumerate(string):
-            left_context = self._get_context(string, i, direction="left", max_depth=1)
-            right_context = self._get_context(string, i, direction="right", max_depth=1)
-            sac = SaC(left_context, self.alphabet.get_id(char), right_context)
-            sac_list.append(sac)
-        return Word(sac_list)
-
-    def _get_context(self, string, index, direction, max_depth):
-        """
-        Get the context for a symbol at a given index.
-        """
-        step = -1 if direction == "left" else 1
-        context = []
-        depth = 0
-        i = index + step
-
-        while 0 <= i < len(string) and depth < max_depth:
-            char = string[i]
-            if char in "[]":  # Stop at brackets
-                break
-            if char not in "+-[]":
-                context.append(self.alphabet.get_id(char))
-                depth += 1
-            i += step
-
-        if direction == "left":
-            context.reverse()
-        return context
 
     def _apply_rules(self, word: Word) -> Word:
         """
@@ -88,16 +56,19 @@ class TestProductionRule(unittest.TestCase):
     def test_production_rules(self):
         print("Initial String:", self.initial_string)
         current_word = self.word
+        current_word.display(self.alphabet.reverse_mappings,mode="sacs")
 
         # Apply rules to produce the first new word
         current_word = self._apply_rules(current_word)
         first_string = current_word.to_string(self.alphabet.reverse_mappings)
         print("First Produced String:", first_string)
+        current_word.display(self.alphabet.reverse_mappings,mode="sacs")
 
         # Apply rules again to produce the second new word
         current_word = self._apply_rules(current_word)
         second_string = current_word.to_string(self.alphabet.reverse_mappings)
         print("Second Produced String:", second_string)
+        current_word.display(self.alphabet.reverse_mappings,mode="sacs")
 
         # Add assertions to verify correctness
         # A -> F+[A]
@@ -106,8 +77,8 @@ class TestProductionRule(unittest.TestCase):
         # A+[FB]-C
         # F+[A]+[FFB]-AC
         # F+[F+[A]]+[FFFB]-F+[A]AC
-        self.assertEqual(first_string, "F+[A]+[FFB]-AC")  # Example output
-        self.assertEqual(second_string, "F+[F+[A]]+[FFFB]-F+[A]AC")
+        self.assertEqual("F+[A]+[FFB]-AC", first_string)  # Example output
+        self.assertEqual("F+[F+[A]]+[FFFB]-F+[A]AC", second_string)
 
 if __name__ == "__main__":
     unittest.main()

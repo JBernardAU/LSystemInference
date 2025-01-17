@@ -69,7 +69,9 @@ class TestAlphabetAndWord(unittest.TestCase):
 
             for sac, count in sac_counts.items():
                 left_context, symbol, right_context = sac
-                print(f"  Left: {left_context}, Symbol: {symbol}, Right: {right_context}, Count: {count}")
+                left_context_str = ", ".join(left_context) if left_context else "*"
+                right_context_str = ", ".join(right_context) if right_context else "*"
+                print(f"  Left: {left_context_str}, Symbol: {symbol}, Right: {right_context_str}, Count: {count}")
 
     def test_display_unique_sacs(self):
         unique_sacs = set()

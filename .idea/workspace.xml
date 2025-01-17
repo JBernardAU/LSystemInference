@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Removing deprecated classes">
-      <change afterPath="$PROJECT_DIR$/UnitTests/TestProductionRulesExtended.py" afterDir="false" />
+    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="More tests">
+      <change afterPath="$PROJECT_DIR$/context_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProductionRules/ProductionRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestProductionRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestProductionRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/SaC.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/SaC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Word.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Word.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,9 +70,9 @@
     "Python.DeterministicRule.executor": "Run",
     "Python.IdentityRule.executor": "Debug",
     "Python.LSystem.executor": "Run",
-    "Python.Main.executor": "Debug",
+    "Python.Main.executor": "Run",
     "Python.Processor.executor": "Run",
-    "Python.ProductionRule.executor": "Run",
+    "Python.ProductionRule.executor": "Debug",
     "Python.SAC.executor": "Run",
     "Python.Symbol.executor": "Run",
     "Python.Utility.executor": "Debug",
@@ -83,11 +90,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference" />
       <recent name="D:\Users\littl\PycharmProjects\LSystemInference\ProductionRules\Deprecated" />
       <recent name="D:\Users\littl\PycharmProjects\LSystemInference\WordsAndSymbols\Deprecated" />
       <recent name="$PROJECT_DIR$/WordsAndSymbols" />
       <recent name="$PROJECT_DIR$/LSystems" />
-      <recent name="$PROJECT_DIR$/Words and Symbols" />
     </key>
   </component>
   <component name="RunManager">
@@ -318,7 +325,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736989857720</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="More tests">
+      <option name="closed" value="true" />
+      <created>1736999332216</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1736999332216</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -333,7 +348,8 @@
     <MESSAGE value="Incremental commit.&#10;&#10;Redid the framework to be object-oriented." />
     <MESSAGE value="Rebuilding from the ground up. Using bottom up instead of top down." />
     <MESSAGE value="Removing deprecated classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removing deprecated classes" />
+    <MESSAGE value="More tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="More tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -368,9 +384,19 @@
           <option name="timeStamp" value="206" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/WordsAndSymbols/Word.py</url>
-          <line>59</line>
-          <option name="timeStamp" value="229" />
+          <url>file://$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py</url>
+          <line>57</line>
+          <option name="timeStamp" value="237" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProductionRules/ProductionRule.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="241" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/UnitTests/TestProductionRule.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="245" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

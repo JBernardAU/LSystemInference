@@ -1,46 +1,50 @@
-from typing import Dict, Set
+from WordsAndSymbols.SaC import EMPTY_SYMBOL, EMPTY_SYMBOL_ID, ANY_SYMBOL, ANY_SYMBOL_ID
+
 
 class Alphabet:
-    def __init__(self, mappings: Dict[str, int], identity_symbols: Set[str] = None):
+    def __init__(self, mappings=None, identity_symbols=None):
         """
-        Initialize an Alphabet object.
+        Initialize the Alphabet class with mappings and identity symbols.
 
-        :param mappings: Dictionary mapping symbols (characters) to unique IDs.
-        :param identity_symbols: Set of symbols considered identity by default (e.g., 'F', '+', '-', '[', ']').
+        :param mappings: A dictionary mapping symbols to IDs.
+        :param identity_symbols: A set of symbols that have identity production rules.
         """
-        self.mappings = mappings
-        self.reverse_mappings = {v: k for k, v in mappings.items()}
-        self.identity_symbols = identity_symbols or {"F", "+", "-", "[", "]"}
-        self.homomorphisms = {id_: id_ for id_ in mappings.values()}  # By default, each symbol maps to itself
+        self.mappings = mappings or {}
+        self.reverse_mappings = {v: k for k, v in self.mappings.items()}
+        self.identity_symbols = identity_symbols or set()
+        self.homomorphisms = {}
 
-    def add_symbol(self, symbol: str, id_: int):
-        """Add a new symbol and its ID to the alphabet."""
-        if symbol in self.mappings or id_ in self.reverse_mappings:
-            raise ValueError("Symbol or ID already exists in the alphabet.")
+        # Add AnySymbol and EmptySymbol to the mappings
+        self.mappings.update({EMPTY_SYMBOL: EMPTY_SYMBOL_ID, ANY_SYMBOL: ANY_SYMBOL_ID})  # λ for EmptySymbol, * for AnySymbol
+        self.reverse_mappings.update({EMPTY_SYMBOL_ID: EMPTY_SYMBOL, ANY_SYMBOL_ID: ANY_SYMBOL})
+
+    def add_symbol(self, symbol, id_):
+        """
+        Add a new symbol to the alphabet with its corresponding ID.
+
+        :param symbol: The symbol to add.
+        :param id_: The ID to assign to the symbol.
+        """
         self.mappings[symbol] = id_
         self.reverse_mappings[id_] = symbol
-        self.homomorphisms[id_] = id_
 
-    def set_homomorphism(self, from_symbol: str, to_symbol: str):
+    def get_id(self, symbol):
         """
-        Define a homomorphism between two symbols.
+        Retrieve the ID for a given symbol.
 
-        :param from_symbol: The symbol to be mapped.
-        :param to_symbol: The symbol it maps to.
+        :param symbol: The symbol to look up.
+        :return: The ID of the symbol.
         """
-        if from_symbol not in self.mappings or to_symbol not in self.mappings:
-            raise ValueError("Both symbols must exist in the alphabet.")
-        from_id = self.mappings[from_symbol]
-        to_id = self.mappings[to_symbol]
-        self.homomorphisms[from_id] = to_id
+        return self.mappings.get(symbol, None)
 
-    def get_id(self, symbol: str) -> int:
-        """Get the ID of a symbol."""
-        return self.mappings.get(symbol)
+    def get_symbol(self, id_):
+        """
+        Retrieve the symbol for a given ID.
 
-    def get_symbol(self, id_: int) -> str:
-        """Get the symbol corresponding to an ID."""
-        return self.reverse_mappings.get(id_)
+        :param id_: The ID to look up.
+        :return: The symbol corresponding to the ID.
+        """
+        return self.reverse_mappings.get(id_, None)
 
     def get_context(self, string, index, direction, max_depth, include_f):
         """
@@ -51,12 +55,12 @@ class Alphabet:
         :param direction: "left" or "right".
         :param max_depth: Maximum number of symbols to include in the context.
         :param include_f: Whether to include 'F' in the context.
-        :return: List of IDs representing the context.
+        :return: List of IDs representing the context. If no context exists, AnySymbol is returned.
         """
         char = string[index]
         if char in "+-[]" or (char == "F" and not include_f):
-            # Turtle symbols and excluded 'F' always have empty context
-            return []
+            # Turtle symbols and excluded 'F' return AnySymbol context
+            return [ANY_SYMBOL_ID]
 
         step = -1 if direction == "left" else 1
         context = []
@@ -73,26 +77,67 @@ class Alphabet:
             i += step
 
         if direction == "left":
-            context.reverse()
-        return context
+            context.reverse()  # Ensure left context is in correct order
 
-    def is_identity(self, symbol_or_id: str or int) -> bool:
-        """Check if a symbol or ID is an identity symbol."""
-        if isinstance(symbol_or_id, str):
-            symbol_or_id = self.mappings.get(symbol_or_id)
-        return symbol_or_id is not None and self.reverse_mappings[symbol_or_id] in self.identity_symbols
+        # Return AnySymbol if the context is empty
+        return context if context else [ANY_SYMBOL_ID]
 
-    def apply_homomorphism(self, id_: int) -> int:
-        """Apply the homomorphism mapping to an ID."""
+    def set_homomorphism(self, source_symbol, target_symbol):
+        """
+        Define a homomorphism mapping from one symbol to another.
+
+        :param source_symbol: The source symbol.
+        :param target_symbol: The target symbol.
+        """
+        source_id = self.get_id(source_symbol)
+        target_id = self.get_id(target_symbol)
+        if source_id is not None and target_id is not None:
+            self.homomorphisms[source_id] = target_id
+
+    def apply_homomorphism(self, id_):
+        """
+        Apply the homomorphism mapping to an ID.
+
+        :param id_: The ID to transform.
+        :return: The transformed ID or the original ID if no mapping exists.
+        """
+        if self.is_any_symbol(id_) or self.is_empty_symbol(id_):
+            return id_  # Do not apply homomorphism to special symbols
         return self.homomorphisms.get(id_, id_)
 
-    def view_with_homomorphism(self) -> Dict[int, int]:
-        """View the homomorphism mappings."""
-        return self.homomorphisms
+    def is_any_symbol(self, symbol_id):
+        """
+        Check if a symbol ID corresponds to AnySymbol (*).
+
+        :param symbol_id: The symbol ID to check.
+        :return: True if it is AnySymbol, False otherwise.
+        """
+        return symbol_id == self.mappings.get("*", None)
+
+    def is_empty_symbol(self, symbol_id):
+        """
+        Check if a symbol ID corresponds to EmptySymbol (λ).
+
+        :param symbol_id: The symbol ID to check.
+        :return: True if it is EmptySymbol, False otherwise.
+        """
+        return symbol_id == self.mappings.get("λ", None)
+
+    def is_identity(self, symbol):
+        """
+        Check if a symbol has an identity production rule.
+
+        :param symbol: The symbol to check.
+        :return: True if the symbol is an identity, False otherwise.
+        """
+        return symbol in self.identity_symbols
 
     def __repr__(self):
-        """Provide a string representation of the Alphabet object."""
+        """
+        Provide a string representation of the Alphabet for debugging.
+        """
         return (
-            f"Alphabet(mappings={self.mappings}, identity_symbols={self.identity_symbols}, "
+            f"Alphabet(mappings={self.mappings}, "
+            f"identity_symbols={self.identity_symbols}, "
             f"homomorphisms={self.homomorphisms})"
         )
