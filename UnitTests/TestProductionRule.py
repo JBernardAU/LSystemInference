@@ -1,7 +1,7 @@
 import unittest
 from ProductionRules.ProductionRule import DeterministicProductionRule
 from WordsAndSymbols.Alphabet import Alphabet
-from WordsAndSymbols.SaC import SaC, ANY_SYMBOL, ANY_SYMBOL_ID
+from WordsAndSymbols.SaC import SaC, ANY_SYMBOL, ANY_SYMBOL_ID, EMPTY_SYMBOL
 from WordsAndSymbols.Word import Word
 
 
@@ -18,7 +18,6 @@ class TestProductionRule(unittest.TestCase):
         # Define the initial string and convert it to a Word
         self.initial_string = "A+[FB]-C"
         self.word = Word.from_string(self.initial_string, self.alphabet.mappings, self.i, self.j)
-
         self.first_word = Word.from_string("F+[A]+[FFB]-AC", self.alphabet.mappings, self.i, self.j)
         self.second_word = Word.from_string("F+[F+[A]]+[FFFB]-F+[A]AC", self.alphabet.mappings, self.i, self.j)
 
@@ -34,7 +33,7 @@ class TestProductionRule(unittest.TestCase):
             ),
             DeterministicProductionRule(
                 SaC([ANY_SYMBOL_ID], self.alphabet.get_id("C"), [ANY_SYMBOL_ID]),  # C -> C
-                Word.from_string("AC", self.alphabet.mappings, self.i, self.j)
+                Word.from_string(EMPTY_SYMBOL, self.alphabet.mappings, self.i, self.j)
             )
         ]
 
@@ -77,8 +76,8 @@ class TestProductionRule(unittest.TestCase):
         # A+[FB]-C
         # F+[A]+[FFB]-AC
         # F+[F+[A]]+[FFFB]-F+[A]AC
-        self.assertEqual("F+[A]+[FFB]-AC", first_string)  # Example output
-        self.assertEqual("F+[F+[A]]+[FFFB]-F+[A]AC", second_string)
+        self.assertEqual("F+[A]+[FFB]-λ", first_string)  # Example output
+        self.assertEqual("F+[F+[A]]+[FFFB]-F+[A]", second_string)
 
 if __name__ == "__main__":
     unittest.main()
