@@ -1,6 +1,0 @@
-Mode: Experimental
-LSystem Name: DragonCurve
-AI Type: GeneticAlgorithm
-Context Mode: Known
-
-

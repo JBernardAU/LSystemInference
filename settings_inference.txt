@@ -1,6 +1,0 @@
-Mode: Inference
-LSystem Name: UnknownLSystem_00001
-AI Type: GeneticAlgorithm
-Context Mode: Known
-
-
