@@ -1,6 +1,6 @@
 from typing import List, Dict
 from WordsAndSymbols.SaC import SaC
-from context_utils import get_context
+from Utility.context_utils import get_context
 
 class Word:
     ANY_SYMBOL = "*"

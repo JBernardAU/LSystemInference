@@ -30,8 +30,8 @@ class TestAlphabetAndWord(unittest.TestCase):
         for string in self.strings:
             sac_list = []
             for i, char in enumerate(string):
-                left_context = self.alphabet.get_context(string, i, direction="left", max_depth=3, include_f=False)
-                right_context = self.alphabet.get_context(string, i, direction="right", max_depth=3, include_f=False)
+                left_context = self.alphabet.get_context(string, i, direction="left", max_depth=3, contextual_F=False)
+                right_context = self.alphabet.get_context(string, i, direction="right", max_depth=3, contextual_F=False)
                 sac = SaC(left_context, self.alphabet.get_id(char), right_context)
                 sac_list.append(sac)
             self.words.append(Word(sac_list))

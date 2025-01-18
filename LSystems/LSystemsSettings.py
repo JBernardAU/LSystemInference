@@ -1,7 +1,7 @@
 import json
 
 class LSystemSettings:
-    def __init__(self, name: str, mode: str = "Inference", ai_type: str = "GeneticAlgorithm", i: int = -1, j: int = -1):
+    def __init__(self, name: str, mode: str = "Inference", ai_type: str = "GeneticAlgorithm", i: int = -1, j: int = -1, known_identities: bool = False, f_has_identity: bool = False):
         """
         Initialize settings for an L-system.
 
@@ -16,6 +16,9 @@ class LSystemSettings:
         self.ai_type = ai_type
         self.i = i
         self.j = j
+        self.known_context = True if self.i > -1 and self.j > -1 else False
+        self.known_identities = known_identities
+        self.f_has_identity = f_has_identity
 
     @classmethod
     def from_json(cls, filepath: str) -> 'LSystemSettings':
@@ -33,7 +36,9 @@ class LSystemSettings:
                 mode=data.get("mode", "Inference"),
                 ai_type=data.get("ai_type", "GeneticAlgorithm"),
                 i=data.get("i", -1),
-                j=data.get("j", -1)
+                j=data.get("j", -1),
+                known_identities= data.get("Known identities", False),
+                f_has_identity= data.get("F_has_identity", False)
             )
         except (FileNotFoundError, json.JSONDecodeError) as e:
             raise ValueError(f"Error loading settings from {filepath}: {e}")
@@ -52,4 +57,4 @@ class LSystemSettings:
         """
         return (f"LSystemSettings("
                 f"name={self.name}, mode={self.mode}, ai_type={self.ai_type}, "
-                f"i={self.i}, j={self.j})")
+                f"i={self.i}, j={self.j}, Known identities = {self.known_identities}, F has identity={self.f_has_identity})")

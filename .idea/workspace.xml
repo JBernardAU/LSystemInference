@@ -4,16 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Added support for any symbol and empty symbol">
-      <change afterPath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LSystems/LSystemsSettings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
+    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file.">
+      <change afterPath="$PROJECT_DIR$/InferenceTools/Evidence.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utility/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utility/generate_mappings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.README" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" beforeDir="false" afterPath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LSystems/CantorDust.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/CantorDust.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LSystems/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/LSystemsSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystemsSettings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings_experimental.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings_inference.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Word.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Word.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/context_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/context_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,10 +71,13 @@
     "Python tests.Python tests in TestProductionRulesExtended.py.executor": "Run",
     "Python tests.Python tests in TestWord.py.executor": "Run",
     "Python.Alphabet.executor": "Run",
+    "Python.AlphabetInference.executor": "Run",
     "Python.CantorDust.executor": "Run",
     "Python.DeterministicRule.executor": "Run",
+    "Python.Evidence.executor": "Run",
     "Python.IdentityRule.executor": "Debug",
     "Python.LSystem.executor": "Run",
+    "Python.LSystemInference.executor": "Run",
     "Python.Main.executor": "Run",
     "Python.Processor.executor": "Run",
     "Python.ProductionRule.executor": "Debug",
@@ -90,11 +98,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\Utility" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\InferenceTools\Utility" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\InferenceTools" />
       <recent name="D:\Users\littl\PycharmProjects\LSystemInference" />
       <recent name="D:\Users\littl\PycharmProjects\LSystemInference\ProductionRules\Deprecated" />
-      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\WordsAndSymbols\Deprecated" />
-      <recent name="$PROJECT_DIR$/WordsAndSymbols" />
-      <recent name="$PROJECT_DIR$/LSystems" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Main">
@@ -113,29 +121,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="LSystemInference" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.11" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -221,7 +206,6 @@
     </configuration>
     <list>
       <item itemvalue="Python.Main" />
-      <item itemvalue="Python.Unnamed" />
       <item itemvalue="Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_parametric_production_rule" />
       <item itemvalue="Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_parametric_rule_applies_to_word" />
       <item itemvalue="Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_rule_applies_to_word" />
@@ -382,7 +366,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737075042495</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file.">
+      <option name="closed" value="true" />
+      <created>1737078391162</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1737078391162</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -399,7 +391,8 @@
     <MESSAGE value="Removing deprecated classes" />
     <MESSAGE value="More tests" />
     <MESSAGE value="Added support for any symbol and empty symbol" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added support for any symbol and empty symbol" />
+    <MESSAGE value="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -427,11 +420,6 @@
           <url>file://$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py</url>
           <line>57</line>
           <option name="timeStamp" value="237" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Main.py</url>
-          <line>5</line>
-          <option name="timeStamp" value="248" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

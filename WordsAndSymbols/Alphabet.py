@@ -46,7 +46,7 @@ class Alphabet:
         """
         return self.reverse_mappings.get(id_, None)
 
-    def get_context(self, string, index, direction, max_depth, include_f):
+    def get_context(self, string, index, direction, max_depth, contextual_F):
         """
         Get the context for a symbol at a given index.
 
@@ -54,11 +54,11 @@ class Alphabet:
         :param index: Current index in the string.
         :param direction: "left" or "right".
         :param max_depth: Maximum number of symbols to include in the context.
-        :param include_f: Whether to include 'F' in the context.
+        :param contextual_F: Whether to include 'F' in the context.
         :return: List of IDs representing the context. If no context exists, AnySymbol is returned.
         """
         char = string[index]
-        if char in "+-[]" or (char == "F" and not include_f):
+        if char in "+-[]" or (char == "F" and not contextual_F):
             # Turtle symbols and excluded 'F' return AnySymbol context
             return [ANY_SYMBOL_ID]
 
@@ -71,7 +71,7 @@ class Alphabet:
             next_char = string[i]
             if next_char in "[]":  # Stop at brackets
                 break
-            if next_char not in "+-[]" and (include_f or next_char != "F"):
+            if next_char not in "+-[]" and (contextual_F or next_char != "F"):
                 context.append(self.get_id(next_char))
                 depth += 1
             i += step

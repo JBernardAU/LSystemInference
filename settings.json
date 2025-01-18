@@ -1,7 +1,9 @@
 {
   "name": "CantorDust",
-  "mode": "Inference",
+  "mode": "Experiment",
   "ai_type": "GeneticAlgorithm",
-  "i": 0,
-  "j": 0
+  "i": -1,
+  "j": -1,
+  "Known identities": true,
+  "F_has_identity": false
 }

@@ -1,3 +1,4 @@
+from InferenceTools.Evidence import Evidence
 from LSystems.LSystem import LSystem
 from ProductionRules.ProductionRule import DeterministicProductionRule
 from WordsAndSymbols.Alphabet import Alphabet
@@ -18,3 +19,4 @@ class CantorDust(LSystem):
         self.add_rule(ruleA.sac,ruleA)
         self.add_rule(ruleB.sac,ruleB)
         self.iterate(n=3)
+
