@@ -39,7 +39,7 @@ class TestAlphabetAndWord(unittest.TestCase):
     def test_display_true_and_homomorphized_words(self):
         print("\nTrue Words:")
         for word in self.words:
-            print(word.to_string(self.alphabet.reverse_mappings))
+            print(word.sacs_to_string(self.alphabet.reverse_mappings))
 
         print("\nHomomorphized Words:")
         for word in self.words:
@@ -52,7 +52,7 @@ class TestAlphabetAndWord(unittest.TestCase):
                 for sac in word.sac_list
             ]
             homomorphized_word = Word(homomorphized)
-            print(homomorphized_word.to_string(self.alphabet.reverse_mappings))
+            print(homomorphized_word.sacs_to_string(self.alphabet.reverse_mappings))
 
     def test_display_sac_counts(self):
         print("\nSaC Counts:")

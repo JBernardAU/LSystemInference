@@ -1,12 +1,14 @@
 from typing import List, Dict
-from WordsAndSymbols.SaC import SaC
+
+from WordsAndSymbols.Alphabet import Alphabet
+from WordsAndSymbols.SaC import SaC, EMPTY_SYMBOL_ID, EMPTY_SYMBOL, ANY_SYMBOL_ID, ANY_SYMBOL, MULTICHAR_SYMBOL
 from Utility.context_utils import get_context
 
 class Word:
-    ANY_SYMBOL = "*"
-    EMPTY_SYMBOL = "λ"
-    ANY_SYMBOL_ID = -1  # Special ID for AnySymbol
-    EMPTY_SYMBOL_ID = -2  # Special ID for EmptySymbol
+    #ANY_SYMBOL = "*"
+    #EMPTY_SYMBOL = "λ"
+    #ANY_SYMBOL_ID = -1  # Special ID for AnySymbol
+    #EMPTY_SYMBOL_ID = -2  # Special ID for EmptySymbol
 
     def __init__(self, sac_list: List[SaC]):
         """
@@ -30,7 +32,7 @@ class Word:
         """Provide a string representation of the Word for debugging."""
         return f"Word({self.sac_list})"
 
-    def to_string(self, reverse_mapping: Dict[int, str]) -> str:
+    def sacs_to_string(self, reverse_mapping: Dict[int, str]) -> str:
         """
         Convert the Word object to a string representation.
 
@@ -40,50 +42,48 @@ class Word:
         parts = []
         for sac in self.sac_list:
             symbol_str = reverse_mapping.get(sac.symbol, "?")
-            if sac.symbol == self.EMPTY_SYMBOL_ID:
-                symbol_str = self.EMPTY_SYMBOL
-            elif sac.symbol == self.ANY_SYMBOL_ID:
-                symbol_str = self.ANY_SYMBOL
+            if sac.symbol == EMPTY_SYMBOL_ID:
+                symbol_str = EMPTY_SYMBOL
+            elif sac.symbol == ANY_SYMBOL_ID:
+                symbol_str = ANY_SYMBOL
             parts.append(symbol_str)
         return ''.join(parts)  # Ensure no trailing separators
 
     @staticmethod
-    def from_string(string: str, mapping: Dict[str, int], i: int, j: int) -> 'Word':
+    def from_string(string: str, alphabet: Alphabet, k: int, l: int) -> 'Word':
         """
         Create a Word object from a string and a character-to-ID mapping.
 
         :param string: A string representation of the word, where individual
                        SaC objects are either concatenated or separated by underscores.
-        :param mapping: Dictionary mapping characters to IDs.
-        :param i: Maximum left context depth.
-        :param j: Maximum right context depth.
+        :param Alphabet: Alphabet class for the mapping and ignore list.
+        :param k: Maximum left context depth.
+        :param l: Maximum right context depth.
         :return: A Word object.
         """
         sac_list = []
         idx = 0
 
         while idx < len(string):
-            if string[idx] == '_':
+            if string[idx] == MULTICHAR_SYMBOL:
                 # Multi-character symbol
-                end = string.find('_', idx + 1)
+                end = string.find(MULTICHAR_SYMBOL, idx + 1)
                 if end == -1:
                     raise ValueError("Malformed string with unmatched underscores.")
                 multi_char_symbol = string[idx + 1:end]
-                if multi_char_symbol not in mapping:
+                if multi_char_symbol not in alphabet.mappings:
                     raise ValueError(f"Unknown symbol: {multi_char_symbol}")
-                symbol_id = mapping[multi_char_symbol]
-                left_context = get_context(string, idx, "left", i, mapping, include_f=False)
-                right_context = get_context(string, end, "right", j, mapping, include_f=False)
-                sac_list.append(SaC(left_context, symbol_id, right_context))
+                symbol_id = alphabet.mappings[multi_char_symbol]
+                lc, s, rc = get_context(string=string, idx=idx, k=k, l=l, alphabet=alphabet, ignore_list=alphabet.ignore_list)
+                sac_list.append(SaC(lc, symbol_id, rc))
                 idx = end + 1
             else:
                 single_char_symbol = string[idx]
-                if single_char_symbol not in mapping:
+                if single_char_symbol not in alphabet.mappings:
                     raise ValueError(f"Unknown symbol: {single_char_symbol}")
-                symbol_id = mapping[single_char_symbol]
-                left_context = get_context(string, idx, "left", i, mapping, include_f=True)
-                right_context = get_context(string, idx, "right", j, mapping, include_f=True)
-                sac_list.append(SaC(left_context, symbol_id, right_context))
+                symbol_id = alphabet.mappings[single_char_symbol]
+                lc, s, rc = get_context(string=string, idx=idx, k=k, l=l, alphabet=alphabet, ignore_list=alphabet.ignore_list)
+                sac_list.append(SaC(lc, symbol_id, rc))
                 idx += 1
 
         return Word(sac_list)
@@ -132,7 +132,8 @@ class Word:
         """
         counts = {}
         for sac in self.sac_list:
-            counts[sac.symbol] = counts.get(sac.symbol, 0) + 1
+            counts[sac] = counts.get(sac,0)+1
+
         return counts
 
     def display(self, reverse_mapping: Dict[int, str], mode: str = "string") -> None:

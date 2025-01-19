@@ -26,12 +26,12 @@ class TestWord(unittest.TestCase):
         sac4 = self.SaC([2], -2, [1])  # EmptySymbol
         word = Word([sac1, sac2, sac3, sac4])
 
-        result = word.to_string(self.reverse_mapping)
+        result = word.sacs_to_string(self.reverse_mapping)
         self.assertEqual(result, "BCCCλ")
 
     def test_from_string(self):
         word_string = "ABCB_CC_A"
-        word = Word.from_string(word_string, self.mapping, i=self.i, j=self.j)
+        word = Word.from_string(word_string, self.mapping, k=self.i, l=self.j)
 
         self.assertEqual(len(word), 6)
         self.assertEqual(word.sac_counts, {1: 2, 2: 2, 3: 1, 4: 1})
@@ -66,7 +66,7 @@ class TestWord(unittest.TestCase):
         word = Word([sac1, sac2])
 
         self.assertEqual(len(word), 2)
-        self.assertEqual(word.to_string(self.reverse_mapping), "*C")
+        self.assertEqual(word.sacs_to_string(self.reverse_mapping), "*C")
 
     def test_emptysymbol_in_word(self):
         sac1 = self.SaC([1], EMPTY_SYMBOL_ID, [3])  # EmptySymbol
@@ -74,7 +74,7 @@ class TestWord(unittest.TestCase):
         word = Word([sac1, sac2])
 
         self.assertEqual(len(word), 2)
-        str = word.to_string(self.reverse_mapping)
+        str = word.sacs_to_string(self.reverse_mapping)
         self.assertEqual(str, "λC")
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ def generate_mappings(strings, F_has_identity=False):
                 unique_symbols.add(char)
 
     # Create a mapping dictionary for unique symbols
-    mapping = {symbol: idx + 1 for idx, symbol in enumerate(sorted(unique_symbols))}
+    mapping = {symbol: idx for idx, symbol in enumerate(sorted(unique_symbols))}
 
     return mapping, identity
 

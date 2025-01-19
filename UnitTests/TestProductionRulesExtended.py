@@ -75,12 +75,12 @@ class TestProductionRuleExtended(unittest.TestCase):
         word_5 = rule.apply(sac_with_param_5)
 
         print("Parametric Rule Results:")
-        print("n=1:", word_1.to_string(self.alphabet.reverse_mappings), parameters_list[0])
-        print("n=5:", word_5.to_string(self.alphabet.reverse_mappings), parameters_list[1])
+        print("n=1:", word_1.sacs_to_string(self.alphabet.reverse_mappings), parameters_list[0])
+        print("n=5:", word_5.sacs_to_string(self.alphabet.reverse_mappings), parameters_list[1])
 
         # Assert correct outputs
-        self.assertEqual(word_1.to_string(self.alphabet.reverse_mappings), "F")
-        self.assertEqual(word_5.to_string(self.alphabet.reverse_mappings), "F")
+        self.assertEqual(word_1.sacs_to_string(self.alphabet.reverse_mappings), "F")
+        self.assertEqual(word_5.sacs_to_string(self.alphabet.reverse_mappings), "F")
 
     def test_rule_applies_to_word(self):
         # Define deterministic rule: A -> F
@@ -104,11 +104,11 @@ class TestProductionRuleExtended(unittest.TestCase):
 
         output_word = Word(output_sac_list)
         print("Deterministic Rule Application Results:")
-        print("Input Word:", input_word.to_string(self.alphabet.reverse_mappings))
-        print("Output Word:", output_word.to_string(self.alphabet.reverse_mappings))
+        print("Input Word:", input_word.sacs_to_string(self.alphabet.reverse_mappings))
+        print("Output Word:", output_word.sacs_to_string(self.alphabet.reverse_mappings))
 
         # Assert correctness
-        self.assertEqual(output_word.to_string(self.alphabet.reverse_mappings), expected_word.to_string(self.alphabet.reverse_mappings))
+        self.assertEqual(output_word.sacs_to_string(self.alphabet.reverse_mappings), expected_word.sacs_to_string(self.alphabet.reverse_mappings))
 
     def test_stochastic_rule_applies_to_word(self):
         # Define stochastic rule: A -> {F with 6%, B with 94%}

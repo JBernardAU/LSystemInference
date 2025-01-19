@@ -1,8 +1,9 @@
-from WordsAndSymbols.SaC import EMPTY_SYMBOL, EMPTY_SYMBOL_ID, ANY_SYMBOL, ANY_SYMBOL_ID
+from WordsAndSymbols.SaC import EMPTY_SYMBOL, EMPTY_SYMBOL_ID, ANY_SYMBOL, ANY_SYMBOL_ID, MULTICHAR_SYMBOL, \
+    MULTICHAR_SYMBOL_ID
 
 
 class Alphabet:
-    def __init__(self, mappings=None, identity_symbols=None):
+    def __init__(self, mappings=None, identity_symbols=None, ignore_list=None):
         """
         Initialize the Alphabet class with mappings and identity symbols.
 
@@ -13,10 +14,27 @@ class Alphabet:
         self.reverse_mappings = {v: k for k, v in self.mappings.items()}
         self.identity_symbols = identity_symbols or set()
         self.homomorphisms = {}
+        self.sacs = []
+        self.symbols = set(self.mappings.keys()) - self.identity_symbols
+        if ignore_list != None:
+            self.ignore_list = ignore_list
+        else:
+            self.ignore_list = set([symbol for symbol in identity_symbols if symbol != "F"])
+
+        # Determine the starting index for new symbols
+        next_index = max(self.mappings.values(), default=-1) + 1
+
+        # Add identity symbols to mappings
+        for symbol in self.identity_symbols:
+            if symbol not in self.mappings:  # Avoid duplicates
+                self.mappings[symbol] = next_index
+                self.reverse_mappings[next_index] = symbol
+                next_index += 1
 
         # Add AnySymbol and EmptySymbol to the mappings
-        self.mappings.update({EMPTY_SYMBOL: EMPTY_SYMBOL_ID, ANY_SYMBOL: ANY_SYMBOL_ID})  # λ for EmptySymbol, * for AnySymbol
-        self.reverse_mappings.update({EMPTY_SYMBOL_ID: EMPTY_SYMBOL, ANY_SYMBOL_ID: ANY_SYMBOL})
+        self.mappings.update({EMPTY_SYMBOL: EMPTY_SYMBOL_ID, ANY_SYMBOL: ANY_SYMBOL_ID, MULTICHAR_SYMBOL: MULTICHAR_SYMBOL_ID})  # λ for EmptySymbol, * for AnySymbol
+        self.reverse_mappings.update({EMPTY_SYMBOL_ID: EMPTY_SYMBOL, ANY_SYMBOL_ID: ANY_SYMBOL, MULTICHAR_SYMBOL_ID: MULTICHAR_SYMBOL})
+        self.ignore_list.update(EMPTY_SYMBOL, ANY_SYMBOL, MULTICHAR_SYMBOL)
 
     def add_symbol(self, symbol, id_):
         """
@@ -131,6 +149,25 @@ class Alphabet:
         :return: True if the symbol is an identity, False otherwise.
         """
         return symbol in self.identity_symbols
+
+    def ids_to_string(self, ids, ignore_empty=False, ignore_any=True) -> str:
+        """
+        Convert a list of IDS to a string representation.
+
+        :param reverse_mapping: Dictionary mapping IDs back to characters.
+        :return: A string representation of the entire word.
+        """
+        parts = []
+        for id in ids:
+            symbol_str = self.reverse_mappings.get(id, "?")
+            if symbol_str == EMPTY_SYMBOL and ignore_empty:
+                pass
+            elif symbol_str == ANY_SYMBOL and ignore_any:
+                pass
+            else:
+                parts.append(symbol_str)
+        return ''.join(parts)  # Ensure no trailing separators
+
 
     def __repr__(self):
         """

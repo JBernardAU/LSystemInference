@@ -59,13 +59,13 @@ class TestProductionRule(unittest.TestCase):
 
         # Apply rules to produce the first new word
         current_word = self._apply_rules(current_word)
-        first_string = current_word.to_string(self.alphabet.reverse_mappings)
+        first_string = current_word.sacs_to_string(self.alphabet.reverse_mappings)
         print("First Produced String:", first_string)
         current_word.display(self.alphabet.reverse_mappings,mode="sacs")
 
         # Apply rules again to produce the second new word
         current_word = self._apply_rules(current_word)
-        second_string = current_word.to_string(self.alphabet.reverse_mappings)
+        second_string = current_word.sacs_to_string(self.alphabet.reverse_mappings)
         print("Second Produced String:", second_string)
         current_word.display(self.alphabet.reverse_mappings,mode="sacs")
 

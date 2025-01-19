@@ -2,8 +2,10 @@ from typing import List, Union
 
 ANY_SYMBOL = "*"
 EMPTY_SYMBOL = "λ"
+MULTICHAR_SYMBOL = "_"
 ANY_SYMBOL_ID = -1  # Special ID for AnySymbol
 EMPTY_SYMBOL_ID = -2  # Special ID for EmptySymbol
+MULTICHAR_SYMBOL_ID = -3  # Special ID for Multchar_Symbol
 
 class SaC:
 

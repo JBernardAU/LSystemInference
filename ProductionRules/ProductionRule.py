@@ -33,7 +33,7 @@ class ProductionRule:
         left_context = "".join(str(x) for x in self.sac.left_context) if self.sac.left_context else "*"
         symbol = self.sac.symbol
         right_context = "".join(str(x) for x in self.sac.right_context) if self.sac.right_context else "*"
-        replacement = self.word.to_string(reverse_mapping={}) if self.word else ""
+        replacement = self.word.sacs_to_string(reverse_mapping={}) if self.word else ""
         return f"{left_context} < {symbol} > {right_context} -> {replacement}"
 
 class DeterministicProductionRule(ProductionRule):

@@ -4,21 +4,26 @@ from WordsAndSymbols.SaC import SaC, ANY_SYMBOL_ID, EMPTY_SYMBOL_ID
 from WordsAndSymbols.Word import Word
 
 class LSystem:
-    def __init__(self, name: str, axiom: str, alphabet: Alphabet, i: int=0, j: int=0):
+    def __init__(self, name: str, axiom: str, alphabet: Alphabet, k: int=0, l: int=0):
         """
         Initialize the L-system with an axiom, alphabet, and context depth.
 
         :param axiom: The initial string of the L-system.
         :param alphabet: The Alphabet object for symbol management.
-        :param i: Maximum left context depth.
-        :param j: Maximum right context depth.
+        :param k: Maximum left context depth.
+        :param l: Maximum right context depth.
         """
+        self.name = name
         self.axiom = axiom
         self.alphabet = alphabet
-        self.i = i
-        self.j = j
-        self.words = [Word.from_string(axiom, alphabet.mappings, i, j)]  # Store all words
+        self.k = k
+        self.l = l
+        self.words = [Word.from_string(axiom, alphabet, k, l)]  # Store all words
         self.rules = []
+
+        for w in self.words:
+            sacs_in_word = list(set(w.sac_list))
+            self.alphabet.sacs = list(set(self.alphabet.sacs + sacs_in_word))
 
     def add_rule(self, sac: SaC, rule: ProductionRule):
         """
@@ -71,11 +76,11 @@ class LSystem:
             symbol = self.alphabet.reverse_mappings.get(sac.symbol, "?")
             right_context = ",".join(self.alphabet.reverse_mappings.get(id_, "?") for id_ in sac.right_context) or "*"
             print(
-                f"  {left_context} < {symbol} > {right_context} -> {rule.word.to_string(self.alphabet.reverse_mappings)}")
+                f"  {left_context} < {symbol} > {right_context} -> {rule.word.sacs_to_string(self.alphabet.reverse_mappings)}")
 
         print("\nWords:")
         for i, word in enumerate(self.words):
-            print(f"  Word {i}: {word.to_string(self.alphabet.reverse_mappings)}")
+            print(f"  Word {i}: {word.sacs_to_string(self.alphabet.reverse_mappings)}")
 
     def to_string(self) -> str:
         """
@@ -83,4 +88,4 @@ class LSystem:
 
         :return: String representation of the current word.
         """
-        return self.words[-1].to_string(self.alphabet.reverse_mappings)
+        return self.words[-1].sacs_to_string(self.alphabet.reverse_mappings)
