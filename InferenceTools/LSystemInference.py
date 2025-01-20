@@ -46,16 +46,23 @@ class LSystemInference:
         """
         self.display_settings()
         print("\nSTART INFERENCE")
-        print(f" PRE-ANALYSIS - Creating MAO")
+        print(f" PRE-ANALYSIS - CREATING MAO")
         # Create the MAO and conduct the naive analysis
         self.MAO = MasterAnalysisObject(problem=self.problem)
 
+        print(f"\n Check for Ambiguity")
+        self.MAO.compute_length_absolute_min_max()
+
         while self.MAO.flag:
+            print(f"\n RESET MAO FLAG")
             self.MAO.flag = False
+
+            print(f"\n STEP 1 - COMPUTE LENGTH | Total Length Production")
+
             print(f"\n STEP 1 - REFINE WORD METRICS")
             # Refine unaccounted for growth & length
-            self.MAO.compute_unaccounted_growth()
-            self.MAO.compute_unaccounted_length()
+            self.MAO.compute_unaccounted_growth_matrix()
+            self.MAO.compute_unaccounted_length_matrix()
 
             print(f"\n STEP 3 - PARIKH ANALYSIS")
             # A. Parikh Analysis
@@ -63,6 +70,13 @@ class LSystemInference:
             growth_matrix = analyze_words_growth(self.problem)
             print(f"   Solve Parikh Length Matrix")
             length_matrix = analyze_words_length(self.problem)
+
+            print(f"\n STEP X - Computing Fragment from Markers")
+            print(f"\n STEP X - Computing Fragment from Overlapping")
+            print(f"\n STEP X - Computing Fragment from Partial Solution")
+            print(f"\n STEP X - Localization")
+
+
 
 
 

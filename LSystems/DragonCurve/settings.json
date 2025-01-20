@@ -4,5 +4,5 @@
   "l": 0,
   "identities": ["F", "+", "-"],
   "ignore": ["+", "-"],
-  "Absolute Min Length": 1
+  "Absolute Min Length": 0
 }
