@@ -1,37 +1,31 @@
-def generate_mappings(strings, F_has_identity=False):
+from LSystems import InferenceProblem
+
+
+def generate_mappings(problem: InferenceProblem):
     """
     Generate a mapping dictionary for unique symbols in strings and identify turtle graphics symbols.
 
     Args:
-        strings (list of str): A list of strings to process.
-        F_has_identity (bool): Whether to treat 'F' as a turtle graphics symbol.
+        problem: The source from which to determine the mappings. It provides the identities, ignore list and the
+        raw strings.
 
     Returns:
         tuple: A tuple containing:
             - mapping (dict): A dictionary mapping unique symbols to unique integers.
-            - identity (set): A set of turtle graphics symbols.
     """
     # Define the default turtle graphics symbols
-    turtle_symbols = {"+", "-", "[", "]"}
-
-    if F_has_identity:
-        turtle_symbols.add("F")
-
-    unique_symbols = set()
-    identity = set()
-
     # Iterate through each string to process symbols
-    for s in strings:
+    unique_symbols = set()
+
+    for s in problem.strings:
         for char in s:
-            if char in turtle_symbols:
-                identity.add(char)
-            else:
+            if char not in problem.identities and char not in problem.ignore_list and char not in unique_symbols:
                 unique_symbols.add(char)
 
     # Create a mapping dictionary for unique symbols
     mapping = {symbol: idx for idx, symbol in enumerate(sorted(unique_symbols))}
 
-    return mapping, identity
+    return mapping
 
 if __name__ == "__main__":
     strings = ["ABA", "ABABCBABA"]

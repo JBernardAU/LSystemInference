@@ -4,20 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file.">
-      <change afterPath="$PROJECT_DIR$/InferenceTools/Evidence.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utility/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utility/generate_mappings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.README" beforeDir="false" />
+    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)">
+      <change afterPath="$PROJECT_DIR$/InferenceTools/MasterAnalysisObject.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LSystems/DragonCurve/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InferenceTools/Evidence.py" beforeDir="false" afterPath="$PROJECT_DIR$/InferenceTools/Evidence.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" beforeDir="false" afterPath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LSystems/CantorDust.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/CantorDust.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LSystems/LSystemsSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystemsSettings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/DragonCurve/DragonCurveProblem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/DragonCurve/DragonCurveProblem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/InferenceProblem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/InferenceProblem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LSystems/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility/context_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/context_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility/generate_mappings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/generate_mappings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility/parikh_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/parikh_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utility/test.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Word.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Word.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/context_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/context_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,14 +72,14 @@
     "Python tests.Python tests in TestProductionRule.py.executor": "Run",
     "Python tests.Python tests in TestProductionRulesExtended.py.executor": "Run",
     "Python tests.Python tests in TestWord.py.executor": "Run",
-    "Python.Alphabet.executor": "Run",
+    "Python.Alphabet.executor": "Debug",
     "Python.AlphabetInference.executor": "Run",
     "Python.CantorDust.executor": "Run",
     "Python.DeterministicRule.executor": "Run",
     "Python.Evidence.executor": "Run",
     "Python.IdentityRule.executor": "Debug",
     "Python.LSystem.executor": "Run",
-    "Python.LSystemInference.executor": "Run",
+    "Python.LSystemInference.executor": "Debug",
     "Python.Main.executor": "Run",
     "Python.Processor.executor": "Run",
     "Python.ProductionRule.executor": "Debug",
@@ -86,23 +88,30 @@
     "Python.Utility.executor": "Debug",
     "Python.Word.executor": "Debug",
     "Python.WordExtended.executor": "Run",
+    "Python.display_utils.executor": "Run",
+    "Python.parikh_analysis.executor": "Run",
+    "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Users/littl/PycharmProjects/LSystemInference/Main.py"
+    "last_opened_file_path": "D:/Users/littl/PycharmProjects/LSystemInference/LSystems/DragonCurve"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\LSystems\DragonCurve" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\PMIT\PMIT_Data" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\CPP" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\Utility" />
-      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\InferenceTools\Utility" />
-      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\InferenceTools" />
-      <recent name="D:\Users\littl\PycharmProjects\LSystemInference" />
-      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\ProductionRules\Deprecated" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\LSystems\DragonCurve" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\LSystems\CantorDust" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\PMIT\CPP" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\CPP" />
+      <recent name="D:\Users\littl\PycharmProjects\LSystemInference\CPP\PMIT_Data" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Main">
@@ -374,7 +383,23 @@
       <option name="project" value="LOCAL" />
       <updated>1737078391162</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file.">
+      <option name="closed" value="true" />
+      <created>1737207142079</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1737207142079</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)">
+      <option name="closed" value="true" />
+      <created>1737260174448</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1737260174448</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -392,7 +417,8 @@
     <MESSAGE value="More tests" />
     <MESSAGE value="Added support for any symbol and empty symbol" />
     <MESSAGE value="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file." />
+    <MESSAGE value="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -421,6 +447,11 @@
           <line>57</line>
           <option name="timeStamp" value="237" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Utility/parikh_analysis.py</url>
+          <line>54</line>
+          <option name="timeStamp" value="460" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -430,5 +461,10 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

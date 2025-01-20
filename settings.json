@@ -1,8 +1,5 @@
 {
   "name": "DragonCurve",
   "mode": "Experiment",
-  "ai_type": "GeneticAlgorithm",
-  "i": -1,
-  "j": -1,
-  "Known identities": true
+  "ai_type": "GeneticAlgorithm"
 }

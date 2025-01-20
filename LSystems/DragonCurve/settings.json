@@ -1,0 +1,8 @@
+{
+  "name": "Dragon Curve",
+  "k": 0,
+  "l": 0,
+  "identities": ["F", "+", "-"],
+  "ignore": ["+", "-"],
+  "Absolute Min Length": 1
+}

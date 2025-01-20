@@ -12,10 +12,9 @@ class Alphabet:
         """
         self.mappings = mappings or {}
         self.reverse_mappings = {v: k for k, v in self.mappings.items()}
-        self.identity_symbols = identity_symbols or set()
+        self.identities = list(identity_symbols) or list()
         self.homomorphisms = {}
-        self.sacs = []
-        self.symbols = set(self.mappings.keys()) - self.identity_symbols
+        self.variables = list(self.mappings.keys() - self.identities)
         if ignore_list != None:
             self.ignore_list = ignore_list
         else:
@@ -25,11 +24,15 @@ class Alphabet:
         next_index = max(self.mappings.values(), default=-1) + 1
 
         # Add identity symbols to mappings
-        for symbol in self.identity_symbols:
+        for symbol in self.identities:
             if symbol not in self.mappings:  # Avoid duplicates
                 self.mappings[symbol] = next_index
                 self.reverse_mappings[next_index] = symbol
                 next_index += 1
+
+        self.symbols = [v for k, v in self.reverse_mappings.items() if k >= 0]
+        self.identities_ids = [self.mappings[symbol] for symbol in self.identities]
+        self.variables_ids = [self.mappings[symbol] for symbol in self.variables]
 
         # Add AnySymbol and EmptySymbol to the mappings
         self.mappings.update({EMPTY_SYMBOL: EMPTY_SYMBOL_ID, ANY_SYMBOL: ANY_SYMBOL_ID, MULTICHAR_SYMBOL: MULTICHAR_SYMBOL_ID})  # λ for EmptySymbol, * for AnySymbol
@@ -148,7 +151,7 @@ class Alphabet:
         :param symbol: The symbol to check.
         :return: True if the symbol is an identity, False otherwise.
         """
-        return symbol in self.identity_symbols
+        return symbol in self.identities
 
     def ids_to_string(self, ids, ignore_empty=False, ignore_any=True) -> str:
         """
@@ -175,6 +178,6 @@ class Alphabet:
         """
         return (
             f"Alphabet(mappings={self.mappings}, "
-            f"identity_symbols={self.identity_symbols}, "
+            f"identity_symbols={self.identities}, "
             f"homomorphisms={self.homomorphisms})"
         )

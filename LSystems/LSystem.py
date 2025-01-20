@@ -21,9 +21,9 @@ class LSystem:
         self.words = [Word.from_string(axiom, alphabet, k, l)]  # Store all words
         self.rules = []
 
-        for w in self.words:
-            sacs_in_word = list(set(w.sac_list))
-            self.alphabet.sacs = list(set(self.alphabet.sacs + sacs_in_word))
+#        for w in self.words:
+#            sacs_in_word = list(set(w.sac_list))
+#            self.alphabet.sacs = list(set(self.alphabet.sacs + sacs_in_word))
 
     def add_rule(self, sac: SaC, rule: ProductionRule):
         """
@@ -66,9 +66,7 @@ class LSystem:
         The alphabet is displayed as SaCs (e.g., * < A > *).
         """
         print("\nAlphabet:")
-        for symbol, id_ in self.alphabet.mappings.items():
-            if id_ not in (ANY_SYMBOL_ID, EMPTY_SYMBOL_ID):
-                print(f"  * < {symbol} > *")
+        print(f"  {self.alphabet.symbols}")
 
         print("\nRules:")
         for sac, rule in self.rules:

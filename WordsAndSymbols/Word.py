@@ -19,6 +19,8 @@ class Word:
         self.sac_list = sac_list
         self.parameters = [{} for _ in sac_list]  # Dictionary of parameters for each position
         self.sac_counts = self._count_sacs()
+        self.symbol_counts = self._count_symbols()
+        self.original_string = "" # mainly for human analysis/debugging
 
     def __len__(self) -> int:
         """Return the number of symbols (SaCs) in the word."""
@@ -74,7 +76,7 @@ class Word:
                 if multi_char_symbol not in alphabet.mappings:
                     raise ValueError(f"Unknown symbol: {multi_char_symbol}")
                 symbol_id = alphabet.mappings[multi_char_symbol]
-                lc, s, rc = get_context(string=string, idx=idx, k=k, l=l, alphabet=alphabet, ignore_list=alphabet.ignore_list)
+                lc, s, rc = get_context(string=string, index=idx, k=k, l=l, alphabet=alphabet)
                 sac_list.append(SaC(lc, symbol_id, rc))
                 idx = end + 1
             else:
@@ -82,8 +84,11 @@ class Word:
                 if single_char_symbol not in alphabet.mappings:
                     raise ValueError(f"Unknown symbol: {single_char_symbol}")
                 symbol_id = alphabet.mappings[single_char_symbol]
-                lc, s, rc = get_context(string=string, idx=idx, k=k, l=l, alphabet=alphabet, ignore_list=alphabet.ignore_list)
-                sac_list.append(SaC(lc, symbol_id, rc))
+                if single_char_symbol not in alphabet.identities:
+                    lc, s, rc = get_context(string=string, index=idx, k=k, l=l, alphabet=alphabet)
+                    sac_list.append(SaC(lc, symbol_id, rc))
+                else:
+                    sac_list.append(SaC([ANY_SYMBOL_ID], symbol_id, [ANY_SYMBOL_ID]))
                 idx += 1
 
         return Word(sac_list)
@@ -124,7 +129,11 @@ class Word:
         self.parameters.extend(other.parameters)
         self.sac_counts = self._count_sacs()
 
-    def _count_sacs(self) -> Dict[int, int]:
+    def revise_counts(self):
+        self.sac_counts = self._count_sacs()
+        self.symbol_counts = self._count_symbols()
+
+    def _count_sacs(self) -> Dict[SaC, int]:
         """
         Count the occurrences of each symbol in the word.
 
@@ -133,6 +142,18 @@ class Word:
         counts = {}
         for sac in self.sac_list:
             counts[sac] = counts.get(sac,0)+1
+
+        return counts
+
+    def _count_symbols(self) -> Dict[int, int]:
+        """
+        Count the occurrences of each symbol in the word.
+
+        :return: A dictionary where keys are symbol IDs and values are their counts.
+        """
+        counts = {}
+        for sac in self.sac_list:
+            counts[sac.symbol] = counts.get(sac.symbol,0)+1
 
         return counts
 
