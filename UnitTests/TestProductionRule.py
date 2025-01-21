@@ -42,11 +42,11 @@ class TestProductionRule(unittest.TestCase):
         Apply production rules to a word.
         """
         new_sac_list = []
-        for sac in word.sac_list:
+        for sac in word.sacs:
             for rule in self.rules:
                 result = rule.apply(sac)
                 if result:
-                    new_sac_list.extend(result.sac_list)
+                    new_sac_list.extend(result.sacs)
                     break
             else:
                 new_sac_list.append(sac)  # If no rule matches, retain the original SaC

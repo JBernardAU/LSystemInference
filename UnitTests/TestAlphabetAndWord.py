@@ -49,7 +49,7 @@ class TestAlphabetAndWord(unittest.TestCase):
                     self.alphabet.apply_homomorphism(sac.symbol),
                     [self.alphabet.apply_homomorphism(id_) for id_ in sac.right_context]
                 )
-                for sac in word.sac_list
+                for sac in word.sacs
             ]
             homomorphized_word = Word(homomorphized)
             print(homomorphized_word.sacs_to_string(self.alphabet.reverse_mappings))
@@ -59,7 +59,7 @@ class TestAlphabetAndWord(unittest.TestCase):
         for i, word in enumerate(self.words):
             print(f"Word {i + 1} counts:")
             sac_counts = {}
-            for sac in word.sac_list:
+            for sac in word.sacs:
                 # Convert SaC to a symbol-based tuple for human-readable counting
                 left_context = tuple(self.alphabet.get_symbol(id_) for id_ in sac.left_context)
                 symbol = self.alphabet.get_symbol(sac.symbol)
@@ -76,7 +76,7 @@ class TestAlphabetAndWord(unittest.TestCase):
     def test_display_unique_sacs(self):
         unique_sacs = set()
         for word in self.words:
-            unique_sacs.update(word.sac_list)
+            unique_sacs.update(word.sacs)
 
         print("\nUnique SaCs:")
         for sac in unique_sacs:

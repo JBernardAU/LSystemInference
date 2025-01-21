@@ -38,7 +38,7 @@ class TestProductionRuleExtended(unittest.TestCase):
         for _ in range(1000):
             produced_word = rule.apply(SaC([], self.alphabet.get_id("A"), []))
             if produced_word:
-                symbol = self.alphabet.get_symbol(produced_word.sac_list[0].symbol)
+                symbol = self.alphabet.get_symbol(produced_word.sacs[0].symbol)
                 results[symbol] += 1
 
         print("Stochastic Rule Results:", results)
@@ -95,10 +95,10 @@ class TestProductionRuleExtended(unittest.TestCase):
 
         # Apply rule to the input word
         output_sac_list = []
-        for sac in input_word.sac_list:
+        for sac in input_word.sacs:
             result = det_rule.apply(sac)
             if result:
-                output_sac_list.extend(result.sac_list)
+                output_sac_list.extend(result.sacs)
             else:
                 output_sac_list.append(sac)
 
@@ -129,16 +129,16 @@ class TestProductionRuleExtended(unittest.TestCase):
 
         for _ in range(1000):
             output_sac_list = []
-            for sac in input_word.sac_list:
+            for sac in input_word.sacs:
                 result = stochastic_rule.apply(sac)
                 if result:
-                    output_sac_list.extend(result.sac_list)
+                    output_sac_list.extend(result.sacs)
                 else:
                     output_sac_list.append(sac)
 
             output_word = Word(output_sac_list)
-            first_symbol = self.alphabet.get_symbol(output_word.sac_list[0].symbol)
-            second_symbol = self.alphabet.get_symbol(output_word.sac_list[1].symbol)
+            first_symbol = self.alphabet.get_symbol(output_word.sacs[0].symbol)
+            second_symbol = self.alphabet.get_symbol(output_word.sacs[1].symbol)
 
             first_a_results[first_symbol] += 1
             second_a_results[second_symbol] += 1

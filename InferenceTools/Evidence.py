@@ -27,3 +27,6 @@ class Evidence:
                     self.sacs_to_solve.append(sac)
                 if sac not in self.sacs:
                     self.sacs.append(sac)
+
+    def get_sac_id(self, sac):
+        return self.sacs.index(sac)

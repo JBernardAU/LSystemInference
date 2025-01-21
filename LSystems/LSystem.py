@@ -54,9 +54,9 @@ class LSystem:
         """
         for _ in range(n):
             new_sac_list = []
-            for sac in self.words[-1].sac_list:  # Use the last word in the list
+            for sac in self.words[-1].sacs:  # Use the last word in the list
                 new_word = self.apply_rule(sac)
-                new_sac_list.extend(new_word.sac_list)
+                new_sac_list.extend(new_word.sacs)
             self.words.append(Word(new_sac_list))  # Append the new word to the list
 
     def display(self):

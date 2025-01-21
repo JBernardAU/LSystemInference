@@ -10,29 +10,28 @@ class Word:
     #ANY_SYMBOL_ID = -1  # Special ID for AnySymbol
     #EMPTY_SYMBOL_ID = -2  # Special ID for EmptySymbol
 
-    def __init__(self, sac_list: List[SaC]):
-        """
-        Initialize a Word object as a collection of SaC objects.
+    def __init__(self, sacs: List[SaC]):
+        """       Initialize a Word object as a collection of SaC objects.
 
-        :param sac_list: List of SaC objects representing the word.
+        :param sacs: List of SaC objects representing the word.
         """
-        self.sac_list = sac_list
-        self.parameters = [{} for _ in sac_list]  # Dictionary of parameters for each position
+        self.sacs = sacs
+        self.parameters = [{} for _ in sacs]  # Dictionary of parameters for each position
         self.sac_counts = self._count_sacs()
         self.symbol_counts = self._count_symbols()
         self.original_string = "" # mainly for human analysis/debugging
 
     def __len__(self) -> int:
         """Return the number of symbols (SaCs) in the word."""
-        return len(self.sac_list)
+        return len(self.sacs)
 
     def __getitem__(self, index: int) -> SaC:
         """Get the SaC object at the specified index."""
-        return self.sac_list[index]
+        return self.sacs[index]
 
     def __repr__(self) -> str:
         """Provide a string representation of the Word for debugging."""
-        return f"Word({self.sac_list})"
+        return f"Word({self.sacs})"
 
     def sacs_to_string(self, reverse_mapping: Dict[int, str]) -> str:
         """
@@ -42,7 +41,7 @@ class Word:
         :return: A string representation of the entire word.
         """
         parts = []
-        for sac in self.sac_list:
+        for sac in self.sacs:
             symbol_str = reverse_mapping.get(sac.symbol, "?")
             if sac.symbol == EMPTY_SYMBOL_ID:
                 symbol_str = EMPTY_SYMBOL
@@ -95,7 +94,7 @@ class Word:
 
     def add_sac(self, sac: SaC):
         """Add a SaC object to the word."""
-        self.sac_list.append(sac)
+        self.sacs.append(sac)
         self.parameters.append({})  # Add a new dictionary for the new position
         self.sac_counts = self._count_sacs()
 
@@ -106,7 +105,7 @@ class Word:
         :param symbol_id: The symbol ID to search for.
         :return: A list of indices where the symbol appears.
         """
-        return [i for i, sac in enumerate(self.sac_list) if sac.symbol == symbol_id]
+        return [i for i, sac in enumerate(self.sacs) if sac.symbol == symbol_id]
 
     def get_contexts(self, index: int) -> SaC:
         """
@@ -115,8 +114,8 @@ class Word:
         :param index: Index of the desired SaC.
         :return: The SaC object at the specified index.
         """
-        if 0 <= index < len(self.sac_list):
-            return self.sac_list[index]
+        if 0 <= index < len(self.sacs):
+            return self.sacs[index]
         raise IndexError("Index out of bounds for Word.")
 
     def append_word(self, other: 'Word'):
@@ -125,7 +124,7 @@ class Word:
 
         :param other: Another Word object.
         """
-        self.sac_list.extend(other.sac_list)
+        self.sacs.extend(other.sacs)
         self.parameters.extend(other.parameters)
         self.sac_counts = self._count_sacs()
 
@@ -140,7 +139,7 @@ class Word:
         :return: A dictionary where keys are symbol IDs and values are their counts.
         """
         counts = {}
-        for sac in self.sac_list:
+        for sac in self.sacs:
             counts[sac] = counts.get(sac,0)+1
 
         return counts
@@ -152,7 +151,7 @@ class Word:
         :return: A dictionary where keys are symbol IDs and values are their counts.
         """
         counts = {}
-        for sac in self.sac_list:
+        for sac in self.sacs:
             counts[sac.symbol] = counts.get(sac.symbol,0)+1
 
         return counts
@@ -167,7 +166,7 @@ class Word:
         """
         if mode == "string":
             parts = []
-            for sac in self.sac_list:
+            for sac in self.sacs:
                 symbol_str = reverse_mapping.get(sac.symbol, "?")
                 if sac.symbol == self.EMPTY_SYMBOL_ID:
                     continue  # Skip λ in output
@@ -179,7 +178,7 @@ class Word:
                     parts.append(symbol_str)
             print("".join(parts))
         elif mode == "sacs":
-            for sac in self.sac_list:
+            for sac in self.sacs:
                 left_context = ",".join(reverse_mapping.get(id_, "?") for id_ in sac.left_context)
                 symbol = reverse_mapping.get(sac.symbol, "?")
                 right_context = ",".join(reverse_mapping.get(id_, "?") for id_ in sac.right_context)

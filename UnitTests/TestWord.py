@@ -35,8 +35,8 @@ class TestWord(unittest.TestCase):
 
         self.assertEqual(len(word), 6)
         self.assertEqual(word.sac_counts, {1: 2, 2: 2, 3: 1, 4: 1})
-        self.assertEqual(word.sac_list[0].symbol, 1)
-        self.assertEqual(word.sac_list[1].symbol, 2)
+        self.assertEqual(word.sacs[0].symbol, 1)
+        self.assertEqual(word.sacs[1].symbol, 2)
         word.display(self.reverse_mapping, mode="string")
         word.display(self.reverse_mapping, mode="sacs")
 

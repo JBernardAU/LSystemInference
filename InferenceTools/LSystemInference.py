@@ -71,6 +71,16 @@ class LSystemInference:
             print(f"   Solve Parikh Length Matrix")
             length_matrix = analyze_words_length(self.problem)
 
+            print(f"\n STEP 4 - Computing Length from Total Symbol Production")
+            self.MAO.compute_length_total_symbol_production()
+
+            print(f"\n STEP 5 - Computing Total Length from Total Symbol Production")
+            #print(f"\n          Without Identities")
+            self.MAO.compute_total_length_total_symbol_production(include_identities=False)
+            # TODO: Check this later with other L-systems there is potential information here, maybe. It is odd.
+            #print(f"\n          With Identities")
+            #self.MAO.compute_total_length_total_symbol_production(include_identities=True)
+
             print(f"\n STEP X - Computing Fragment from Markers")
             print(f"\n STEP X - Computing Fragment from Overlapping")
             print(f"\n STEP X - Computing Fragment from Partial Solution")

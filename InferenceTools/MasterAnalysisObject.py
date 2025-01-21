@@ -1,4 +1,5 @@
 import copy
+import math
 
 
 class MasterAnalysisObject:
@@ -24,20 +25,23 @@ class MasterAnalysisObject:
         self.num_sacs = len(self.problem.evidence.sacs)
         self.num_words = len(self.problem.evidence.words)
 
-        # Initialize N x M' matrices with zeros
         self.min_growth = [[0 for _ in range(self.num_symbols)] for _ in range(self.num_sacs)]
         self.max_growth = [[0 for _ in range(self.num_symbols)] for _ in range(self.num_sacs)]
 
         self.min_length = [0 for _ in range(self.num_sacs)]
         self.max_length = [0 for _ in range(self.num_sacs)]
 
-        self.word_growth = [[0 for _ in range(self.num_symbols)] for _ in range(self.num_words-1)]
+        self.symbol_counts = [[0 for _ in range(self.num_symbols)] for _ in range(self.num_words)]
         self.word_unaccounted_growth = [[0 for _ in range(self.num_symbols)] for _ in range(self.num_words-1)]
         self.word_unaccounted_length = [0 for _ in range(self.num_words-1)]
 
+        # the sum of the successors in each word have to be within the min/max of the values stored here
+        self.total_length_min = [0 for _ in range(self.num_words-1)]
+        self.total_length_max = [0 for _ in range(self.num_words-1)]
+
         # Conduct Naive/Initial analysis
         self.naive_min_max()
-        self.compute_word_growth()
+        self.compute_symbol_counts()
 
         # Initialize Unaccounted Growth & Length
         self.compute_unaccounted_growth_matrix()
@@ -45,24 +49,73 @@ class MasterAnalysisObject:
         self.problem.MAO = self
 
     def set_min_growth(self, sac, symbol, value):
-        if self.min_growth[self.problem.evidence.sacs.index(sac)][symbol] < value:
-            self.min_growth[self.problem.evidence.sacs.index(sac)][symbol] = value
+        if self.min_growth[self.problem.evidence.get_sac_id(sac)][symbol] < value:
+            self.min_growth[self.problem.evidence.get_sac_id(sac)][symbol] = value
             self.flag = True
 
     def set_max_growth(self, sac, symbol, value):
-        if self.max_growth[self.problem.evidence.sacs.index(sac)][symbol] > value:
-            self.max_growth[self.problem.evidence.sacs.index(sac)][symbol] = value
+        if self.max_growth[self.problem.evidence.get_sac_id(sac)][symbol] > value:
+            self.max_growth[self.problem.evidence.get_sac_id(sac)][symbol] = value
             self.flag = True
 
     def set_min_length(self, sac, value):
-        if self.min_length[self.problem.evidence.sacs.index(sac)] < value:
-            self.min_length[self.problem.evidence.sacs.index(sac)] = value
+        if self.min_length[self.problem.evidence.get_sac_id(sac)] < value:
+            self.min_length[self.problem.evidence.get_sac_id(sac)] = value
             self.flag = True
 
     def set_max_length(self, sac, value):
-        if self.max_length[self.problem.evidence.sacs.index(sac)] > value:
-            self.max_length[self.problem.evidence.sacs.index(sac)] = value
+        if self.max_length[self.problem.evidence.get_sac_id(sac)] > value:
+            self.max_length[self.problem.evidence.get_sac_id(sac)] = value
             self.flag = True
+
+    def set_total_length_min(self, iWord, value):
+        if self.total_length_min[iWord] > value:
+            self.total_length_min[iWord] = value
+            self.flag = True
+
+    def set_total_length_max(self, iWord, value):
+        if self.total_length_max[iWord] > value:
+            self.total_length_max[iWord] = value
+            self.flag = True
+
+
+    # These get called a lot so it just keeps the code cleaner
+    def get_min_growth(self, sac, symbol):
+        return self.min_growth[self.problem.evidence.get_sac_id(sac)][symbol]
+
+    def get_max_length(self, sac, symbol):
+        return self.max_growth[self.problem.evidence.get_sac_id(sac)][symbol]
+
+    def get_min_length(self, sac):
+        return self.problem.MAO.min_length[self.problem.evidence.get_sac_id(sac)]
+
+    def get_max_length(self, sac):
+        return self.problem.MAO.max_length[self.problem.evidence.get_sac_id(sac)]
+
+    def is_symbol_id_identity(self, id):
+        return id in self.problem.evidence.alphabet.identities_ids
+
+    def is_symbol_identity(self, symbol):
+        return symbol in self.problem.evidence.alphabet.identities
+
+    def is_sac_identity(self, sac):
+        return sac.symbol in self.problem.evidence.alphabet.identities_ids
+
+    def get_variable_sacs(self, w):
+         return [(key, value) for key, value in w.sacs.items() if not self.is_sac_identity(key)]
+
+    def get_variable_sac_counts(self, w):
+         return [(key, value) for key, value in w.sac_counts.items() if not self.is_sac_identity(key)]
+
+    def get_identity_sacs(self, w):
+         return [(key, value) for key, value in w.sacs.items() if self.is_sac_identity(key)]
+
+    def get_identity_sac_counts(self, w):
+         return [(key, value) for key, value in w.sac_counts.items() if self.is_sac_identity(key)]
+
+    # The following functions compute some kind of fact that helps reduce the p-space size.
+    def compute_lexicon(self):
+        pass
 
     def compute_length_absolute_min_max(self):
         """
@@ -105,18 +158,87 @@ class MasterAnalysisObject:
         Computes the minimum and maximum lengths of symbols in W1 based on their
         contributions to the total length of W2.
         """
-        for iWord, w in self.problem.evidence.words[:-1]:
+        for iWord, w in enumerate(self.problem.evidence.words[:-1]):
             total_length = len(self.problem.evidence.words[iWord+1])
+            for sac1, count1 in w.sac_counts.items():
+                produced_min = 0
+                produced_max = 0
+                # no need to do this calculation for symbols with identity
+                for sac2, count2 in w.sac_counts.items():
+                    # for every other sac compute how much they produce
+                    if sac1 != sac2:
+                        produced_min += count2 * self.problem.MAO.get_min_length(sac2)
+                        produced_max += count2 * self.problem.MAO.get_max_length(sac2)
 
+                remainder_min = max(0,total_length - produced_max)
+                remainder_max = max(0,total_length - produced_min)
 
+                min_length = remainder_min / count1
+                max_length = remainder_max / count1
 
-            for iSac, sac_count in w.sac_counts:
-               pass
+                self.problem.MAO.set_min_length(sac1, min_length)
+                self.problem.MAO.set_max_length(sac1, max_length)
 
+    def compute_total_length_total_symbol_production(self, include_identities=False):
+        """
+        Find the SAC that appear least and most frequently
+        Max total length is the sum of the least frequent handling the most # of symbols + max of the rest
+        Min total length is the sum of the most frequent handling the most # of symbols + min of the rest
+        """
 
+        # Get the list of SaCs that occur the least and most frequently (but actually exist)
+        for iWord, w in enumerate(self.problem.evidence.words[:-1]):
+            # get the sacs that occur most/least frequently
 
-    def compute_total_length_total_symbol_production(self):
-        pass
+            word_sac_counts = self.get_variable_sac_counts(w)
+            sorted_items = sorted(word_sac_counts, key=lambda x: x[1], reverse=True)
+            max_value = sorted_items[0][1]
+            sorted_items = sorted(word_sac_counts, key=lambda x: x[1])
+            min_value = sorted_items[0][1]
+
+            most_frequent = [(key, value) for key, value in word_sac_counts if value == max_value]
+            least_frequent = [(key, value) for key, value in word_sac_counts if value == min_value]
+
+            # The unaccounted for growth must not include that from variables, only identities
+            uag_total = sum(self.symbol_counts[iWord+1])
+            if not include_identities:
+                # Subtract out identities from iWord
+                for iSymbol, count in enumerate(self.symbol_counts[iWord]):
+                    if self.is_symbol_id_identity(iSymbol):
+                        uag_total -= count
+
+            for iMost, most in enumerate(most_frequent):
+                if not self.is_symbol_id_identity(most[0].symbol) or include_identities:
+                    for iLeast, least in enumerate(least_frequent):
+                        if most[0] != least[0] and (not self.is_symbol_id_identity(least[0].symbol) or include_identities):
+                            remainder_max = uag_total
+                            remainder_min = uag_total
+                            rest_min = 0
+                            rest_max = 0
+
+                            # Max total length is the sum of the least frequent handling the most # of symbols + max of the rest
+                            # Min total length is the sum of the most frequent handling the least # of symbols + min of the rest
+                            for sac, count in self.problem.evidence.words[iWord].sac_counts.items():
+                                # do not include the sac that occurs the most, and do not include identities (unless specified)
+                                if most[0] != sac and (not self.is_symbol_id_identity(sac.symbol) or include_identities):
+                                    remainder_min -= count * self.get_min_length(sac)
+                                    rest_min += self.get_min_length(sac)
+                                # do not include the sac that occurs the least, and do not include identities (unless specified)
+                                if least[0] != sac and (not self.is_symbol_id_identity(sac.symbol) or include_identities):
+                                    remainder_max -= count * self.get_max_length(sac)
+                                    rest_max += self.get_max_length(sac)
+                            total_min = rest_min + remainder_min / self.problem.evidence.words[iWord].sac_counts[most[0]]
+                            total_max = rest_max + max(0,remainder_max) / self.problem.evidence.words[iWord].sac_counts[least[0]]
+
+                            # subtract out the length of the identities
+                            if include_identities:
+                                identity_counts = self.get_identity_sac_counts(w)
+                                total_identity_count = len(identity_counts)
+                                total_min -= total_identity_count
+                                total_max -= total_identity_count
+
+                            self.set_total_length_max(iWord, total_max)
+                            self.set_total_length_min(iWord, total_min)
 
     def compute_total_length_symbiology(self):
         pass
@@ -2597,7 +2719,7 @@ void LSIProblemV3::ComputeSymbolLocalization()
     def compare_position(self):
         pass
 
-    def compute_word_growth(self):
+    def compute_symbol_counts(self):
         """
         Compute the growth of words by analyzing the frequency of symbols
         in subsequent words within the evidence data.
@@ -2607,10 +2729,10 @@ void LSIProblemV3::ComputeSymbolLocalization()
         `original_string`. The count is then stored in the `word_growth` attribute, indexed by the
         current word's index and the symbol's unique ID in the alphabet.
         """
-        for iWord, w in enumerate(self.problem.evidence.words[:-1]):
+        for iWord, w in enumerate(self.problem.evidence.words):
             for symbol in self.problem.evidence.alphabet.symbols:
-                count = self.problem.evidence.words[iWord+1].original_string.count(symbol)
-                self.word_growth[iWord][self.problem.evidence.alphabet.get_id(symbol)] = count
+                count = self.problem.evidence.words[iWord].original_string.count(symbol)
+                self.symbol_counts[iWord][self.problem.evidence.alphabet.get_id(symbol)] = count
 
     def compute_unaccounted_growth_matrix(self):
         """
@@ -2632,7 +2754,7 @@ void LSIProblemV3::ComputeSymbolLocalization()
                             self.problem.evidence.alphabet.get_id(symbol)]
                         sac_count = w.sac_counts[sac]
                         accounted_growth_of_symbol_in_word += min_growth_of_symbol_by_sac * sac_count
-                self.word_unaccounted_growth[iWord][self.problem.evidence.alphabet.get_id(symbol)] = (self.word_growth[iWord][self.problem.evidence.alphabet.get_id(symbol)] - accounted_growth_of_symbol_in_word)
+                self.word_unaccounted_growth[iWord][self.problem.evidence.alphabet.get_id(symbol)] = (self.symbol_counts[iWord+1][self.problem.evidence.alphabet.get_id(symbol)] - accounted_growth_of_symbol_in_word)
 
     def compute_unaccounted_length_matrix(self):
         """
@@ -2688,7 +2810,7 @@ void LSIProblemV3::ComputeSymbolLocalization()
             else:
                 # find the shortest word after the sac appears
                 for iWord, w in enumerate(self.problem.evidence.words[:-1]):
-                    if sac in w.sac_list:
+                    if sac in w.sacs:
                         shortest_word_length = len(self.problem.evidence.words[iWord+1])
                 self.min_length[iSac] = naive_min
                 self.max_length[iSac] = shortest_word_length

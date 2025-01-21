@@ -4,23 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)">
-      <change afterPath="$PROJECT_DIR$/InferenceTools/MasterAnalysisObject.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LSystems/DragonCurve/settings.json" afterDir="false" />
+    <list default="true" id="edc5e251-071c-473b-a578-b21f2247cdd9" name="Changes" comment="Converting PMIT CPP code into Python">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InferenceTools/Evidence.py" beforeDir="false" afterPath="$PROJECT_DIR$/InferenceTools/Evidence.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" beforeDir="false" afterPath="$PROJECT_DIR$/InferenceTools/LSystemInference.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LSystems/DragonCurve/DragonCurveProblem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/DragonCurve/DragonCurveProblem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LSystems/InferenceProblem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/InferenceProblem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InferenceTools/MasterAnalysisObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/InferenceTools/MasterAnalysisObject.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LSystems/LSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/LSystems/LSystem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utility.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utility/context_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/context_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utility/generate_mappings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/generate_mappings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utility/parikh_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility/parikh_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utility/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Alphabet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestAlphabetAndWord.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestProductionRule.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestProductionRule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestProductionRulesExtended.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestProductionRulesExtended.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/TestWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/TestWord.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WordsAndSymbols/Word.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordsAndSymbols/Word.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,46 +52,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_parametric_production_rule.executor": "Run",
-    "Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_parametric_rule_applies_to_word.executor": "Run",
-    "Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_rule_applies_to_word.executor": "Run",
-    "Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_stochastic_production_rule.executor": "Run",
-    "Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_stochastic_rule_applies_to_word.executor": "Run",
-    "Python tests.Python tests for TestWord.TestWord.test_add_sac.executor": "Run",
-    "Python tests.Python tests for TestWord.TestWord.test_append_word.executor": "Run",
-    "Python tests.Python tests for TestWord.TestWord.test_from_string.executor": "Run",
-    "Python tests.Python tests in TestAlphabetAndWord.py.executor": "Run",
-    "Python tests.Python tests in TestProductionRule.py.executor": "Run",
-    "Python tests.Python tests in TestProductionRulesExtended.py.executor": "Run",
-    "Python tests.Python tests in TestWord.py.executor": "Run",
-    "Python.Alphabet.executor": "Debug",
-    "Python.AlphabetInference.executor": "Run",
-    "Python.CantorDust.executor": "Run",
-    "Python.DeterministicRule.executor": "Run",
-    "Python.Evidence.executor": "Run",
-    "Python.IdentityRule.executor": "Debug",
-    "Python.LSystem.executor": "Run",
-    "Python.LSystemInference.executor": "Debug",
-    "Python.Main.executor": "Run",
-    "Python.Processor.executor": "Run",
-    "Python.ProductionRule.executor": "Debug",
-    "Python.SAC.executor": "Run",
-    "Python.Symbol.executor": "Run",
-    "Python.Utility.executor": "Debug",
-    "Python.Word.executor": "Debug",
-    "Python.WordExtended.executor": "Run",
-    "Python.display_utils.executor": "Run",
-    "Python.parikh_analysis.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Users/littl/PycharmProjects/LSystemInference/LSystems/DragonCurve"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_parametric_production_rule.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_parametric_rule_applies_to_word.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_rule_applies_to_word.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_stochastic_production_rule.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestProductionRulesExtended.TestProductionRuleExtended.test_stochastic_rule_applies_to_word.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestWord.TestWord.test_add_sac.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestWord.TestWord.test_append_word.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for TestWord.TestWord.test_from_string.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in TestAlphabetAndWord.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in TestProductionRule.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in TestProductionRulesExtended.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in TestWord.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Alphabet.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.AlphabetInference.executor&quot;: &quot;Run&quot;,
+    &quot;Python.CantorDust.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DeterministicRule.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Evidence.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Fragment.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IdentityRule.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.LSystem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.LSystemInference.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.MasterAnalysisObject.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Processor.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ProductionRule.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.SAC.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Symbol.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Utility.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Word.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.WordExtended.executor&quot;: &quot;Run&quot;,
+    &quot;Python.display_utils.executor&quot;: &quot;Run&quot;,
+    &quot;Python.parikh_analysis.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Users/littl/PycharmProjects/LSystemInference/LSystems/DragonCurve&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Users\littl\PycharmProjects\LSystemInference\LSystems\DragonCurve" />
@@ -399,7 +395,23 @@
       <option name="project" value="LOCAL" />
       <updated>1737260174448</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)">
+      <option name="closed" value="true" />
+      <created>1737332862757</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1737332862757</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Converting PMIT CPP code into Python">
+      <option name="closed" value="true" />
+      <created>1737341990936</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1737341990936</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -418,7 +430,8 @@
     <MESSAGE value="Added support for any symbol and empty symbol" />
     <MESSAGE value="Added LSystem and LSystemInference.py classes&#10;&#10;Now loads from json setting file." />
     <MESSAGE value="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Parikh Analysis&#10;&#10;Revising context rules (they were wrong)" />
+    <MESSAGE value="Converting PMIT CPP code into Python" />
+    <option name="LAST_COMMIT_MESSAGE" value="Converting PMIT CPP code into Python" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -448,9 +461,9 @@
           <option name="timeStamp" value="237" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Utility/parikh_analysis.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="460" />
+          <url>file://$PROJECT_DIR$/InferenceTools/LSystemInference.py</url>
+          <line>82</line>
+          <option name="timeStamp" value="287" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
