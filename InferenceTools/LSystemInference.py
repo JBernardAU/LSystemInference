@@ -86,6 +86,16 @@ class LSystemInference:
             print(f"\n STEP X - Computing Fragment from Partial Solution")
             print(f"\n STEP X - Localization")
 
+            print(f"\n Compute Minimum Variables")
+            selected_sacs = self.MAO.find_minimum_sacs_set()
+            print(selected_sacs)
+            print(f"\n Compute Minimum P-Space")
+            selected_sacs, pspace_size = self.MAO.find_smallest_pspace()
+            print(f"{selected_sacs}\n{pspace_size}")
+            pass
+
+
+
 
 
 

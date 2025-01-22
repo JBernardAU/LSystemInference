@@ -83,7 +83,7 @@ class MasterAnalysisObject:
     def get_min_growth(self, sac, symbol):
         return self.min_growth[self.problem.evidence.get_sac_id(sac)][symbol]
 
-    def get_max_length(self, sac, symbol):
+    def get_max_growth(self, sac, symbol):
         return self.max_growth[self.problem.evidence.get_sac_id(sac)][symbol]
 
     def get_min_length(self, sac):
@@ -327,11 +327,11 @@ class MasterAnalysisObject:
 
         	// STEP 3 - these steps discovery facts about the L-system, such as fragments
         	// A. if a set of symbols can only be produced by one symbol, then that set is a fragment
-        	// i. if the uniqueness is at the start of the production it is a head fragment 
-        	// ii. if the uniqueness is at the end of the production it is a tail fragment 
-        	// iii. if the uniqueness is at the middle of the production it is a mid fragment 
+        	// i. if the uniqueness is at the start of the production it is a head fragment
+        	// ii. if the uniqueness is at the end of the production it is a tail fragment
+        	// iii. if the uniqueness is at the middle of the production it is a mid fragment
         	// iv. if the uniqueness is at the start and end of the production it is a complete fragment
-        	// B. Remove any fragment which could not be localized into a wake, mark as tabu		
+        	// B. Remove any fragment which could not be localized into a wake, mark as tabu
 
         	// STEP 1 - This step remove reduces the number of localizations repeat until convergence
         	bool change = false;
@@ -2814,3 +2814,161 @@ void LSIProblemV3::ComputeSymbolLocalization()
                         shortest_word_length = len(self.problem.evidence.words[iWord+1])
                 self.min_length[iSac] = naive_min
                 self.max_length[iSac] = shortest_word_length
+
+    # Core function to find the minimum set of sacs to solve all words
+    def find_minimum_sacs_set(self):
+        """
+        Finds the minimum set of sacs required to solve all equations.
+
+        Returns:
+            set: The minimum set of sacs needed to solve all words.
+        """
+        uncovered_words = set(word for word in self.problem.evidence.words)
+        selected_sacs = set()
+        found_sacs = set()
+
+        # Add all identity sacs to selected_sacs
+        for sac in self.problem.evidence.sacs:
+            if self.is_sac_identity(sac):
+                selected_sacs.add(sac)
+
+        # Loop until all words are covered
+        while uncovered_words:
+            # Count how many uncovered words each sac can solve
+            sac_coverage = {}
+            for word in uncovered_words:
+                word_obj = next((w for w in self.problem.evidence.words if w == word), None)
+                if word_obj:
+                    for sac in word_obj.sac_counts.keys():
+                        # Only consider sacs that have not already been selected
+                        if sac not in selected_sacs and sac not in found_sacs:
+                            sac_coverage[sac] = sac_coverage.get(sac, 0) + 1
+
+            # Select the sac that solves the most uncovered words
+            if not sac_coverage:
+                raise RuntimeError("No valid sac can cover remaining words.")
+
+            best_sac = max(sac_coverage, key=sac_coverage.get)
+            selected_sacs.add(best_sac)
+
+            # Remove all words that are now fully covered (explicitly or implicitly)
+            while True:
+                new_found_sacs = set()
+                uncovered_words = {
+                    word for word in uncovered_words
+                    if not all(
+                        sac in selected_sacs or sac in found_sacs or
+                        all(
+                            other_sac in selected_sacs or other_sac in found_sacs
+                            for other_sac in next(
+                                (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                            )
+                            if other_sac != sac
+                        )
+                        for sac in next(
+                            (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                        )
+                    ) or new_found_sacs.update(
+                        sac for sac in next(
+                            (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                        ) if sac not in selected_sacs and sac not in found_sacs
+                    )
+                }
+                if new_found_sacs:
+                    found_sacs.update(new_found_sacs)
+                else:
+                    break
+
+        # remove identities
+        for sac in self.problem.evidence.sacs:
+            if self.is_sac_identity(sac):
+                selected_sacs.remove(sac)
+
+        return selected_sacs
+
+    # Core function to find the smallest p-space of sacs
+    def find_smallest_pspace(self):
+        """
+        Finds the smallest p-space of sacs to solve all equations.
+
+        Args:
+            problem (Problem): The problem containing words and sacs.
+            min_length (dict): A dictionary mapping each sac to its minimum length.
+            max_length (dict): A dictionary mapping each sac to its maximum length.
+
+        Returns:
+            tuple: A set of sacs that minimizes the p-space and the p-space product.
+        """
+        uncovered_words = set(word for word in self.problem.evidence.words)
+        selected_sacs = set()
+        found_sacs = set()
+
+        # Add all identity sacs to selected_sacs
+        for sac in self.problem.evidence.sacs:
+            if self.is_sac_identity(sac):
+                selected_sacs.add(sac)
+
+        total_product = 1
+
+        # Loop until all words are covered
+        while uncovered_words:
+            # Evaluate the impact of adding each sac to the solution
+            best_sac = None
+            best_increase = float('inf')
+
+            for sac in self.problem.evidence.sacs:
+                if sac in selected_sacs or sac in found_sacs:
+                    continue  # Already selected or found
+
+                # Compute range product increase
+                range_size = self.get_max_length(sac) - self.get_min_length(sac) + 1
+                new_product = total_product * range_size
+
+                # Count how many uncovered words this sac can solve
+                covers = sum(1 for word in uncovered_words if sac in next(
+                    (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                ))
+
+                # Heuristic: prioritize sacs that solve more words with minimal range impact
+                if covers > 0 and new_product < best_increase:
+                    best_sac = sac
+                    best_increase = new_product
+
+            # Add the best sac to the solution
+            selected_sacs.add(best_sac)
+            total_product = best_increase
+
+            # Remove all words that are now fully covered (explicitly or implicitly)
+            while True:
+                new_found_sacs = set()
+                uncovered_words = {
+                    word for word in uncovered_words
+                    if not all(
+                        sac in selected_sacs or sac in found_sacs or
+                        all(
+                            other_sac in selected_sacs or other_sac in found_sacs
+                            for other_sac in next(
+                                (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                            )
+                            if other_sac != sac
+                        )
+                        for sac in next(
+                            (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                        )
+                    ) or new_found_sacs.update(
+                        sac for sac in next(
+                            (w.sac_counts.keys() for w in self.problem.evidence.words if w == word), []
+                        ) if sac not in selected_sacs and sac not in found_sacs
+                    )
+                }
+                if new_found_sacs:
+                    found_sacs.update(new_found_sacs)
+                else:
+                    break
+
+        # Remove all identity sacs to selected_sacs
+        for sac in self.problem.evidence.sacs:
+            if self.is_sac_identity(sac):
+                selected_sacs.remove(sac)
+
+        return selected_sacs, total_product
