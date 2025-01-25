@@ -81,6 +81,9 @@ class LSystemInference:
             #print(f"\n          With Identities")
             #self.MAO.compute_total_length_total_symbol_production(include_identities=True)
 
+            print(f"\n STEP 6 - Computing Total Length from Symbiology")
+            self.MAO.compute_total_length_symbiology()
+
             print(f"\n STEP X - Computing Fragment from Markers")
             print(f"\n STEP X - Computing Fragment from Overlapping")
             print(f"\n STEP X - Computing Fragment from Partial Solution")

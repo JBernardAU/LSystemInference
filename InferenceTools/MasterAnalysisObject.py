@@ -2777,6 +2777,18 @@ void LSIProblemV3::ComputeSymbolLocalization()
                     accounted_length_in_word += min_length_by_sac * sac_count
             self.word_unaccounted_length[iWord] = len(self.problem.evidence.words[iWord+1]) - accounted_length_in_word
 
+    def compute_total_length_symbiology(self):
+        """
+        The total length of generation N can be reduced by the lengths of the SACs from previous generations
+        Thus the effect is a length equation for only those SACs that appear in this generation
+        """
+
+        for iWord, w in self.problem.evidence.words[:-1]:
+            for iSac, sac in w.sac_counts:
+
+                pass
+        pass
+
     def naive_min_max(self):
         """
         This function processes the evidence from the `problem` object, updating matrices that track the
