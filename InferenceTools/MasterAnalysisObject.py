@@ -1,6 +1,8 @@
 import copy
 import math
 
+from Utility.analysis_utils import create_length_equation
+
 
 class MasterAnalysisObject:
     def __init__(self, problem):
@@ -38,6 +40,10 @@ class MasterAnalysisObject:
         # the sum of the successors in each word have to be within the min/max of the values stored here
         self.total_length_min = [0 for _ in range(self.num_words-1)]
         self.total_length_max = [0 for _ in range(self.num_words-1)]
+
+        # an equation if a dictionary containing a list of sacs and a value
+        # e.g.: { 'sacs' : List[sac], 'value' : int }
+        self.length_equations = []
 
         # Conduct Naive/Initial analysis
         self.naive_min_max()
@@ -77,7 +83,6 @@ class MasterAnalysisObject:
         if self.total_length_max[iWord] > value:
             self.total_length_max[iWord] = value
             self.flag = True
-
 
     # These get called a lot so it just keeps the code cleaner
     def get_min_growth(self, sac, symbol):
@@ -246,7 +251,13 @@ class MasterAnalysisObject:
     def compute_total_length_by_length(self):
         pass
 
+
     def compute_length_total_length(self):
+        """
+        For wi => wi+1 Assume that all symbols except one provide their min/max, the remaining symbol must produce
+        the remainder
+        :return:
+        """
         pass
 
     def compute_length_symbiology(self):
@@ -2779,15 +2790,30 @@ void LSIProblemV3::ComputeSymbolLocalization()
 
     def compute_total_length_symbiology(self):
         """
-        The total length of generation N can be reduced by the lengths of the SACs from previous generations
-        Thus the effect is a length equation for only those SACs that appear in this generation
+        DEPRECATED
+        The general case of compute_length_total_length() covers this special case
         """
-
-        for iWord, w in self.problem.evidence.words[:-1]:
-            for iSac, sac in w.sac_counts:
-
-                pass
+        print("compute_total_length_symbiology() is deprecated. Do not call.")
         pass
+        #The total length of generation N can be reduced by the lengths of the SACs from previous generations
+        #Thus the effect is a length equation for only those SACs that appear in this generation
+        #for iWord, w in enumerate(self.problem.evidence.words[:-1]):
+            #min_length = 0
+            #max_length = 0
+            #new_sac_counts = {}
+            #next_word = self.problem.evidence.words[iWord+1]
+            # find all new sacs in the next word
+            #    if sac in prev.sac_counts:
+            #        min_length += self.get_min_length(sac) * prev.sac_counts[sac]
+            #        max_length += self.get_max_length(sac) * prev.sac_counts[sac]
+            #       pass
+            #    else:
+            #        new_sac_counts[sac](w.sac_counts[iSac])
+            #if len(new_sac_counts) > 0:
+            #    #otherwise create an equation
+            #    unaccounted_max = len(w) - min_length
+            #    unaccounted_min = len(w) - max_length
+            #    self.length_equations.append(create_length_equation(new_sac_counts, unaccounted_min, unaccounted_max))
 
     def naive_min_max(self):
         """

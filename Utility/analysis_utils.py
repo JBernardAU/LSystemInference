@@ -9,3 +9,6 @@ def calculate_modified_weighted_mean(x, y):
     numerator = sum((b / a) * a for a, b in zip(x, y))
     denominator = sum(b / a for a, b in zip(x, y))
     return numerator / denominator
+
+def create_length_equation(sacs, min, max):
+    return {"sacs" : sacs, "min" : min, "max" : max}
